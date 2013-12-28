@@ -1,0 +1,399 @@
+
+fa.cpp,1011
+struct fa_parser 31,941
+  fa_parser(fa_parser::fa_parser33,990
+  std::string& name;fa_parser::name36,1087
+  std::string& seq;fa_parser::seq37,1108
+  std::string& str;fa_parser::str38,1128
+  struct append_seqfa_parser::append_seq40,1149
+    std::string& seq;fa_parser::append_seq::seq42,1173
+    append_seq(fa_parser::append_seq::append_seq44,1196
+    void operator()(fa_parser::append_seq::operator()47,1266
+  struct definitionfa_parser::definition56,1400
+    typedef rule<ScannerT> rule_t;fa_parser::definition::rule_t58,1424
+    rule_t fa;fa_parser::definition::fa59,1459
+    rule_t head;fa_parser::definition::head60,1474
+    rule_t seq_l;fa_parser::definition::seq_l61,1491
+    rule_t seq;fa_parser::definition::seq62,1509
+    rule_t str;fa_parser::definition::str63,1525
+    rule_t str_l;fa_parser::definition::str_l64,1541
+    definition(fa_parser::definition::definition66,1560
+    const rule_t& start(fa_parser::definition::start76,1919
+load(82,1988
+load(105,2444
+
+ip.cpp,2594
+class IPimpl38,966
+  IPimpl(IPimpl::IPimpl41,989
+  ~IPimpl(IPimpl::~IPimpl52,1248
+  int make_variable(IPimpl::make_variable57,1295
+  int make_constraint(IPimpl::make_constraint66,1513
+  void add_constraint(IPimpl::add_constraint80,2004
+  void update(IPimpl::update89,2177
+  double solve(IPimpl::solve91,2197
+  double get_value(IPimpl::get_value103,2526
+  glp_prob *ip_;IPimpl::ip_109,2616
+  std::vector<int> ia_;IPimpl::ia_110,2633
+  std::vector<int> ja_;IPimpl::ja_111,2657
+  std::vector<double> ar_;IPimpl::ar_112,2681
+class IPimpl117,2738
+  IPimpl(IPimpl::IPimpl120,2761
+  ~IPimpl(IPimpl::~IPimpl129,3054
+  int make_variable(IPimpl::make_variable135,3111
+  int make_constraint(IPimpl::make_constraint141,3246
+  void add_constraint(IPimpl::add_constraint150,3435
+  void update(IPimpl::update155,3545
+  double solve(IPimpl::solve160,3592
+  double get_value(IPimpl::get_value183,4244
+  GRBEnv* env_;IPimpl::env_189,4341
+  GRBModel* model_;IPimpl::model_190,4357
+  int dir_;IPimpl::dir_191,4377
+  std::vector<GRBVar> vars_;IPimpl::vars_193,4390
+  std::vector<IPimpl::std::vector194,4419
+  std::vector< std::vector< std::pair<int,double> > > m_;IPimpl::m_194,4419
+  std::vector<int> bnd_;IPimpl::bnd_195,4477
+  std::vector<double> l_;IPimpl::l_196,4502
+  std::vector<double> u_;IPimpl::u_197,4528
+class IPimpl202,4599
+  IPimpl(IPimpl::IPimpl205,4622
+  ~IPimpl(IPimpl::~IPimpl210,4757
+  int make_variable(IPimpl::make_variable216,4813
+  int make_constraint(IPimpl::make_constraint224,4966
+  void add_constraint(IPimpl::add_constraint233,5155
+  void update(IPimpl::update238,5265
+  double solve(IPimpl::solve247,5448
+  double get_value(IPimpl::get_value274,6183
+  IloEnv env_;IPimpl::env_280,6276
+  IloModel model_;IPimpl::model_281,6291
+  IloExpr obj_;IPimpl::obj_282,6310
+  IloBoolVarArray vars_;IPimpl::vars_283,6326
+  IloCplex* cplex_;IPimpl::cplex_284,6351
+  std::vector<IPimpl::std::vector285,6371
+  std::vector< std::vector< std::pair<int,double> > > m_;IPimpl::m_285,6371
+  std::vector<int> bnd_;IPimpl::bnd_286,6429
+  std::vector<double> l_;IPimpl::l_287,6454
+  std::vector<double> u_;IPimpl::u_288,6480
+  IP::DirType dir_;IPimpl::dir_289,6506
+  int n_th_;IPimpl::n_th_290,6526
+IP(297,6641
+~IP(303,6710
+make_variable(310,6746
+make_constraint(317,6824
+add_constraint(324,6934
+update(331,7041
+solve(338,7086
+get_value(345,7136
+IP(353,7210
+~IP(359,7281
+make_variable(366,7336
+make_constraint(374,7424
+add_constraint(382,7537
+update(389,7632
+solve(396,7693
+get_value(403,7753
+
+ractip.cpp,1858
+namespace Vienna 44,1144
+namespace uShuffle 61,1539
+typedef unsigned int uint;71,1648
+typedef std::vector<float> VF;72,1675
+typedef std::vector<VF> VVF;73,1706
+typedef std::vector<int> VI;74,1735
+typedef std::vector<VI> VVI;75,1764
+typedef Vienna::plist pair_info;77,1814
+typedef Vienna::pair_info pair_info;79,1853
+class RactIP82,1898
+  RactIP(RactIP::RactIP85,1921
+  ~RactIP(RactIP::~RactIP111,2417
+  float alpha_;RactIP::alpha_136,3452
+  float beta_;RactIP::beta_137,3521
+  float th_hy_;RactIP::th_hy_138,3581
+  float th_ss_;RactIP::th_ss_139,3659
+  float th_ac_;RactIP::th_ac_140,3736
+  int max_w_;RactIP::max_w_141,3811
+  int min_w_;RactIP::min_w_142,3882
+  int enable_zscore_;RactIP::enable_zscore_143,3953
+  int num_shuffling_;RactIP::num_shuffling_144,4016
+  uint seed_;RactIP::seed_145,4098
+  bool in_pk_;RactIP::in_pk_146,4150
+  bool use_contrafold_;RactIP::use_contrafold_147,4218
+  bool use_pf_duplex_;RactIP::use_pf_duplex_148,4280
+  bool stacking_constraints_;RactIP::stacking_constraints_149,4303
+  bool show_energy_;RactIP::show_energy_150,4333
+  bool allow_concat_;RactIP::allow_concat_151,4354
+  bool run_with_modena_;RactIP::run_with_modena_152,4376
+  int n_th_;RactIP::n_th_153,4401
+  std::string rip_file_;RactIP::rip_file_154,4457
+  std::string param_file_;RactIP::param_file_155,4482
+  std::string fa1_;RactIP::fa1_156,4509
+  std::string fa2_;RactIP::fa2_157,4529
+contrafold(162,4567
+contraduplex(192,5342
+rnafold(214,5968
+rnafold(249,6925
+rnaduplex(296,8289
+load_from_rip(334,9469
+  enum { NONE,::NONE338,9640
+  enum { NONE, TABLE_R,::TABLE_R338,9640
+  enum { NONE, TABLE_R, TABLE_S,::TABLE_S338,9640
+  enum { NONE, TABLE_R, TABLE_S, TABLE_I ::TABLE_I338,9640
+solve(389,10777
+parse_options(830,22106
+calculate_energy(875,23520
+run(923,24767
+main(1015,27498
+
+boltzmann_param.h,39
+#define __INC_BOLTZMANN_PARAM_H__2,34
+
+cmdline.h,2981
+#define CMDLINE_H9,295
+#define CMDLINE_PARSER_PACKAGE 24,572
+#define CMDLINE_PARSER_PACKAGE_NAME 30,743
+#define CMDLINE_PARSER_PACKAGE_NAME 32,798
+#define CMDLINE_PARSER_VERSION 38,922
+struct gengetopt_args_info42,1025
+  const char *help_help;help_help44,1054
+  const char *full_help_help;full_help_help45,1133
+  const char *version_help;version_help46,1244
+  float alpha_arg;47,1329
+  char * alpha_orig;48,1406
+  const char *alpha_help;alpha_help49,1506
+  float beta_arg;50,1591
+  char * beta_orig;51,1668
+  const char *beta_help;beta_help52,1768
+  float fold_th_arg;53,1853
+  char * fold_th_orig;54,1948
+  const char *fold_th_help;fold_th_help55,2066
+  float hybridize_th_arg;56,2169
+  char * hybridize_th_orig;57,2270
+  const char *hybridize_th_help;hybridize_th_help58,2394
+  float acc_th_arg;59,2503
+  char * acc_th_orig;60,2595
+  const char *acc_th_help;acc_th_help61,2710
+  int max_w_arg;62,2810
+  char * max_w_orig;63,2895
+  const char *max_w_help;max_w_help64,3007
+  int min_w_arg;65,3104
+  char * min_w_orig;66,3189
+  const char *min_w_help;min_w_help67,3301
+  int zscore_arg;68,3398
+  char * zscore_orig;69,3542
+  const char *zscore_help;zscore_help70,3713
+  int num_shuffling_arg;71,3869
+  char * num_shuffling_orig;72,3952
+  const char *num_shuffling_help;num_shuffling_help73,4059
+  int seed_arg;74,4151
+  char * seed_orig;75,4231
+  const char *seed_help;seed_help76,4338
+  int mccaskill_flag;77,4430
+  const char *mccaskill_help;mccaskill_help78,4515
+  int allow_isolated_flag;79,4611
+  const char *allow_isolated_help;allow_isolated_help80,4695
+  int show_energy_flag;81,4790
+  const char *show_energy_help;show_energy_help82,4904
+  char * param_file_arg;83,5029
+  char * param_file_orig;84,5125
+  const char *param_file_help;param_file_help85,5259
+  int no_pk_flag;86,5378
+  const char *no_pk_help;no_pk_help87,5480
+  char * rip_arg;88,5593
+  char * rip_orig;89,5682
+  const char *rip_help;rip_help90,5809
+  unsigned int help_given 92,5924
+  unsigned int full_help_given 93,5992
+  unsigned int version_given 94,6070
+  unsigned int alpha_given 95,6144
+  unsigned int beta_given 96,6214
+  unsigned int fold_th_given 97,6282
+  unsigned int hybridize_th_given 98,6356
+  unsigned int acc_th_given 99,6440
+  unsigned int max_w_given 100,6512
+  unsigned int min_w_given 101,6582
+  unsigned int zscore_given 102,6652
+  unsigned int num_shuffling_given 103,6724
+  unsigned int seed_given 104,6810
+  unsigned int mccaskill_given 105,6878
+  unsigned int allow_isolated_given 106,6956
+  unsigned int show_energy_given 107,7044
+  unsigned int param_file_given 108,7126
+  unsigned int no_pk_given 109,7206
+  unsigned int rip_given 110,7276
+  char **inputs inputs112,7343
+  unsigned inputs_num 113,7415
+struct cmdline_parser_params117,7549
+  int override;119,7580
+  int initialize;120,7676
+  int check_required;121,7784
+  int check_ambiguity;122,7890
+  int print_errors;123,8031
+
+fa.h,556
+#define __INC_FA_H__22,795
+#define BOOST_SPIRIT_CLASSIC_NS 35,1045
+class Fasta38,1099
+  Fasta(Fasta::Fasta41,1121
+  Fasta(Fasta::Fasta43,1162
+  Fasta(Fasta::Fasta49,1295
+  operator=(Fasta::operator=54,1392
+  const std::string& name(Fasta::name64,1545
+  const std::string& seq(Fasta::seq65,1597
+  std::string& seq(Fasta::seq66,1647
+  const std::string& str(Fasta::str67,1685
+  unsigned int size(Fasta::size68,1735
+  std::string name_;Fasta::name_78,1936
+  std::string seq_;Fasta::seq_79,1957
+  std::string str_;Fasta::str_80,1977
+
+ip.h,488
+#define __INC_IP_H__21,720
+class IP25,757
+  typedef enum {MIN,IP::MIN28,776
+  typedef enum {MIN, MAX}IP::MAX28,776
+  typedef enum {MIN, MAX} DirType;IP::DirType28,776
+  typedef enum {FR,IP::FR29,811
+  typedef enum {FR, LO,IP::LO29,811
+  typedef enum {FR, LO, UP,IP::UP29,811
+  typedef enum {FR, LO, UP, DB,IP::DB29,811
+  typedef enum {FR, LO, UP, DB, FX}IP::FX29,811
+  typedef enum {FR, LO, UP, DB, FX} BoundType;IP::BoundType29,811
+  IPimpl* impl_;IP::impl_42,1130
+
+pf_duplex.h,35
+#define __INC_PF_DUPLEX_H__23,747
+
+ushuffle.h,46
+typedef long (*randfunc_t)randfunc_t38,1799
+
+boltzmann_param.c,1151
+#define DEF 17,348
+#define NST 18,364
+static int stack37a[stack37a21,400
+static int mismatchH37a[mismatchH37a33,806
+static int mismatchI37a[mismatchI37a72,1983
+static int dangle5_37a[dangle5_37a111,3150
+static int dangle3_37a[dangle3_37a124,3487
+static int int11_37a[int11_37a137,3831
+static int int21_37a[int21_37a435,12359
+static int int22_37a[int22_37a1909,55285
+static int hairpin37a[hairpin37a5833,149409
+static int bulge37a[bulge37a5841,149646
+static int internal_loop37a[internal_loop37a5849,149889
+static int MLparams_a[MLparams_a5857,150136
+static int ninio_a[ninio_a5864,150314
+struct tetra_loops 5871,150436
+  char *s;s5872,150457
+  int e;5873,150468
+} tetraloops_a[tetraloops_a5874,150477
+static void copy_stacks(5908,151101
+static void copy_loop(5916,151291
+static void copy_mismatch(5923,151407
+static void copy_int11(5932,151627
+static void copy_int21(5942,151894
+static void copy_int22(5953,152202
+static void copy_dangle(5965,152541
+static void copy_MLparams(5973,152720
+static void copy_ninio(5985,152939
+static void copy_Tetra_loop(5995,153097
+void copy_boltzmann_parameters(6010,153385
+
+cmdline.c,1380
+#define FIX_UNUSED(21,429
+const char *gengetopt_args_info_purpose gengetopt_args_info_purpose28,552
+const char *gengetopt_args_info_usage gengetopt_args_info_usage30,663
+const char *gengetopt_args_info_description gengetopt_args_info_description32,765
+const char *gengetopt_args_info_full_help[gengetopt_args_info_full_help34,816
+init_help_array(58,2885
+const char *gengetopt_args_info_help[gengetopt_args_info_help81,4088
+typedef enum {ARG_NOARG_NO83,4131
+  , ARG_FLAG84,4152
+  , ARG_STRING85,4165
+  , ARG_INT86,4180
+  , ARG_FLOAT87,4192
+} cmdline_parser_arg_type;88,4206
+void clear_given 104,4613
+void clear_args 128,5315
+void init_args_info(163,6326
+cmdline_parser_print_version 190,7633
+static void print_help_common(197,7824
+cmdline_parser_print_help 213,8223
+cmdline_parser_print_full_help 222,8391
+cmdline_parser_init 231,8574
+cmdline_parser_params_init(242,8782
+cmdline_parser_params_create(255,9069
+free_string_field 264,9302
+cmdline_parser_release 275,9402
+write_into_file(305,10368
+cmdline_parser_dump(317,10598
+cmdline_parser_file_save(372,12654
+cmdline_parser_free 392,13052
+gengetopt_strdup 399,13221
+cmdline_parser 413,13439
+cmdline_parser_ext 419,13585
+cmdline_parser2 435,13947
+cmdline_parser_required 458,14506
+static char *package_name package_name466,14674
+int update_arg(487,15720
+cmdline_parser_internal 587,18294
+
+pf_duplex.c,668
+#define MIN2(32,865
+#define MAX2(33,913
+#define PUBLIC47,1428
+#define PRIVATE 48,1443
+PRIVATE paramT *P P53,1571
+PRIVATE double **fw;fw55,1598
+PRIVATE double **bk;bk56,1664
+PUBLIC double **pr_duplex;pr_duplex57,1730
+PUBLIC double **pr_duplex2;pr_duplex258,1802
+PRIVATE short  *S1,S159,1830
+PRIVATE short  *S1, *SS1,SS159,1830
+PRIVATE short  *S1, *SS1, *S2,S259,1830
+PRIVATE short  *S1, *SS1, *S2, *SS2;SS259,1830
+PRIVATE int   n1,60,1867
+PRIVATE int   n1,n2;60,1867
+LogAdd(70,2143
+pf_duplex(78,2294
+free_pf_duplex(133,3680
+pf_duplex_fw(144,3854
+pf_duplex_bk(192,5174
+PRIVATE short * encode_seq(242,6536
+PRIVATE void encode_seqs(259,6924
+
+ushuffle.c,1032
+static randfunc_t randfunc 43,1822
+void set_randfunc(45,1860
+static const char *s_ s_51,1966
+static int l_ 52,1996
+static int k_ 53,2015
+typedef struct vertex 55,2035
+	int *indices;indices56,2059
+	int n_indices;57,2074
+	int i_indices;58,2090
+	int intree,59,2106
+	int intree, next;59,2106
+	int i_sequence;60,2125
+} vertex;61,2142
+static vertex *vertices vertices63,2153
+static int n_vertices;64,2185
+static int *indices indices65,2208
+static int root;66,2236
+static void *malloc0(malloc070,2276
+typedef struct hentry 82,2481
+	struct hentry *next;next83,2505
+	int i_sequence;84,2527
+	int i_vertices;85,2544
+} hentry;86,2561
+static hentry *entries entries88,2572
+static hentry **htable htable89,2603
+static int htablesize 90,2634
+static double hmagic;91,2661
+static int hcode(93,2684
+static void hinit(106,2894
+static void hcleanup(113,3069
+static void hinsert(121,3178
+void shuffle1(139,3618
+void permutec(192,4896
+static void permutei(202,5069
+void shuffle2(212,5247
+void shuffle(272,6602
