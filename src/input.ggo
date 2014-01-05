@@ -1,0 +1,29 @@
+option "alpha" a " weight for hybridization" float ¥
+       typestr="FLOAT" no default="0.5"
+option "beta" b  "weight for unpaired bases" float ¥
+       typestr="FLOAT" no default="0.0"
+option "fold-th" t "Threshold for base-pairing probabilities" float ¥
+       typestr="FLOAT" no default="0.5"
+option "hybridize-th" u "Threshold for hybridazation probabilities" float ¥
+       typestr="FLOAT" no default="0.2"
+option "acc-th" s "Threshold for accessible probabilities" float ¥
+       typestr="FLOAT" no default="0.0"
+max-w"  Maximum length of accessible regions  
+                               (default=`0')
+      --min-w=INT            Minimum length of accessible regions  
+                               (default=`0')
+      --zscore=INT           Calculate z-score via dishuffling (0=no shuffling, 
+                               1=1st seq only, 2=2nd seq only, or 12=both)  
+                               (default=`0')
+      --num-shuffling=INT    The number of shuffling  (default=`1000')
+      --seed=INT             Seed for random number generator  (default=`0')
+  -m, --mccaskill            Use McCaskill model for folding  (default=off)
+  -i, --allow-isolated       Allow isolated base-pairs  (default=off)
+  -e, --show-energy          calculate the free energy of the predicted joint 
+                               structure  (default=off)
+  -P, --param-file=FILENAME  Read the energy parameter file for Vienna RNA 
+                               package
+  -p, --no-pk                do not use the constraints for interenal 
+                               pseudoknots  (default=off)
+  -r, --rip=FILENAME         Import posterior probabilities from the result of 
+                               RIP

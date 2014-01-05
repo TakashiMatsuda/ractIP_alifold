@@ -91,12 +91,12 @@ am__can_run_installinfo = \
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/takashi/ダウンロード/ractip-0.0.3/missing --run aclocal-1.12
+ACLOCAL = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run aclocal-1.12
 AMTAR = $${TAR-tar}
-AUTOCONF = ${SHELL} /home/takashi/ダウンロード/ractip-0.0.3/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/takashi/ダウンロード/ractip-0.0.3/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/takashi/ダウンロード/ractip-0.0.3/missing --run automake-1.12
-AWK = gawk
+AUTOCONF = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run autoconf
+AUTOHEADER = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run autoheader
+AUTOMAKE = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run automake-1.12
+AWK = awk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
@@ -108,12 +108,12 @@ CXXFLAGS = -g -O2
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
-ECHO_C = 
-ECHO_N = -n
+ECHO_C = \c
+ECHO_N = 
 ECHO_T = 
-EGREP = /bin/grep -E
+EGREP = /usr/bin/grep -E
 EXEEXT = 
-GREP = /bin/grep
+GREP = /usr/bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_PROGRAM = ${INSTALL}
@@ -121,10 +121,10 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -lRNA -ldl -lgmp -lz -lpthread 
+LIBS = -lRNA -lltdl -ldl -lz -lpthread 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/takashi/ダウンロード/ractip-0.0.3/missing --run makeinfo
-MKDIR_P = /bin/mkdir -p
+MAKEINFO = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run makeinfo
+MKDIR_P = .././install-sh -c -d
 OBJEXT = o
 PACKAGE = ractip
 PACKAGE_BUGREPORT = satoken@bio.keio.ac.jp
@@ -135,13 +135,13 @@ PACKAGE_URL =
 PACKAGE_VERSION = 0.0.3
 PATH_SEPARATOR = :
 SET_MAKE = 
-SHELL = /bin/bash
+SHELL = /bin/sh
 STRIP = 
 VERSION = 0.0.3
-abs_builddir = /home/takashi/ダウンロード/ractip-0.0.3/src
-abs_srcdir = /home/takashi/ダウンロード/ractip-0.0.3/src
-abs_top_builddir = /home/takashi/ダウンロード/ractip-0.0.3
-abs_top_srcdir = /home/takashi/ダウンロード/ractip-0.0.3
+abs_builddir = /Users/takashi/cbrc/ractip-0.0.3/src
+abs_srcdir = /Users/takashi/cbrc/ractip-0.0.3/src
+abs_top_builddir = /Users/takashi/cbrc/ractip-0.0.3
+abs_top_srcdir = /Users/takashi/cbrc/ractip-0.0.3
 ac_ct_CC = gcc
 ac_ct_CXX = g++
 am__include = include
@@ -161,7 +161,7 @@ host_alias =
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/takashi/ダウンロード/ractip-0.0.3/install-sh
+install_sh = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -557,11 +557,7 @@ uninstall-am: uninstall-binPROGRAMS
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-binPROGRAMS \
-	check-syntax
-
-check-syntax:
-	gcc -Wall -fsyntax-only $(CHK_SOURCES)
+	uninstall-am uninstall-binPROGRAMS
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -83,7 +83,7 @@ typedef Vienna::pair_info pair_info;
 #endif
 
 
-// watching
+
 class RactIP
 {
 public:
@@ -95,6 +95,7 @@ public:
       th_ac_(0.0),
       max_w_(0),
       min_w_(0),
+      mix_w(0.0),//
       enable_zscore_(0),
       num_shuffling_(0),
       seed_(0),
@@ -145,6 +146,7 @@ private:
   float th_ac_;                // threshold for the accessible probability
   int max_w_;                  // maximum length of accessible regions
   int min_w_;                  // mimimum length of accessible regions
+  float mix_w;
   int enable_zscore_;          // flag for calculating z-score
   int num_shuffling_;          // the number of shuffling for calculating z-score
   uint seed_;                  // seed for random()
@@ -160,21 +162,51 @@ private:
   std::string param_file_;
   std::string fa1_;
   std::string fa2_;
+  
 };
 
 
 // writing
-// Maybe designing the interface will be useful.
 void
 RactIP::
-alifold(const std::string& seq, VF& bp, VI&offset, VVF& up) const
+alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<str::string>>& engine, mix_w, std::vector<FoldingEngine<Aln>*> cf_list, vm) const
 {
+  // 必要なパスはすべて通してあると仮定してコードする。
   
-  template class MixtureModel<Aln> model;
+  std::vector<std::pair<FoldingEngine<Aln>*,float> > models;
   
   
 
+  // どういう順番であるか調べる[0]と[1]
+  for (uint i=0; i!=engine.size(); ++i)
+    {
+      if (engine.size()!=mix_w.size())
+	models.push_back(std::make_pair(cf_list[i], 1.0));//default=1.0
+      else
+	models.push_back(std::make_pair(cf_list[i],mix_w[i]));
+    }
+  cf=new MixtureModel<Aln>(models,vm.count("mea");
+
+			   /**
+			    * engine.size()
+			    **/
+
+  // upの計算部分、そのまま
+  const uint L=seq.size();
+  up.resize(L, VF(1, 1.0));
+  for (uint i=0; i!=L; ++i)
+  {
+    for (uint j=0; j<i; ++j)
+      up[i][0] -= bp[offset[j+1]+(i+1)];
+    
+    for (uint j=i+1; j<L; ++j)
+      up[i][0] -= bp[offset[i+1]+(j+1)];
+    
+    up[i][0] = std::max(0.0f, up[i][0]);
+  
+  
 }
+
 
 // reading
 void
@@ -406,9 +438,9 @@ load_from_rip(const char* filename,
 
 float
 RactIP::
-solve(const std::string& s1, const std::string& s2, std::string& r1, std::string& r2)
+solve(const std::string& s1, const std::string& s2, std::string& r1, std::string& r2, FoldingEngine fe)
 {
-  IP ip(IP::MAX, n_th_);
+  IP ip(IP::MAX, n_th_);// watching
   VF bp1, bp2;
   VI offset1, offset2;
   VVF hp;
@@ -792,7 +824,7 @@ solve(const std::string& s1, const std::string& s2, std::string& r1, std::string
   }
 
   // execute optimization
-  float ea = ip.solve();
+  float ea = ip.solve();// (inner solver)
 
   // build the resultant structure
   r1.resize(s1.size());
@@ -860,11 +892,11 @@ solve(const std::string& s1, const std::string& s2, std::string& r1, std::string
 
 RactIP&
 RactIP::
-parse_options(int& argc, char**& argv)// this program starts here
+parse_options(int& argc, char**& argv)
 {
-  gengetopt_args_info args_info;
+  gengetopt_args_info args_info;// Gnu gengetopt
   if (cmdline_parser(argc, argv, &args_info)!=0) exit(1);
-
+  // the last filepointer should be taken by centroid_alifold section.
   alpha_ = args_info.alpha_arg;
   beta_ = args_info.beta_arg;
   th_ss_ = args_info.fold_th_arg;
@@ -872,17 +904,19 @@ parse_options(int& argc, char**& argv)// this program starts here
   th_ac_ = args_info.acc_th_arg;
   max_w_ = args_info.max_w_arg;
   min_w_ = args_info.min_w_arg;
+  mix_w = args_info.mix_w_arg;// warning:undefined
   enable_zscore_ = args_info.zscore_arg;
   num_shuffling_ = args_info.num_shuffling_arg;
   seed_ = args_info.seed_arg;
   in_pk_ = args_info.no_pk_flag==0;
   use_contrafold_ = args_info.mccaskill_flag==0;
+  //models = args_info.models_arg // not yet implemented
   //use_pf_duplex_ = args_info.pf_duplex_flag;
   stacking_constraints_ = args_info.allow_isolated_flag==0;
   //allow_concat_ = args_info.allow_concat_flag;
   //run_with_modena_ = args_info.modena_flag;
   n_th_ = 1; // args_info.n_th_arg;
-  if (args_info.rip_given) rip_file_ = args_info.rip_arg;
+  if (args_info.rip_given) rip_file_ = args_info.rip_arg;// edit here
   show_energy_ = args_info.show_energy_flag==1;
   if (args_info.param_file_given) param_file_ = args_info.param_file_arg;
 
@@ -960,7 +994,7 @@ run()// script watching
   if (!param_file_.empty())
     Vienna::read_parameter_file(param_file_.c_str());
   
-  // read sequences
+  // Alignments
   Aln fa1, fa2;
   if (!fa1_.empty() && !fa2_.empty())
   {

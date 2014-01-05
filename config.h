@@ -29,13 +29,13 @@
 /* #undef HAVE_LIBGLPK */
 
 /* Define to 1 if you have the `gmp' library (-lgmp). */
-#define HAVE_LIBGMP 1
+/* #undef HAVE_LIBGMP */
 
 /* Define to 1 if you have the `ilocplex' library (-lilocplex). */
 /* #undef HAVE_LIBILOCPLEX */
 
 /* Define to 1 if you have the `ltdl' library (-lltdl). */
-/* #undef HAVE_LIBLTDL */
+#define HAVE_LIBLTDL 1
 
 /* Define to 1 if you have the `pthread' library (-lpthread). */
 #define HAVE_LIBPTHREAD 1
@@ -77,7 +77,7 @@
 #define HAVE_VIENNA18 /**/
 
 /* have the Vienna RNA package version 2.0 or above */
-/* #undef HAVE_VIENNA20 */
+#define HAVE_VIENNA20 /**/
 
 /* Define to 1 if the system has the type `_Bool'. */
 /* #undef HAVE__BOOL */

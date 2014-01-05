@@ -18,8 +18,39 @@
 
 void
 RactIP::
-alifold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
+alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, engine, mix_w, cf_list, vm) const
 {
+  // 必要なパスはすべて通してあると仮定してコードする。
+  
+  std::vector<std::string> engine;
+  if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
+  std::vector<std::pair<FoldingEngine<Aln>*,float> > models;
+  for (uint i=0; i!=engine.size(); ++i)
+    {
+      if (engine.size()!=mix_w.size())
+	models.push_back(std::make_pair(cf_list[i], 1.0)e);
+      else
+	models.push_back(std::make_pair(cf_list[i],mix_w[i]));
+    }
+  cf=new MixtureModel<Aln>(models,vm.count("mea");
+
+			   /**
+			    * engine.size()
+			    **/
+
+  // upの計算部分、そのまま
+  const uint L=seq.size();
+  up.resize(L, VF(1, 1.0));
+  for (uint i=0; i!=L; ++i)
+  {
+    for (uint j=0; j<i; ++j)
+      up[i][0] -= bp[offset[j+1]+(i+1)];
+    
+    for (uint j=i+1; j<L; ++j)
+      up[i][0] -= bp[offset[i+1]+(j+1)];
+    
+    up[i][0] = std::max(0.0f, up[i][0]);
+  
   
 }
 
@@ -29,7 +60,6 @@ void
 RactIP::
 contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
 {
-
   /**
    *この作り方は"contrafold/**Engine.hpp"にあわせているため
    **/
@@ -42,7 +72,7 @@ contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
   en.RegisterParameters(pm);
   en.LoadValues(w);
   en.LoadSequence(ss);
-  en.ComputeInside();// undefined?
+  en.ComputeInside();
   en.ComputeOutside();
   en.ComputePosterior();
   en.GetPosterior(0, bp, offset);// alifold must implements this function type
@@ -63,6 +93,9 @@ contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
 // 下が注目しているRactIPのbpmatrix を投げてその結果を得る部分
     contrafold(s1, bp1, offset1, up1);//reading
 
+/**
+ * 
+ **/
 
 // Alifoldを用いる場合、次のように投げる。
 /**
