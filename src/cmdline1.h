@@ -55,9 +55,6 @@ struct gengetopt_args_info
   float hybridize_th_arg;	/**< @brief Threshold for hybridazation probabilities (default='0.2').  */
   char * hybridize_th_orig;	/**< @brief Threshold for hybridazation probabilities original value given at command line.  */
   const char *hybridize_th_help; /**< @brief Threshold for hybridazation probabilities help description.  */
-  float mix_weight_arg;	/**< @brief weight for mixture model for Alimodel (default='0.5').  */
-  char * mix_weight_orig;	/**< @brief weight for mixture model for Alimodel original value given at command line.  */
-  const char *mix_weight_help; /**< @brief weight for mixture model for Alimodel help description.  */
   float acc_th_arg;	/**< @brief Threshold for accessible probabilities (default='0.0').  */
   char * acc_th_orig;	/**< @brief Threshold for accessible probabilities original value given at command line.  */
   const char *acc_th_help; /**< @brief Threshold for accessible probabilities help description.  */
@@ -90,6 +87,15 @@ struct gengetopt_args_info
   char * rip_arg;	/**< @brief Import posterior probabilities from the result of RIP.  */
   char * rip_orig;	/**< @brief Import posterior probabilities from the result of RIP original value given at command line.  */
   const char *rip_help; /**< @brief Import posterior probabilities from the result of RIP help description.  */
+  float mix_weight_arg;	/**< @brief mixture weights of inference engines (default='0.5').  */
+  char * mix_weight_orig;	/**< @brief mixture weights of inference engines original value given at command line.  */
+  const char *mix_weight_help; /**< @brief mixture weights of inference engines help description.  */
+  char * engineX_arg;	/**< @brief specify the inference engine for independent sequence (default='McCaskilll').  */
+  char * engineX_orig;	/**< @brief specify the inference engine for independent sequence original value given at command line.  */
+  const char *engineX_help; /**< @brief specify the inference engine for independent sequence help description.  */
+  char * engineA_arg;	/**< @brief specify the inference engine for independent Alignment (default='Alifold').  */
+  char * engineA_orig;	/**< @brief specify the inference engine for independent Alignment original value given at command line.  */
+  const char *engineA_help; /**< @brief specify the inference engine for independent Alignment help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -97,7 +103,6 @@ struct gengetopt_args_info
   unsigned int beta_given ;	/**< @brief Whether beta was given.  */
   unsigned int fold_th_given ;	/**< @brief Whether fold-th was given.  */
   unsigned int hybridize_th_given ;	/**< @brief Whether hybridize-th was given.  */
-  unsigned int mix_weight_given ;	/**< @brief Whether mix-weight was given.  */
   unsigned int acc_th_given ;	/**< @brief Whether acc-th was given.  */
   unsigned int max_w_given ;	/**< @brief Whether max-w was given.  */
   unsigned int min_w_given ;	/**< @brief Whether min-w was given.  */
@@ -110,6 +115,9 @@ struct gengetopt_args_info
   unsigned int param_file_given ;	/**< @brief Whether param-file was given.  */
   unsigned int no_pk_given ;	/**< @brief Whether no-pk was given.  */
   unsigned int rip_given ;	/**< @brief Whether rip was given.  */
+  unsigned int mix_weight_given ;	/**< @brief Whether mix-weight was given.  */
+  unsigned int engineX_given ;	/**< @brief Whether engineX was given.  */
+  unsigned int engineA_given ;	/**< @brief Whether engineA was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */

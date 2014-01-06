@@ -902,9 +902,9 @@ parse_options(int& argc, char**& argv)
   th_ss_ = args_info.fold_th_arg;
   th_hy_ = args_info.hybridize_th_arg;
   th_ac_ = args_info.acc_th_arg;
+  mix-weight = args_info.mix_weight_arg;
   max_w_ = args_info.max_w_arg;
   min_w_ = args_info.min_w_arg;
-  mix_w = args_info.mix_w_arg;// warning:undefined
   enable_zscore_ = args_info.zscore_arg;
   num_shuffling_ = args_info.num_shuffling_arg;
   seed_ = args_info.seed_arg;
@@ -916,7 +916,7 @@ parse_options(int& argc, char**& argv)
   //allow_concat_ = args_info.allow_concat_flag;
   //run_with_modena_ = args_info.modena_flag;
   n_th_ = 1; // args_info.n_th_arg;
-  if (args_info.rip_given) rip_file_ = args_info.rip_arg;// edit here
+  if (args_info.rip_given) rip_file_ = args_info.rip_arg;
   show_energy_ = args_info.show_energy_flag==1;
   if (args_info.param_file_given) param_file_ = args_info.param_file_arg;
 

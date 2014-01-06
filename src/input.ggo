@@ -3,7 +3,6 @@ option "alpha" a " weight for hybridization" float typestr="FLOAT" no default="0
 option "beta" b  "weight for unpaired bases" float typestr="FLOAT" no default="0.0"
 option "fold-th" t "Threshold for base-pairing probabilities" float typestr="FLOAT" no default="0.5"
 option "hybridize-th" u "Threshold for hybridazation probabilities" float typestr="FLOAT" no default="0.2"
-option "mix-weight" w "weight for mixture model for Alimodel" float typestr="FLOAT" no default="0.5"
 option "acc-th" s "Threshold for accessible probabilities" float typestr="FLOAT" no default="0.0"
 option "max-w" -  "Maximum length of accessible regions" int typestr="INT" no default="0"
 option "min-w" - "Minimum length of accessible regions" int typestr="INT" no default="0"
@@ -16,3 +15,9 @@ option "show-energy" e "calculate the free energy of the predicted joint structu
 option "param-file" P "Read the energy parameter file for Vienna RNA package" string typestr="FILENAME" no
 option "no-pk" p "do not use the constraints for interenal pseudoknots" flag off
 option "rip" r "Import posterior probabilities from the result of RIP" string typestr="FILENAME" no
+
+# options from centroid_alifold
+option "mix-weight" w "mixture weights of inference engines" float typestr="FLOAT" no default="0.5"
+option "engineX" X "specify the inference engine for independent sequence" string typestr="ENGINENAME" no default="McCaskilll"
+option "engineA" A "specify the inference engine for independent Alignment" string typestr="ENGINENAME" no default="Alifold"
+

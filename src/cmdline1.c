@@ -40,7 +40,6 @@ const char *gengetopt_args_info_help[] = {
   "  -b, --beta=FLOAT           weight for unpaired bases  (default=`0.0')",
   "  -t, --fold-th=FLOAT        Threshold for base-pairing probabilities\n                               (default=`0.5')",
   "  -u, --hybridize-th=FLOAT   Threshold for hybridazation probabilities\n                               (default=`0.2')",
-  "  -w, --mix-weight=FLOAT     weight for mixture model for Alimodel\n                               (default=`0.5')",
   "  -s, --acc-th=FLOAT         Threshold for accessible probabilities\n                               (default=`0.0')",
   "      --max-w=INT            Maximum length of accessible regions\n                               (default=`0')",
   "      --min-w=INT            Minimum length of accessible regions\n                               (default=`0')",
@@ -53,6 +52,9 @@ const char *gengetopt_args_info_help[] = {
   "  -P, --param-file=FILENAME  Read the energy parameter file for Vienna RNA\n                               package",
   "  -p, --no-pk                do not use the constraints for interenal\n                               pseudoknots  (default=off)",
   "  -r, --rip=FILENAME         Import posterior probabilities from the result of\n                               RIP",
+  "  -w, --mix-weight=FLOAT     mixture weights of inference engines\n                               (default=`0.5')",
+  "  -X, --engineX=ENGINENAME   specify the inference engine for independent\n                               sequence  (default=`McCaskilll')",
+  "  -A, --engineA=ENGINENAME   specify the inference engine for independent\n                               Alignment  (default=`Alifold')",
     0
 };
 
@@ -85,7 +87,6 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->beta_given = 0 ;
   args_info->fold_th_given = 0 ;
   args_info->hybridize_th_given = 0 ;
-  args_info->mix_weight_given = 0 ;
   args_info->acc_th_given = 0 ;
   args_info->max_w_given = 0 ;
   args_info->min_w_given = 0 ;
@@ -98,6 +99,9 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->param_file_given = 0 ;
   args_info->no_pk_given = 0 ;
   args_info->rip_given = 0 ;
+  args_info->mix_weight_given = 0 ;
+  args_info->engineX_given = 0 ;
+  args_info->engineA_given = 0 ;
 }
 
 static
@@ -112,8 +116,6 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->fold_th_orig = NULL;
   args_info->hybridize_th_arg = 0.2;
   args_info->hybridize_th_orig = NULL;
-  args_info->mix_weight_arg = 0.5;
-  args_info->mix_weight_orig = NULL;
   args_info->acc_th_arg = 0.0;
   args_info->acc_th_orig = NULL;
   args_info->max_w_arg = 0;
@@ -134,6 +136,12 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->no_pk_flag = 0;
   args_info->rip_arg = NULL;
   args_info->rip_orig = NULL;
+  args_info->mix_weight_arg = 0.5;
+  args_info->mix_weight_orig = NULL;
+  args_info->engineX_arg = gengetopt_strdup ("McCaskilll");
+  args_info->engineX_orig = NULL;
+  args_info->engineA_arg = gengetopt_strdup ("Alifold");
+  args_info->engineA_orig = NULL;
   
 }
 
@@ -148,19 +156,21 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->beta_help = gengetopt_args_info_help[3] ;
   args_info->fold_th_help = gengetopt_args_info_help[4] ;
   args_info->hybridize_th_help = gengetopt_args_info_help[5] ;
-  args_info->mix_weight_help = gengetopt_args_info_help[6] ;
-  args_info->acc_th_help = gengetopt_args_info_help[7] ;
-  args_info->max_w_help = gengetopt_args_info_help[8] ;
-  args_info->min_w_help = gengetopt_args_info_help[9] ;
-  args_info->zscore_help = gengetopt_args_info_help[10] ;
-  args_info->num_shuffling_help = gengetopt_args_info_help[11] ;
-  args_info->seed_help = gengetopt_args_info_help[12] ;
-  args_info->mccaskill_help = gengetopt_args_info_help[13] ;
-  args_info->allow_iosolated_help = gengetopt_args_info_help[14] ;
-  args_info->show_energy_help = gengetopt_args_info_help[15] ;
-  args_info->param_file_help = gengetopt_args_info_help[16] ;
-  args_info->no_pk_help = gengetopt_args_info_help[17] ;
-  args_info->rip_help = gengetopt_args_info_help[18] ;
+  args_info->acc_th_help = gengetopt_args_info_help[6] ;
+  args_info->max_w_help = gengetopt_args_info_help[7] ;
+  args_info->min_w_help = gengetopt_args_info_help[8] ;
+  args_info->zscore_help = gengetopt_args_info_help[9] ;
+  args_info->num_shuffling_help = gengetopt_args_info_help[10] ;
+  args_info->seed_help = gengetopt_args_info_help[11] ;
+  args_info->mccaskill_help = gengetopt_args_info_help[12] ;
+  args_info->allow_iosolated_help = gengetopt_args_info_help[13] ;
+  args_info->show_energy_help = gengetopt_args_info_help[14] ;
+  args_info->param_file_help = gengetopt_args_info_help[15] ;
+  args_info->no_pk_help = gengetopt_args_info_help[16] ;
+  args_info->rip_help = gengetopt_args_info_help[17] ;
+  args_info->mix_weight_help = gengetopt_args_info_help[18] ;
+  args_info->engineX_help = gengetopt_args_info_help[19] ;
+  args_info->engineA_help = gengetopt_args_info_help[20] ;
   
 }
 
@@ -251,7 +261,6 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->beta_orig));
   free_string_field (&(args_info->fold_th_orig));
   free_string_field (&(args_info->hybridize_th_orig));
-  free_string_field (&(args_info->mix_weight_orig));
   free_string_field (&(args_info->acc_th_orig));
   free_string_field (&(args_info->max_w_orig));
   free_string_field (&(args_info->min_w_orig));
@@ -262,6 +271,11 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->param_file_orig));
   free_string_field (&(args_info->rip_arg));
   free_string_field (&(args_info->rip_orig));
+  free_string_field (&(args_info->mix_weight_orig));
+  free_string_field (&(args_info->engineX_arg));
+  free_string_field (&(args_info->engineX_orig));
+  free_string_field (&(args_info->engineA_arg));
+  free_string_field (&(args_info->engineA_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -309,8 +323,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "fold-th", args_info->fold_th_orig, 0);
   if (args_info->hybridize_th_given)
     write_into_file(outfile, "hybridize-th", args_info->hybridize_th_orig, 0);
-  if (args_info->mix_weight_given)
-    write_into_file(outfile, "mix-weight", args_info->mix_weight_orig, 0);
   if (args_info->acc_th_given)
     write_into_file(outfile, "acc-th", args_info->acc_th_orig, 0);
   if (args_info->max_w_given)
@@ -335,6 +347,12 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "no-pk", 0, 0 );
   if (args_info->rip_given)
     write_into_file(outfile, "rip", args_info->rip_orig, 0);
+  if (args_info->mix_weight_given)
+    write_into_file(outfile, "mix-weight", args_info->mix_weight_orig, 0);
+  if (args_info->engineX_given)
+    write_into_file(outfile, "engineX", args_info->engineX_orig, 0);
+  if (args_info->engineA_given)
+    write_into_file(outfile, "engineA", args_info->engineA_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -599,7 +617,6 @@ cmdline_parser_internal (
         { "beta",	1, NULL, 'b' },
         { "fold-th",	1, NULL, 't' },
         { "hybridize-th",	1, NULL, 'u' },
-        { "mix-weight",	1, NULL, 'w' },
         { "acc-th",	1, NULL, 's' },
         { "max-w",	1, NULL, 0 },
         { "min-w",	1, NULL, 0 },
@@ -612,10 +629,13 @@ cmdline_parser_internal (
         { "param-file",	1, NULL, 'P' },
         { "no-pk",	0, NULL, 'p' },
         { "rip",	1, NULL, 'r' },
+        { "mix-weight",	1, NULL, 'w' },
+        { "engineX",	1, NULL, 'X' },
+        { "engineA",	1, NULL, 'A' },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hVa:b:t:u:w:s:mieP:pr:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hVa:b:t:u:s:mieP:pr:w:X:A:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -675,18 +695,6 @@ cmdline_parser_internal (
               &(local_args_info.hybridize_th_given), optarg, 0, "0.2", ARG_FLOAT,
               check_ambiguity, override, 0, 0,
               "hybridize-th", 'u',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'w':	/* weight for mixture model for Alimodel.  */
-        
-        
-          if (update_arg( (void *)&(args_info->mix_weight_arg), 
-               &(args_info->mix_weight_orig), &(args_info->mix_weight_given),
-              &(local_args_info.mix_weight_given), optarg, 0, "0.5", ARG_FLOAT,
-              check_ambiguity, override, 0, 0,
-              "mix-weight", 'w',
               additional_error))
             goto failure;
         
@@ -763,6 +771,42 @@ cmdline_parser_internal (
               &(local_args_info.rip_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "rip", 'r',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'w':	/* mixture weights of inference engines.  */
+        
+        
+          if (update_arg( (void *)&(args_info->mix_weight_arg), 
+               &(args_info->mix_weight_orig), &(args_info->mix_weight_given),
+              &(local_args_info.mix_weight_given), optarg, 0, "0.5", ARG_FLOAT,
+              check_ambiguity, override, 0, 0,
+              "mix-weight", 'w',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'X':	/* specify the inference engine for independent sequence.  */
+        
+        
+          if (update_arg( (void *)&(args_info->engineX_arg), 
+               &(args_info->engineX_orig), &(args_info->engineX_given),
+              &(local_args_info.engineX_given), optarg, 0, "McCaskilll", ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "engineX", 'X',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'A':	/* specify the inference engine for independent Alignment.  */
+        
+        
+          if (update_arg( (void *)&(args_info->engineA_arg), 
+               &(args_info->engineA_orig), &(args_info->engineA_given),
+              &(local_args_info.engineA_given), optarg, 0, "Alifold", ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "engineA", 'A',
               additional_error))
             goto failure;
         
