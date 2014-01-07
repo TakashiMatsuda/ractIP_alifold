@@ -33,7 +33,7 @@ class InferenceEngine
     // dimensions
     int L, SIZE;
 
-    // sequence data
+  // sequence data
     std::vector<int> s, offset;
     std::vector<int> allow_unpaired_position;
     std::vector<int> allow_unpaired, allow_paired;
@@ -256,12 +256,12 @@ public:
                                                          const std::vector< InferenceEngine<RealT>* >& en ) const;
     RealT *GetPosterior(const RealT posterior_cutoff) const;
     RealT *GetPosterior(const RealT posterior_cutoff, std::vector<RealT>& p) const;
-    RealT *GetPosterior(const RealT posterior_cutoff, std::vector<RealT>& p, std::vector<int>& o) const
+  RealT *GetPosterior(const RealT posterior_cutoff, std::vector<RealT>& p, std::vector<int>& o) const
     {
         RealT* ret = GetPosterior(posterior_cutoff, p);
-        o = offset;
+        o = offset;//
         return ret;
-    }// Reading
+    }
     RealT *GetPosterior2(const RealT posterior_cutoff) const;
     RealT *GetPosterior2(const RealT posterior_cutoff, std::vector<RealT>& p) const;
 

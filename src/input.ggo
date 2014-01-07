@@ -17,7 +17,6 @@ option "no-pk" p "do not use the constraints for interenal pseudoknots" flag off
 option "rip" r "Import posterior probabilities from the result of RIP" string typestr="FILENAME" no
 
 # options from centroid_alifold
-option "mix-weight" w "mixture weights of inference engines" float typestr="FLOAT" no default="0.5"
-option "engineX" X "specify the inference engine for independent sequence" string typestr="ENGINENAME" no default="McCaskilll"
-option "engineA" A "specify the inference engine for independent Alignment" string typestr="ENGINENAME" no default="Alifold"
-
+option "mix-weight" w "mixture weights of inference engines" float typestr="FLOAT" no default="1.0,1.0"#multiple option way
+option "engine-seq" X "specify the inference engine for independent sequence" string typestr="ENGINENAME" no default="McCaskilll"
+option "engine-aln" A "specify the inference engine for independent Alignment" string typestr="ENGINENAME" no default="Alifold"

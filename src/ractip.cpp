@@ -43,6 +43,16 @@
 
 #include "centroidalifold/mixture.h"
 #include "centroidalifold/aln.h"
+#include "centroidalifold/engine/contrafold.h"
+#include "centroidalifold/engine/contrafoldm.h"
+#include "centroidalifold/engine/mccaskill.h"
+#include "centroidalifold/engine/alifold.h"
+#include "centroidalifold/engine/pfold.h"
+#include "centroidalifold/engine/averaged.h"
+#include "centroidalifold/engine/mixture.h"
+#include "centroidalifold/engine/aux.h"
+
+
 
 namespace Vienna {
 extern "C" {
@@ -95,7 +105,6 @@ public:
       th_ac_(0.0),
       max_w_(0),
       min_w_(0),
-      mix_w(0.0),//
       enable_zscore_(0),
       num_shuffling_(0),
       seed_(0),
@@ -110,7 +119,10 @@ public:
       rip_file_(),
       param_file_(),
       fa1_(),
-      fa2_()
+      fa2_(),
+      mix_w(),
+      engine()
+
   {
   }
   
@@ -128,6 +140,7 @@ public:
                                float& e1, float& e2, float& e3);
 
 private:
+  void alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<std::pair<FoldingEnine<Aln>*,float> >& models) const;
   void contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const;
   void contraduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const;
   void rnafold(const std::string& seq, VF& bp, VI& offset) const;
@@ -146,7 +159,6 @@ private:
   float th_ac_;                // threshold for the accessible probability
   int max_w_;                  // maximum length of accessible regions
   int min_w_;                  // mimimum length of accessible regions
-  float mix_w;
   int enable_zscore_;          // flag for calculating z-score
   int num_shuffling_;          // the number of shuffling for calculating z-score
   uint seed_;                  // seed for random()
@@ -163,47 +175,26 @@ private:
   std::string fa1_;
   std::string fa2_;
   
+  /**
+   * member for Alignment interaction
+   **/
+  std::vector<float> mix_w;   // mixture weights of inference engines
+  std::vector<std::string> engine;
+
 };
 
 
 // writing
 void
 RactIP::
-alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<str::string>>& engine, mix_w, std::vector<FoldingEngine<Aln>*> cf_list, vm) const
+alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<std::pair<FoldingEngine<Aln>*,float> >&  models) const
 {
   // 必要なパスはすべて通してあると仮定してコードする。
+  // centroid_alifoldのコードを流用して、いいところで取り出す関数を作っておいて、呼び出す。
   
-  std::vector<std::pair<FoldingEngine<Aln>*,float> > models;
-  
-  
-
-  // どういう順番であるか調べる[0]と[1]
-  for (uint i=0; i!=engine.size(); ++i)
-    {
-      if (engine.size()!=mix_w.size())
-	models.push_back(std::make_pair(cf_list[i], 1.0));//default=1.0
-      else
-	models.push_back(std::make_pair(cf_list[i],mix_w[i]));
-    }
-  cf=new MixtureModel<Aln>(models,vm.count("mea");
-
-			   /**
-			    * engine.size()
-			    **/
-
-  // upの計算部分、そのまま
-  const uint L=seq.size();
-  up.resize(L, VF(1, 1.0));
-  for (uint i=0; i!=L; ++i)
-  {
-    for (uint j=0; j<i; ++j)
-      up[i][0] -= bp[offset[j+1]+(i+1)];
-    
-    for (uint j=i+1; j<L; ++j)
-      up[i][0] -= bp[offset[i+1]+(j+1)];
-    
-    up[i][0] = std::max(0.0f, up[i][0]);
-  
+  models.calculate_posterior(seq);
+  bp=models.get_bp();
+  // offsetの扱いをこれから決める
   
 }
 
@@ -222,11 +213,11 @@ contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
   en.RegisterParameters(pm);
   en.LoadValues(w);
   en.LoadSequence(ss);
-  en.ComputeInside();// undefined?
+  en.ComputeInside();
   en.ComputeOutside();
   en.ComputePosterior();
-  en.GetPosterior(0, bp, offset);// alifold must implements this function type
-
+  en.GetPosterior(0, bp, offset);//
+  
   const uint L=seq.size();
   up.resize(L, VF(1, 1.0));
   for (uint i=0; i!=L; ++i)
@@ -438,7 +429,7 @@ load_from_rip(const char* filename,
 
 float
 RactIP::
-solve(const std::string& s1, const std::string& s2, std::string& r1, std::string& r2, FoldingEngine fe)
+  solve(const std::string& s1, const std::string& s2, std::string& r1, std::string& r2, std::vector<std::pair<FoldingEngine<Aln>*,float> > models)
 {
   IP ip(IP::MAX, n_th_);// watching
   VF bp1, bp2;
@@ -447,15 +438,15 @@ solve(const std::string& s1, const std::string& s2, std::string& r1, std::string
   VVF up1, up2;
   bool enable_accessibility = min_w_>1 && max_w_>=min_w_;
 
-  /*
+  /**
    *  2013 Takashi Matsuda added the following (alifold) section.
-   */
-  
+   **/
+  bool use_alifold=true;// temporary code
   if(use_alifold){
-  alifold(s1, bp1, offset1, up1);// define alifold later
-  alifold(s2, bp2, offset2, up2);
+    alifold(s1, bp1, offset1, up1, models);
+    alifold(s2, bp2, offset2, up2, models);
   
-  rnaduplex(s1,s2,hp)// maybe change this
+    rnaduplex(s1,s2,hp);
   }
 
   
@@ -466,8 +457,7 @@ solve(const std::string& s1, const std::string& s2, std::string& r1, std::string
   }
   else if (use_contrafold_)
   {
-    // calculate probability matrices for each seq?
-    contrafold(s1, bp1, offset1, up1);//reading
+    contrafold(s1, bp1, offset1, up1);
     contrafold(s2, bp2, offset2, up2);
     //contraduplex(s1, s2, hp);
     rnaduplex(s1, s2, hp);
@@ -902,7 +892,7 @@ parse_options(int& argc, char**& argv)
   th_ss_ = args_info.fold_th_arg;
   th_hy_ = args_info.hybridize_th_arg;
   th_ac_ = args_info.acc_th_arg;
-  mix-weight = args_info.mix_weight_arg;
+  mix_w = args_info.mix_weight_arg;
   max_w_ = args_info.max_w_arg;
   min_w_ = args_info.min_w_arg;
   enable_zscore_ = args_info.zscore_arg;
@@ -927,6 +917,8 @@ parse_options(int& argc, char**& argv)
     cmdline_parser_free(&args_info);
     exit(1);
   }
+
+  // filename
   if (args_info.inputs_num>=1)
     fa1_ = args_info.inputs[0];
   if (args_info.inputs_num>=2)
@@ -987,7 +979,7 @@ calculate_energy(const std::string s1, const std::string& s2,
 
 int
 RactIP::
-run()// script watching
+run()
 {
   // set the energy parameters
   copy_boltzmann_parameters();
@@ -998,7 +990,7 @@ run()// script watching
   Aln fa1, fa2;
   if (!fa1_.empty() && !fa2_.empty())
   {
-    std::list<Aln> l1, l2;// changed here <input> (Fasta -> Aln)
+    std::list<Aln> l1, l2;// change here <input> (Fasta -> Aln)
     if (Aln::load(l1, fa1_.c_str())==0)
       throw (fa1_+": Format error").c_str();
     if (Aln::load(l2, fa2_.c_str())==0)
@@ -1016,10 +1008,100 @@ run()// script watching
     fa2=*(x++);
   }
   else { throw "unreachable"; }
+  
+  /**
+   * centroid_align section
+   * Takashi Matsuda 2013-2014 automn-winter
+   **/
+  
+  std::vector<FoldingEngine<Aln>*> cflist(engine.size(),NULL);
+  if (engine.empty())
+    {// Default setting for Inference Engine
+#ifdef HAVE_LIBRNA
+    engine.push_back("McCaskill");
+    engine.push_back("Alifold");
+#else
+    engine.push_back("CONTRAfold");
+#endif
+    }
+
+  if (vm.count("pf_fold")) { engine.resize(1); engine[0]="McCaskill"; }
+  if (vm.count("alipf_fold")) { engine.resize(1); engine[0]="Alifold"; }// watching
+  if (vm.count("aux")) { engine.resize(1); engine[0]="AUX"; }
+
+  FoldingEngine<Aln>* cf=NULL;
+  std::vector<FoldingEngine<Aln>*> cf_list(engine.size(), NULL);
+  std::vector<FoldingEngine<std::string>*> src_list(engine.size(), NULL);
+  for (uint i=0; i!=engine.size(); ++i)
+  {
+    if (engine[i]=="CONTRAfold")
+    {
+      if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 4.0);
+      src_list[i] = new CONTRAfoldModel(param, !vm.count("noncanonical"), max_bp_dist, seed, vm.count("mea"));
+      cf_list[i] = new AveragedModel(src_list[i], max_bp_dist, vm.count("mea"));
+    }
+    else if (engine[i]=="CONTRAfoldM")
+    {
+      if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 4.0);
+      cf_list[i] = new CONTRAfoldMultiModel(param, !vm.count("noncanonical"), max_bp_dist, seed, vm.count("mea"));
+    }
+#ifdef HAVE_LIBRNA
+    else if (engine[i]=="McCaskill")
+    {
+      if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 2.0);
+      src_list[i] = new McCaskillModel(!vm.count("noncanonical"), max_bp_dist,
+                                       param.empty() ? NULL : param.c_str(),
+                                       seed, vm.count("mea"));
+      cf_list[i] = new AveragedModel(src_list[i], max_bp_dist, vm.count("mea"));
+    }
+    else if (engine[i]=="Alifold")
+    {
+      if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 2.0);
+      cf_list[i] = new AliFoldModel(!vm.count("noncanonical"), max_bp_dist,
+                                    param.empty() ? NULL : param.c_str(),
+                                    seed, vm.count("mea"));
+    }
+#endif
+    else if (engine[i]=="pfold")
+    {
+      if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
+      std::string pfold_bin_dir(getenv("PFOLD_BIN_DIR") ? getenv("PFOLD_BIN_DIR") : ".");
+      std::string awk_bin(getenv("AWK_BIN") ? getenv("AWK_BIN") : "mawk");
+      std::string sed_bin(getenv("SED_BIN") ? getenv("SED_BIN") : "sed");
+      cf_list[i] = new PfoldModel<Aln>(pfold_bin_dir, awk_bin, sed_bin, vm.count("mea"));
+    }
+    else if (engine[i]=="AUX")
+    {
+      if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
+      src_list[i] = new AuxModel(model, vm.count("mea"));
+      cf_list[i] = new AveragedModel(src_list[i], 0, vm.count("mea"));
+    }
+    else
+    {
+      throw std::logic_error("unsupported engine");
+    }
+  }
+
+  if (engine.size()==1)
+    cf=cf_list[0];
+  else
+  {
+    // if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
+    std::vector<std::pair<FoldingEngine<Aln>*,float> > models;//watching
+    for (uint i=0; i!=engine.size(); ++i)
+    {
+      if (engine.size()!=mix_w.size())
+        models.push_back(std::make_pair(cf_list[i], 1.0)e);
+      else
+        models.push_back(std::make_pair(cf_list[i], mix_w[i]));
+    }
+    //cf = new MixtureModel<Aln>(models, vm.count("mea"));
+    cf = new MixtureModel<Aln>(models, 0);
+  }
 
   // predict the interation
   std::string r1, r2;
-  float ea = solve(fa1.seq(), fa2.seq(), r1, r2);
+  float ea = solve(fa1.seq(), fa2.seq(), r1, r2, models);
 
   // display the result
   std::cout << ">" << fa1.name() << std::endl

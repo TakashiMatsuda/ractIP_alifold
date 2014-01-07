@@ -233,5 +233,194 @@ alignment用のコードを挿入する。
 これRIPファイルで入力させればいいんじゃない・・・？
 centroidalifoldの前半部分だけを切り取って結果として出力して、
 二つをpythonで結べばいい気がしてきた。
-load_from_rinに注目。
+load_from_ripに注目。
 < ripはまったく違った。まともにやろう。
+
+cmdlineを作り終えた。
+次はファイルポインタの受け渡し。どのように行うか。
+
+If you specify the inference engines multiply, centroid_alifold employs a mixtured baes-pairing probability matrix. The mixture weight can be set by '-w' or '--mixture' option. The default setting of centroid_alifold is '-e McCaskill -w 1.0 -e Alifold -w 1.0'. See more detail in (Hamada et al., 2010).
+
+上の意味がわからない。二つの方法のweightがどちらも1.0とはどういうことなんだろうか。
+論文を参照。
+論文では0.5,0.5の配分と書いてあることから、あとで半分にしているのだろうか。内装をみてみる。
+（今回はcentroidalifoldにしたがう必要がある）
+
+ファイルポインタの引き渡し部分を実装する。
+ファイルのパスを引き渡した。
+
+受け取り側の型がconst char*
+もとの型はstring
+この二つの間に互換性はあるか。
+安全性からload関数の方の受け取り型をstringに変えることができないだろうか。
+
+Aln::loadの内装をみている。
+file_iterator: boost/spirit/include/classic.hppにあるらしい
+あとは内装をみる必要はなさそうだ。
+faとalnは非常によくにて作られている、作者も同じ人だしfaを流用してalnを作ったのだろう。
+
+centroid_alifold section, つまり
+alignmentに対する塩基対確率の計算に必要なパラメータを用意してまとめて適切な形でsolve関数に渡す。
+
+modelsに渡すもの
+engine
+どのようにengineを収集していたか、に着目。
+たくさん書いてあって、最終的にはgammaに関する記述部分をのぞく部分をすべてractIPに搭載することに
+なると思う。
+理解したところから順番にソースに加えていく。
+とりあえずデフォルトのみをカバーするコードを書く。
+
+po::variables_map vmとは何だろう
+variables_map: オプション引数を格納したmap
+vm.countで、辞書的に指定したオプション引数を取り出すことができる。
+
+vm.countとなっているところを修正して、投げる。
+meaとか関係ない。
+これリファクタリングしたほうがいいな。
+
+投げるところまでできた。
+
+base-pairing probabilityを取り出すメンバ関数をつくるか、
+centroid_alifoldで用いられている方法をそのまま流用して、
+塩基対確率行列を得る。
+
+MixtureModelのコンストラクタに塩基対確率行列の作成が実装されているかもしれない
+中をみていて、意味をしらない文法が出てきた。したにメモしておく。
+// Reading
+template <class SEQ>
+MixtureModel<SEQ>::
+MixtureModel(const std::vector<std::pair<FoldingEngine<SEQ>*,float> >& models,
+             bool run_as_mea /*=false*/)
+  : FoldingEngine<SEQ>(run_as_mea, 0), models_(models)
+{
+}
+コロンのつづきは初期化を表すということ（らしい）、標準は読んでません
+順番にみていく。
+FoldingEngineの初期化、おそらくこれは関係ないと思う。（modelsを入れていないので）
+変数名が書いてないのは何故
+models_の初期化：
+std::vector<std::pair<FoldingEngine<SEQ>*,float> > models_;
+これを初期化してもとくに何もおこらない、メンバに代入するだけ
+なにもしていない。
+
+次を読む。どこで塩基対確率が代入されているかを読みつづける。
+calculate_posteriarで実装されている（みたい）
+
+
+そのままcontrafoldと同様に実装していいんじゃないかな。
+継承のことも考えると、
+FoldingEngineとInferenceEngineの違いが気になる。
+FoldingEngineもInferenceEngineも何も継承していないクラスだった。
+umu.
+FoldingEngineの内装を読んでいって、どこで塩基対確率を求めているか理解する。
+最終的にはcontrafoldとかを使うはずだから、そこに注目すればわかりやすいかもしれない。
+FoldingEngineの内装を読み始める前に、
+centroid_alifoldの、cfが作られたあとのその利用状況について理解するのも必要だと思う。
+cf->stochastic_fold:
+FoldingEngineの実装。
+
+calculate_posterior:
+x->first firstはpairの第一要素
+FoldingEngine::calculate_posterior(SEQ seq):
+  virtual void calculate_posterior(const SEQ& seq) = 0;
+virtual宣言:仮想宣言
+実装は継承したクラス内で行われ、そのクラス内では宣言のみ行うときに書く
+
+これを呼び出せばいいのかな
+結果はどこに保管されるのだろう
+FoldingEngine:bp_
+BPTable bp_
+get_bp()で返ってくるみたい
+  const BPTable& get_bp() const { return bp_; }
+
+stochastic_fold内でcalculate_posteriorが呼び出されているか < 未確認
+ractIP::alifoldの中でcalclulate_posterior(seq)とget_bp()を実装した
+でも、offset変数にも何かを入れないとractIPは動作しないみたい
+
+
+contrafold()でのoffsetの振る舞いをみる。
+下の文を再現するには、どうすればいいのか。
+  SStruct ss("unknown", seq);
+  ParameterManager<float> pm;
+  InferenceEngine<float> en(false);
+  VF w = GetDefaultComplementaryValues<float>();
+  bp.resize((seq.size()+1)*(seq.size()+2)/2);
+  std::fill(bp.begin(), bp.end(), 0.0);
+  en.RegisterParameters(pm);
+  en.LoadValues(w);
+  en.LoadSequence(ss);
+  en.ComputeInside();
+  en.ComputeOutside();
+  en.ComputePosterior();
+  en.GetPosterior(0, bp, offset);//
+
+
+
+offset:
+相殺、差し引き、埋め合わせ
+分かれ出たもの
+offset:(内装のなかでの意味)
+InferenceEngine<float>::GetPosterior :
+RealT *GetPosterior(const RealT posterior_cutoff, std::vector<RealT>& p, std::vector<int>& o) const
+    {
+        RealT* ret = GetPosterior(posterior_cutoff, p);
+        o = offset;
+        return ret;
+    }// Reading
+
+
+GetPosterior(0,bp,offset)で
+GetPosterior(0,bp){
+bp.resize(SIZE);
+for (int i=0; i<SIZE; i++){
+    bp[i]=(posterior[i] >= posterior_cutoff ? posterior[i] : RealT(0));
+}
+offsetにこのクラス(InferenceEngine)のoffsetが上書きされる
+InferenceEngine::offsetがどこで編集されるか調べる
+//C++のクラスのコード、toStringがないとデバッグも理解するのも難しいね。
+
+offset:
+headerには操作が見つからなかった
+InferenceEngine.ipp
+//////////////////////////////////////////////////////////////////////
+// ComputeRowOffset()
+//
+// Consider an N x N upper triangular matrix whose elements are
+// stored in a one-dimensional flat array using the following
+// row-major indexing scheme:
+//
+//     0  1  2  3     <-- row 0
+//        4  5  6     <-- row 1
+//           7 [8]    <-- row 2
+//              9     <-- row 3
+//
+// Assuming 0-based indexing, this function computes offset[i]
+// for the ith row such that offset[i]+j is the index of the
+// (i,j)th element of the upper triangular matrix in the flat
+// array.
+//
+// For example, offset[2] = 5, so the (2,3)th element of the
+// upper triangular matrix (marked in the picture above) can be 
+// found at position offset[2]+3 = 5+3 = 8 in the flat array.
+//////////////////////////////////////////////////////////////////////
+
+(space)
+
+    // compute indexing scheme for upper triangular arrays;
+    // also allow each position to be unpaired by default, and
+    // set the loss for each unpaired position to zero
+    for (int i = 0; i <= L; i++)
+    {
+      offset[i] = ComputeRowOffset(i,L+1,max_bp_dist);//
+        allow_unpaired_position[i] = 1;
+        loss_unpaired_position[i] = RealT(0);
+    }
+
+この実装がどこで呼ばれているか調べる。
+返されたoffsetが何を表すのか調べる。
+論文にもこの単語が出ていないか調べる。
+offset はbpを参照するためのものだった。
+bpmatrixは1-dimension vectorとして表現している。これはメモリを節約する工夫である。
+これからcentroid_alifoldのbpから、ractIPのメモリ節約型bp+offsetに変換する部分を実装する。
+
+
