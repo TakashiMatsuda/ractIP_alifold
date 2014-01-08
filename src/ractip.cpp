@@ -183,6 +183,13 @@ private:
 
 };
 
+//writing
+void RactIP::
+transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset)
+{
+  
+}
+
 
 // writing
 void
@@ -190,13 +197,26 @@ RactIP::
 alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<std::pair<FoldingEngine<Aln>*,float> >&  models) const
 {
   // 必要なパスはすべて通してあると仮定してコードする。
-  // centroid_alifoldのコードを流用して、いいところで取り出す関数を作っておいて、呼び出す。
-  
+  // centroid_alifoldのコードを流用して、塩基対確率を計算して取り出す関数を作っておいて、呼び出す。
+  // basepair probabilityの計算
   models.calculate_posterior(seq);
-  bp=models.get_bp();
-  // offsetの扱いをこれから決める
+  bp_centroidfold=models.get_bp();
+  // bpの変換
+  transBP_centroidfold_ractip(bp_centroidfold, bp, offset);
   
+  
+  const uint L=seq.size();
+  up.resize(L, VF(1, 1.0));
+  for (uint i=0; i!=L; ++i)
+  {
+    for (uint j=0; j<i; ++j)
+      up[i][0] -= bp[offset[j+1]+(i+1)];
+    for (uint j=i+1; j<L; ++j)
+      up[i][0] -= bp[offset[i+1]+(j+1)];
+    up[i][0] = std::max(0.0f, up[i][0]);
+  }
 }
+
 
 
 // reading
@@ -1087,7 +1107,7 @@ run()
   else
   {
     // if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
-    std::vector<std::pair<FoldingEngine<Aln>*,float> > models;//watching
+    std::vector<std::pair<FoldingEngine<Aln>*,float> > models;
     for (uint i=0; i!=engine.size(); ++i)
     {
       if (engine.size()!=mix_w.size())
@@ -1098,7 +1118,7 @@ run()
     //cf = new MixtureModel<Aln>(models, vm.count("mea"));
     cf = new MixtureModel<Aln>(models, 0);
   }
-
+  
   // predict the interation
   std::string r1, r2;
   float ea = solve(fa1.seq(), fa2.seq(), r1, r2, models);
@@ -1178,3 +1198,4 @@ main(int argc, char* argv[])
   }
   return 1;
 }
+
