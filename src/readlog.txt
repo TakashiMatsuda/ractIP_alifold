@@ -531,4 +531,61 @@ std::vector<T> table_;
 bp_(i,j)でよびだされているとしか思えないけどなぁ。。。それで実装してみるか。
 //!!!! CAUTION !!!! bp_(i,j)の正当性を理解していません！！！！！///////
 
+void RactIP::
+transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset)
 
+まず上三角行列だけを取り出して、一次元配列にしていく。
+offsetは行列の大きさからただちに計算される。
+offset計算関数はComputeROwOffsetによって計算する。
+InferenceEngineのコードが参考になりそうなので閲覧する。
+template<class RealT>
+int InferenceEngine<RealT>::ComputeRowOffset(int i, int N, int w /*=0*/) const
+{
+    Assert(i >= 0 && i <= N, "Index out-of-bounds.");
+#define USE_EFFICIENT_WINDOW
+#ifdef USE_EFFICIENT_WINDOW
+    if (w==0)
+    {
+	// equivalent to:
+	//   return N*(N+1)/2 - (N-i)*(N-i+1)/2 - i;
+	return i*(N+N-i-1)/2;
+    }
+    else
+    {
+	return i*w - i;
+    }
+#else
+    // equivalent to:
+    //   return N*(N+1)/2 - (N-i)*(N-i+1)/2 - i;
+    return i*(N+N-i-1)/2;
+#endif
+}
+
+必要なのは、N
+    // compute indexing scheme for upper triangular arrays;
+    // also allow each position to be unpaired by default, and
+    // set the loss for each unpaired position to zero
+    for (int i = 0; i <= L; i++)
+    {
+      offset[i] = ComputeRowOffset(i,L+1,max_bp_dist);//(only here CRO)
+        allow_unpaired_position[i] = 1;
+        loss_unpaired_position[i] = RealT(0);
+    }
+
+enはこのあとまだ使われるのか。（メンバを用いることがあれば、問題になるかもしれない）
+->使わない。心配はいりません。
+
+まず、上三角行列をとりだすことから。
+bp(i,j)と(j,i)
+は等しいんだろうか？
+それともそもそもその座標には一回もアクセスしていなんだろうか。
+・・ふつうに入っていると仮定する。
+上三角の値が右上行列に入っていると仮定する。
+
+一次元配列を取り出した。
+    max_bp_dist(max_bp_dist),//contrafoldではこの引数は与えられないのでデフォルト値となる
+    InferenceEngine(bool allow_noncomplementary, int max_bp_dist=0);
+
+trans関数の実装を終了した.
+二次構造での塩基対確率の実装を終了した。
+----------------------------------------------

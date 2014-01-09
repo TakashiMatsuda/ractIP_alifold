@@ -1057,7 +1057,7 @@ void InferenceEngine<RealT>::LoadSequence(const SStruct &sstruct)
     // set the loss for each unpaired position to zero
     for (int i = 0; i <= L; i++)
     {
-      offset[i] = ComputeRowOffset(i,L+1,max_bp_dist);//
+      offset[i] = ComputeRowOffset(i,L+1,max_bp_dist);//only here CRO called
         allow_unpaired_position[i] = 1;
         loss_unpaired_position[i] = RealT(0);
     }

@@ -187,7 +187,25 @@ private:
 void RactIP::
 transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset)
 {
+  int bpsize=bp_centroidfold.size();
+  for (int i=0; i<bpsize; i++)
+    {
+      int j=0;
+      for (j=i; j<bpsize; j++)
+	{
+	  bp.push_back(bp_centroidfold(i,j));
+	}
+    }
   
+  //L = sstruct.G;
+  
+  int max_bp_dist=0;
+  for (int i = 0; i <= bpsize; i++)
+    {
+      offset[i] = ComputeRowOffset(i,bpsize+1,max_bp_dist);
+      //allow_unpaired_position[i] = 1;
+      //loss_unpaired_position[i] = RealT(0);
+    }
 }
 
 
@@ -218,7 +236,6 @@ alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<std::pa
 }
 
 
-
 // reading
 void
 RactIP::
@@ -236,7 +253,7 @@ contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
   en.ComputeInside();
   en.ComputeOutside();
   en.ComputePosterior();
-  en.GetPosterior(0, bp, offset);//
+  en.GetPosterior(0, bp, offset);
   
   const uint L=seq.size();
   up.resize(L, VF(1, 1.0));
@@ -248,7 +265,7 @@ contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
       up[i][0] -= bp[offset[i+1]+(j+1)];
     up[i][0] = std::max(0.0f, up[i][0]);
   }
-}    
+}
 
 void
 RactIP::
@@ -271,6 +288,7 @@ contraduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const
     for (uint j=0; j!=seq2.size(); ++j)
       hp[i+1][j+1] = ip[en.GetOffset(i+1)+(j+1)];
 }
+
 
 void
 RactIP::
@@ -466,7 +484,7 @@ RactIP::
     alifold(s1, bp1, offset1, up1, models);
     alifold(s2, bp2, offset2, up2, models);
   
-    rnaduplex(s1,s2,hp);
+    rnaduplex(s1,s2,hp);// 1st structure base pairing probability
   }
 
   
