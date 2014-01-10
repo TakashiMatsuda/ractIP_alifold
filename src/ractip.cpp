@@ -84,6 +84,8 @@ extern "C" {
 typedef unsigned int uint;
 typedef std::vector<float> VF;
 typedef std::vector<VF> VVF;
+typedef std::vector<VVF> VVVF;
+typedef std::vector<VVVF> VVVVF;
 typedef std::vector<int> VI;
 typedef std::vector<VI> VVI;
 #ifdef HAVE_VIENNA18
@@ -198,7 +200,6 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset)
     }
   
   //L = sstruct.G;
-  
   int max_bp_dist=0;
   for (int i = 0; i <= bpsize; i++)
     {
@@ -209,12 +210,12 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset)
 }
 
 
-// writing
+
 void
 RactIP::
 alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<std::pair<FoldingEngine<Aln>*,float> >&  models) const
 {
-  // 必要なパスはすべて通してあると仮定してコードする。
+  // 必要なパスをMakeFileに記載しよう。
   // centroid_alifoldのコードを流用して、塩基対確率を計算して取り出す関数を作っておいて、呼び出す。
   // basepair probabilityの計算
   models.calculate_posterior(seq);
@@ -371,6 +372,57 @@ rnafold(const std::string& seq, VF& bp, VI& offset, VVF& up, uint max_w) const
 #endif
   Vienna::free_pf_arrays();
 }
+
+void
+RactIP::
+rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
+{
+  // hpに平均値を入れていく。
+  const std::list<std::string>& s1=a1.seq();
+  const std::list<std::string>& s2=a2.seq();
+  int size1=a1.size();
+  int size2=a2.size();
+  std::list<std::string>iterator it1=s1.begin();
+  std::list<std::string>iterator it2=s2.begin();
+  VVVVF vhp(size1);
+  int i=0;
+  for (it1=s1.begin(); it1 != s1.end(); it1++)
+    {
+      double sum=0;
+      int j=0;
+      vhp[i].resize(size2);
+      
+      for (it2=s2.begin(); it2!=s2.end(); it2++)
+	{
+	  rnaduplex(*it1, *it2, vhp[i][j]);
+	  j++;
+	}
+      i++;
+    }
+  // 平均
+  VVVF::iterator it_vvhp;
+  VVF::iterator it_vhp;
+  int L=vvhp[0][0].size();
+  int M=vvhp[0][0][0].size();
+  hp.resize(L);
+  for(int i=0; i<L; i++)
+    {
+      hp[i].resize(M);
+      for (int j=0; j<M; j++)
+	{
+	  double sum=0;
+	  for (it_vvhp=vhp.begin(); it_vvhp!=vhp.end();it_vvhp++)
+	    {
+	      for(it_vhp=*it_vvhp.begin(); it_vhp!=*it_vvhp.end(); it_vhp++)
+		{
+		  sum+=*it_vhp[i][j];
+		}
+	    }
+	  hp[i][j]=sum / (double)(size1+size2);	  
+	}
+    }
+}
+
 
 void
 RactIP::

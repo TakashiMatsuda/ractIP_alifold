@@ -45,7 +45,7 @@ private:
   std::vector<T*> ptr_;
   uint size_;
   uint max_dist_;
-  
+s  
 public:
   CYKTable()
     : table_(), ptr_(), size_(0), max_dist_(0)
