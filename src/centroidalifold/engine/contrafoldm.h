@@ -25,8 +25,8 @@
 #define __INC_ENGINE_CONTRAFOLDM_H__
 
 #include "../folding_engine.h"
-#include "engine/contrafold.h"
-#include "engine/averaged.h"
+#include "contrafold.h"
+#include "averaged.h"
 
 class CONTRAfoldMultiModel : public FoldingEngine<Aln>
 {

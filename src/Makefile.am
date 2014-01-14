@@ -9,4 +9,12 @@ ractip_SOURCES = \
 	contrafold/ParameterManager.hpp contrafold/ParameterManager.ipp \
 	contrafold/SStruct.hpp contrafold/SStruct.cpp \
 	contrafold/Utilities.hpp contrafold/Utilities.ipp contrafold/Utilities.cpp \
-	contrafold/Defaults.ipp contrafold/LogSpace.hpp contrafold/Config.hpp contrafold/rand.h 
+	contrafold/Defaults.ipp contrafold/LogSpace.hpp contrafold/Config.hpp contrafold/rand.h \
+	centroidalifold/engine/contrafold.h \
+	centroidalifold/engine/contrafoldm.h \
+	centroidalifold/engine/mccaskill.h \
+	centroidalifold/engine/alifold.h \
+	centroidalifold/engine/pfold.h \
+	centroidalifold/engine/averaged.h \
+	centroidalifold/engine/mixture.h \
+	cenroidalifold/engine/aux.h

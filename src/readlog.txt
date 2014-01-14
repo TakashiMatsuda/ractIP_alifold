@@ -601,3 +601,81 @@ seq()でlist<string>を得る
 rnaduplex_alnを実装した。
 ---------------------------------------------
 MakeFileの作成
+automakeを用いている
+環境依存の変数をコンパイラに渡すのに、autoconfを使う。
+automakeとは何か:
+
+-----------------------------------------------
+makeの前に、単体でコンパイルが通るようにデバッグする。
+---------
+私が手を付けていないところで出るエラーは、./configureしていないことによってマクロ変数が代入されていないことが原因になっているものですべてではないかと思う。
+今は私が手を付けたところだけを修正する。
+---------
+alifoldのところ、vmを通じて引数に接続する文がまだたくさんのこっているので、
+ひとまずそこをすべてコメントアウトする。
+iteratorの文法間違いを起こしているようなので、イテレータの仕様を読んで、書き直す。
+------------
+s1まわりのiterator 文法間違い
+s1は参照であるから、この中身に対するイテレータを生成しようとしているが、それは生成されない。
+右辺にあるものの正確な型を理解しよう。clangのエラーメッセージの理解もしよう。
+------------
+mix_weightのちゃんとした実装
+(gengetoptのggoファイルの実装)
+などの入出力の整備
+複数オプション：(mix_weightのため)
+複数オプションを廃止する。そもそもwと1-wなんだから、要求するほうがおかしい。
+片方だけを頂いて、もう片方はデフォルトで1-wとする。
+cmdline1.c .hのPACKAGEマクロ変数のエラーは、config.hがまだ生成されていないために起こるエラー。
+佐藤さんのggoファイルがあった。。。ショック。
+------------
+vmの書き換え
+-----------
+solve関数の引数型の指定でエラー
+constの理解をする。右左どちらを修飾するのか。
+
+undeclaredってでてくるの、ヘッダに書かれていないことが原因か？
+------
+modelsのメンバ関数を呼び出すようにしているけど、これはmodelsの型を間違えている。
+違う型で宣言しなきゃいけない。
+centroid_alifoldではMixtureModelのインスタンスに対して呼び出しをしていた。
+修正した。渡す引数をmodelsからcfに変更した。
+------
+ComputeRowOffset関数は、InferenceEngineに入っている。そのため、InferenceEngineを呼びださなければならない。
+public memberにして、InferenceEngine(false) en;としてenからcallした
+------
+ソースファイルの変更をターミナルが反映しない。ターミナルの設定を変更するにはどうすればいいんだろう。
+わからなかった。明日友達に聞こう。
+------
+include先でエラーになっている場合、下の出力のnoteメッセージに自分のソースコードがないか調べる
+それが問題のことが多い、下に行くほど原因らしい
+------
+まだまだ順番に読んでいく。3時になったら工学部の方を始める。
+ractip.cpp:526:32: note: in instantiation of template class 'std::__1::list<std::__1::basic_string<char> &, std::__1::allocator<std::__1::basic_string<char> &> >' requested here
+solve(std::list<std::string& > s1, std::list<std::string& > s2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
+listのインスタンス化が必要
+引数の型を変更したい。aln.seq()の型を確認する。
+ const std::list<std::string>& seq() const { return seq_; }
+変更した。
+------
+ std::string s1(fa1.seq());
+下流、ractIPの表示時に上の処理を行っている、ここを変更する
+the energy of the joint structureを計算・表示するのに配列が必要とされる。
+この部分はまだまったくソースを読んでいないのですが、配列が必要ならその塩基配列を塩基配列アラインメントに
+置き換える
+表示であれば、list<string>を与えて、内部でそれをそのまま表示する関数に変更する。
+この機能は私の卒業論文には含めないことができるので、卒業論文を書いてから実装する。
+------
+  cf.calculate_posterior(seq);
+calculate_posteriorの引数の型はAln
+Alnを入れる
+solve関数からすべてAlnを引数にとるように変更する。
+内部でlist<string>が必要ならコールする
+変更した。
+------
+ractip.cpp:228:3: error: member function 'transBP_centroidfold_ractip' not viable: 'this' argument has type 'const RactIP', but function is not marked const
+  transBP_centroidfold_ractip(bp_centroidfold, bp, offset);
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+alifoldはRactIPに対してconstメンバ関数
+中でtransBPを読んでいて、これはconstでないため
+transBPをconstに修正した
+------

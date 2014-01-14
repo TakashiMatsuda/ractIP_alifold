@@ -2,7 +2,7 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Define to 1 if you have the <glpk.h> header file. */
-/* #undef HAVE_GLPK_H */
+#define HAVE_GLPK_H 1
 
 /* Define to 1 if you have the <gurobi_c++.h> header file. */
 /* #undef HAVE_GUROBI_C___H */
@@ -26,7 +26,7 @@
 #define HAVE_LIBDL 1
 
 /* Define to 1 if you have the `glpk' library (-lglpk). */
-/* #undef HAVE_LIBGLPK */
+#define HAVE_LIBGLPK 1
 
 /* Define to 1 if you have the `gmp' library (-lgmp). */
 /* #undef HAVE_LIBGMP */

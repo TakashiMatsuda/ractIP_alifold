@@ -132,11 +132,11 @@ AUTOCONF = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run autoconf
 AUTOHEADER = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run autoheader
 AUTOMAKE = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run automake-1.12
 AWK = awk
-CC = gcc
+CC = clang
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPPFLAGS = 
-CXX = g++
+CXX = clang++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
@@ -156,7 +156,7 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LIBOBJS = 
-LIBS = -lRNA -lltdl -ldl -lz -lpthread 
+LIBS = -lRNA -lglpk -lltdl -ldl -lz -lpthread 
 LTLIBOBJS = 
 MAKEINFO = ${SHELL} /Users/takashi/cbrc/ractip-0.0.3/missing --run makeinfo
 MKDIR_P = ./install-sh -c -d

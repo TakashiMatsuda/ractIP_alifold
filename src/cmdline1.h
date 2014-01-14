@@ -75,8 +75,8 @@ struct gengetopt_args_info
   const char *seed_help; /**< @brief Seed for random number generator help description.  */
   int mccaskill_flag;	/**< @brief Use McCaskill model for folding (default=off).  */
   const char *mccaskill_help; /**< @brief Use McCaskill model for folding help description.  */
-  int allow_iosolated_flag;	/**< @brief Allow isolated base-pairs (default=off).  */
-  const char *allow_iosolated_help; /**< @brief Allow isolated base-pairs help description.  */
+  int allow_isolated_flag;	/**< @brief Allow isolated base-pairs (default=off).  */
+  const char *allow_isolated_help; /**< @brief Allow isolated base-pairs help description.  */
   int show_energy_flag;	/**< @brief calculate the free energy of the predicted joint structure (default=off).  */
   const char *show_energy_help; /**< @brief calculate the free energy of the predicted joint structure help description.  */
   char * param_file_arg;	/**< @brief Read the energy parameter file for Vienna RNA package.  */
@@ -87,15 +87,15 @@ struct gengetopt_args_info
   char * rip_arg;	/**< @brief Import posterior probabilities from the result of RIP.  */
   char * rip_orig;	/**< @brief Import posterior probabilities from the result of RIP original value given at command line.  */
   const char *rip_help; /**< @brief Import posterior probabilities from the result of RIP help description.  */
-  float mix_weight_arg;	/**< @brief mixture weights of inference engines (default='0.5').  */
+  float mix_weight_arg;	/**< @brief mixture weights of inference engines (default='1.0').  */
   char * mix_weight_orig;	/**< @brief mixture weights of inference engines original value given at command line.  */
   const char *mix_weight_help; /**< @brief mixture weights of inference engines help description.  */
-  char * engineX_arg;	/**< @brief specify the inference engine for independent sequence (default='McCaskilll').  */
-  char * engineX_orig;	/**< @brief specify the inference engine for independent sequence original value given at command line.  */
-  const char *engineX_help; /**< @brief specify the inference engine for independent sequence help description.  */
-  char * engineA_arg;	/**< @brief specify the inference engine for independent Alignment (default='Alifold').  */
-  char * engineA_orig;	/**< @brief specify the inference engine for independent Alignment original value given at command line.  */
-  const char *engineA_help; /**< @brief specify the inference engine for independent Alignment help description.  */
+  char * engine_seq_arg;	/**< @brief specify the inference engine for independent sequence (default='McCaskilll').  */
+  char * engine_seq_orig;	/**< @brief specify the inference engine for independent sequence original value given at command line.  */
+  const char *engine_seq_help; /**< @brief specify the inference engine for independent sequence help description.  */
+  char * engine_aln_arg;	/**< @brief specify the inference engine for independent Alignment (default='Alifold').  */
+  char * engine_aln_orig;	/**< @brief specify the inference engine for independent Alignment original value given at command line.  */
+  const char *engine_aln_help; /**< @brief specify the inference engine for independent Alignment help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -110,14 +110,14 @@ struct gengetopt_args_info
   unsigned int num_shuffling_given ;	/**< @brief Whether num-shuffling was given.  */
   unsigned int seed_given ;	/**< @brief Whether seed was given.  */
   unsigned int mccaskill_given ;	/**< @brief Whether mccaskill was given.  */
-  unsigned int allow_iosolated_given ;	/**< @brief Whether allow-iosolated was given.  */
+  unsigned int allow_isolated_given ;	/**< @brief Whether allow-isolated was given.  */
   unsigned int show_energy_given ;	/**< @brief Whether show-energy was given.  */
   unsigned int param_file_given ;	/**< @brief Whether param-file was given.  */
   unsigned int no_pk_given ;	/**< @brief Whether no-pk was given.  */
   unsigned int rip_given ;	/**< @brief Whether rip was given.  */
   unsigned int mix_weight_given ;	/**< @brief Whether mix-weight was given.  */
-  unsigned int engineX_given ;	/**< @brief Whether engineX was given.  */
-  unsigned int engineA_given ;	/**< @brief Whether engineA was given.  */
+  unsigned int engine_seq_given ;	/**< @brief Whether engine-seq was given.  */
+  unsigned int engine_aln_given ;	/**< @brief Whether engine-aln was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */

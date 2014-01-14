@@ -175,7 +175,7 @@ class InferenceEngine
 
     void FillScores(typename std::vector<std::pair<RealT, RealT> >::iterator begin, typename std::vector<std::pair<RealT, RealT> >::iterator end, RealT value);
     void FillCounts(typename std::vector<std::pair<RealT, RealT> >::iterator begin, typename std::vector<std::pair<RealT, RealT> >::iterator end, RealT value);
-    int ComputeRowOffset(int i, int N, int w) const;
+  //int ComputeRowOffset(int i, int N, int w) const;
     bool IsComplementary(int i, int j) const;
     
     RealT ScoreJunctionA(int i, int j) const;
@@ -219,7 +219,8 @@ public:
     // constructor and destructor
     InferenceEngine(bool allow_noncomplementary, int max_bp_dist=0);
     ~InferenceEngine();
-
+  
+    int ComputeRowOffset(int i, int N, int w) const;
     // register params with the parameter manager
     void RegisterParameters(ParameterManager<RealT> &parameter_manager);
                             

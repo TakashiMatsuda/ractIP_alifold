@@ -22,7 +22,7 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-#include "cmdline.h"
+#include "cmdline1.h"
 #include <unistd.h>
 #include <cstdlib>
 #include <sys/time.h>
@@ -41,8 +41,10 @@
 
 #include "contrafold/Defaults.ipp"
 
-#include "centroidalifold/mixture.h"
+// 依存関係が面倒くさくなるようだったら、関数そのものを移動しよう
 #include "centroidalifold/aln.h"
+#include "centroidalifold/mea.h"
+#include "centroidalifold/folding_engine.h"
 #include "centroidalifold/engine/contrafold.h"
 #include "centroidalifold/engine/contrafoldm.h"
 #include "centroidalifold/engine/mccaskill.h"
@@ -51,7 +53,6 @@
 #include "centroidalifold/engine/averaged.h"
 #include "centroidalifold/engine/mixture.h"
 #include "centroidalifold/engine/aux.h"
-
 
 
 namespace Vienna {
@@ -134,16 +135,17 @@ public:
 
   RactIP& parse_options(int& argc, char**& argv);
   int run();
-  float solve(const std::string& s1, const std::string& s2,
-              std::string& r1, std::string& r2);
+  float solve(Aln& s1, Aln& s2, std::string& r1, std::string& r2, MixtureModel<Aln> cf);
 
   static void calculate_energy(const std::string s1, const std::string& s2,
                                const std::string r1, const std::string& r2,
                                float& e1, float& e2, float& e3);
 
 private:
-  void alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<std::pair<FoldingEnine<Aln>*,float> >& models) const;
+  void transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const;
+  void alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln> cf) const;
   void contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const;
+  void rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const;
   void contraduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const;
   void rnafold(const std::string& seq, VF& bp, VI& offset) const;
   void rnafold(const std::string& seq, VF& bp, VI& offset, VVF& up, uint max_w) const;
@@ -185,9 +187,10 @@ private:
 
 };
 
-//writing
-void RactIP::
-transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset)
+
+void
+RactIP::
+transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const
 {
   int bpsize=bp_centroidfold.size();
   for (int i=0; i<bpsize; i++)
@@ -201,9 +204,11 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset)
   
   //L = sstruct.G;
   int max_bp_dist=0;
+  InferenceEngine<float> en(false);
+  
   for (int i = 0; i <= bpsize; i++)
     {
-      offset[i] = ComputeRowOffset(i,bpsize+1,max_bp_dist);
+      offset[i] = en.ComputeRowOffset(i,bpsize+1,max_bp_dist);
       //allow_unpaired_position[i] = 1;
       //loss_unpaired_position[i] = RealT(0);
     }
@@ -213,13 +218,13 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset)
 
 void
 RactIP::
-alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<std::pair<FoldingEngine<Aln>*,float> >&  models) const
+alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln> cf) const
 {
-  // 必要なパスをMakeFileに記載しよう。
   // centroid_alifoldのコードを流用して、塩基対確率を計算して取り出す関数を作っておいて、呼び出す。
   // basepair probabilityの計算
-  models.calculate_posterior(seq);
-  bp_centroidfold=models.get_bp();
+  cf.calculate_posterior(seq);//MixtureModelはアラインメントを要求する
+  BPTable bp_centroidfold;
+  bp_centroidfold=cf.get_bp();
   // bpの変換
   transBP_centroidfold_ractip(bp_centroidfold, bp, offset);
   
@@ -237,7 +242,6 @@ alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, std::vector<std::pa
 }
 
 
-// reading
 void
 RactIP::
 contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
@@ -378,12 +382,12 @@ RactIP::
 rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
 {
   // hpに平均値を入れていく。
-  const std::list<std::string>& s1=a1.seq();
-  const std::list<std::string>& s2=a2.seq();
+  std::list<std::string> s1=a1.seq();//
+  std::list<std::string> s2=a2.seq();
   int size1=a1.size();
   int size2=a2.size();
-  std::list<std::string>iterator it1=s1.begin();
-  std::list<std::string>iterator it2=s2.begin();
+  std::list<std::string>::iterator it1=s1.begin();
+  std::list<std::string>::iterator it2=s2.begin();
   VVVVF vhp(size1);
   int i=0;
   for (it1=s1.begin(); it1 != s1.end(); it1++)
@@ -400,10 +404,10 @@ rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
       i++;
     }
   // 平均
-  VVVF::iterator it_vvhp;
-  VVF::iterator it_vhp;
-  int L=vvhp[0][0].size();
-  int M=vvhp[0][0][0].size();
+  VVVVF::iterator it_vvhp;
+  VVVF::iterator it_vhp;
+  int L=vhp[0][0].size();
+  int M=vhp[0][0][0].size();
   hp.resize(L);
   for(int i=0; i<L; i++)
     {
@@ -413,9 +417,9 @@ rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
 	  double sum=0;
 	  for (it_vvhp=vhp.begin(); it_vvhp!=vhp.end();it_vvhp++)
 	    {
-	      for(it_vhp=*it_vvhp.begin(); it_vhp!=*it_vvhp.end(); it_vhp++)
+	      for(it_vhp=(*it_vvhp).begin(); it_vhp!=(*it_vvhp).end(); it_vhp++)
 		{
-		  sum+=*it_vhp[i][j];
+		  sum+=(*it_vhp)[i][j];
 		}
 	    }
 	  hp[i][j]=sum / (double)(size1+size2);	  
@@ -519,7 +523,7 @@ load_from_rip(const char* filename,
 
 float
 RactIP::
-  solve(const std::string& s1, const std::string& s2, std::string& r1, std::string& r2, std::vector<std::pair<FoldingEngine<Aln>*,float> > models)
+solve(Aln& s1, Aln& s2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
 {
   IP ip(IP::MAX, n_th_);// watching
   VF bp1, bp2;
@@ -528,20 +532,18 @@ RactIP::
   VVF up1, up2;
   bool enable_accessibility = min_w_>1 && max_w_>=min_w_;
 
+  // calculate posterior probability matrices
   /**
    *  2013 Takashi Matsuda added the following (alifold) section.
    **/
   bool use_alifold=true;// temporary code
   if(use_alifold){
-    alifold(s1, bp1, offset1, up1, models);
-    alifold(s2, bp2, offset2, up2, models);
+    alifold(s1, bp1, offset1, up1, cf);
+    alifold(s2, bp2, offset2, up2, cf);
   
     rnaduplex(s1,s2,hp);// 1st structure base pairing probability
   }
-
-  
-  // calculate posterior probability matrices
-  if (!rip_file_.empty())
+  else if (!rip_file_.empty())
   {
     load_from_rip(rip_file_.c_str(), s1, s2, bp1, offset1, bp2, offset2, hp);
   }
@@ -982,7 +984,7 @@ parse_options(int& argc, char**& argv)
   th_ss_ = args_info.fold_th_arg;
   th_hy_ = args_info.hybridize_th_arg;
   th_ac_ = args_info.acc_th_arg;
-  mix_w = args_info.mix_weight_arg;
+  mix_w[0] = args_info.mix_weight_arg;
   max_w_ = args_info.max_w_arg;
   min_w_ = args_info.min_w_arg;
   enable_zscore_ = args_info.zscore_arg;
@@ -1114,14 +1116,16 @@ run()
     engine.push_back("CONTRAfold");
 #endif
     }
-
+  /**
   if (vm.count("pf_fold")) { engine.resize(1); engine[0]="McCaskill"; }
-  if (vm.count("alipf_fold")) { engine.resize(1); engine[0]="Alifold"; }// watching
+  if (vm.count("alipf_fold")) { engine.resize(1); engine[0]="Alifold"; }
   if (vm.count("aux")) { engine.resize(1); engine[0]="AUX"; }
-
+  **/
+  
   FoldingEngine<Aln>* cf=NULL;
   std::vector<FoldingEngine<Aln>*> cf_list(engine.size(), NULL);
   std::vector<FoldingEngine<std::string>*> src_list(engine.size(), NULL);
+  /**
   for (uint i=0; i!=engine.size(); ++i)
   {
     if (engine[i]=="CONTRAfold")
@@ -1171,13 +1175,13 @@ run()
       throw std::logic_error("unsupported engine");
     }
   }
-
+  **/
+  std::vector<std::pair<FoldingEngine<Aln>*,float> > models;
   if (engine.size()==1)
     cf=cf_list[0];
   else
   {
     // if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
-    std::vector<std::pair<FoldingEngine<Aln>*,float> > models;
     for (uint i=0; i!=engine.size(); ++i)
     {
       if (engine.size()!=mix_w.size())
@@ -1191,7 +1195,9 @@ run()
   
   // predict the interation
   std::string r1, r2;
-  float ea = solve(fa1.seq(), fa2.seq(), r1, r2, models);
+  float ea = solve(fa1.seq(), fa2.seq(), r1, r2, cf);
+  //////////////////////// by Takashi Matsuda ///////////////////////////////
+  
 
   // display the result
   std::cout << ">" << fa1.name() << std::endl
@@ -1230,7 +1236,7 @@ run()
           uShuffle::shuffle(fa1.seq().c_str(), &s1[0], fa1.seq().size(), 2);
         if (enable_zscore_==2 || enable_zscore_==12)
           uShuffle::shuffle(fa2.seq().c_str(), &s2[0], fa2.seq().size(), 2);
-        solve(s1, s2, r1, r2);
+        solve(s1, s2, r1, r2);//
         float ee1, ee2, ee3;
         calculate_energy(s1, s2, r1, r2, ee1, ee2, ee3);
         float ee=ee1+ee2+ee3;
