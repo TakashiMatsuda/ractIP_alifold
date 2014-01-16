@@ -135,7 +135,7 @@ public:
 
   RactIP& parse_options(int& argc, char**& argv);
   int run();
-  float solve(Aln& s1, Aln& s2, std::string& r1, std::string& r2, MixtureModel<Aln> cf);
+  float solve(Aln& s1, Aln& s2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf);
 
   static void calculate_energy(const std::string s1, const std::string& s2,
                                const std::string r1, const std::string& r2,
@@ -523,7 +523,7 @@ load_from_rip(const char* filename,
 
 float
 RactIP::
-solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
+solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
 {
   std::list<std::string> s1=a1.seq();
   std::list<std::string> s2=a2.seq();
@@ -545,6 +545,8 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
   
     rnaduplex_aln(a1,a2,hp);// 1st structure base pairing probability
   }
+  /**
+   * Takashi Matsuda commented out below in 2014
   else if (!rip_file_.empty())
   {
     load_from_rip(rip_file_.c_str(), s1, s2, bp1, offset1, bp2, offset2, hp);
@@ -574,7 +576,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
     rnafold(s2, bp2, offset2, up2, std::max(1, max_w_));
 #endif
     rnaduplex(s1, s2, hp);
-  }
+    }**/
   
   // make objective variables with their weights
   VVI x(s1.size(), VI(s1.size(), -1));
@@ -1198,17 +1200,48 @@ run()
   
   // predict the interation
   std::string r1, r2;
-  float ea = solve(fa1, fa2, r1, r2, &cf);
+  float ea = solve(fa1, fa2, r1, r2, *cf);
 
-  //////////////////////// by Takashi Matsuda ///////////////////////////////
+
+  // diplay the result
+  const std::list<std::string> fa1_name=fa1.name();
+  std::list<std::string> ::const_iterator itr1_name=fa1_name.begin();
+  const std::list<std::string> fa1_seq=fa1.seq();
+  std::list<std::string> ::const_iterator itr1_seq=fa1_seq.begin();
   
+  for(; itr1_name!=fa1_name.end(); itr1_name++)
+    {
+      std::cout << ">" << (*itr1_name) << std::endl
+		<< (*itr1_seq) << std::endl;
+      itr1_seq++;
+    }
+  std::cout<< r1 << std::endl;
+  
+  const std::list<std::string> fa2_name=fa2.name();
+  std::list<std::string> ::const_iterator itr2_name=fa2_name.begin();
+  const std::list<std::string> fa2_seq=fa2.seq();
+  std::list<std::string> ::const_iterator itr2_seq=fa2_seq.begin();
+  for(; itr2_name!=fa2_name.end(); itr2_name++)
+    {
+      std::cout << ">" << (*itr2_name) << std::endl
+		<< (*itr2_seq) << std::endl;
+      itr2_seq++;
+    }
+  std::cout<< r1 << std::endl;
 
+  
+  //////////////////////// by Takashi Matsuda ///////////////////////////////
+  //// future work: separate above code ///////
+  
+  
   // display the result
+  /**
   std::cout << ">" << fa1.name() << std::endl
             << fa1.seq() << std::endl << r1 << std::endl
             << ">" << fa2.name() << std::endl
             << fa2.seq() << std::endl << r2 << std::endl;
-
+  **/
+  /**
   // show energy of the joint structure
   if (show_energy_ || enable_zscore_==1 || enable_zscore_==2 || enable_zscore_==12)
   {
@@ -1256,7 +1289,7 @@ run()
         std::cout << "z-score: " << 0.0 << std::endl;
     }
   }
-
+  **/
   return 0;
 }
 

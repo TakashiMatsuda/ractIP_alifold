@@ -33,7 +33,7 @@ struct fa_parser : public grammar< fa_parser >
   fa_parser(std::string& n, std::string& s, std::string& st)
     : name(n), seq(s), str(st) { }
 
-  std::string& name;
+  std::string& name;// watching
   std::string& seq;
   std::string& str;
 
