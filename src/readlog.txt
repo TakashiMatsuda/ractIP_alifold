@@ -679,3 +679,58 @@ alifoldはRactIPに対してconstメンバ関数
 中でtransBPを読んでいて、これはconstでないため
 transBPをconstに修正した
 ------
+eaの修正をした
+------
+ractip.cpp:1198:38: error: no viable conversion from 'FoldingEngine<Aln> *' to 'MixtureModel<Aln>'
+  float ea = solve(fa1, fa2, r1, r2, cf);
+                                     ^~
+./centroidalifold/engine/mixture.h:30:7: note: candidate constructor (the implicit copy constructor) not viable: no known conversion from 'FoldingEngine<Aln> *' to 'const MixtureModel<Aln> &'
+      for 1st argument
+class MixtureModel : public FoldingEngine<SEQ>
+      ^
+./centroidalifold/engine/mixture.h:33:3: note: candidate constructor not viable: no known conversion from 'FoldingEngine<Aln> *' to
+      'const std::vector<std::pair<FoldingEngine<Aln> *, float> > &' for 1st argument
+  MixtureModel(const std::vector<std::pair<FoldingEngine<SEQ>*,float> >& models, bool run_as_mea=false);
+  ^
+ractip.cpp:526:77: note: passing argument to parameter 'cf' here
+solve(Aln& s1, Aln& s2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
+                                                                            ^
+cfの型が引数型と異る
+宣言を修正した
+------
+ractip.cpp:544:15: error: no viable conversion from 'Aln' to 'const std::string' (aka 'const basic_string<char, char_traits<char>, allocator<char> >')
+    rnaduplex(s1,s2,hp);// 1st structure base pairing probability
+              ^~
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:1185:5: note: candidate constructor not viable: no known conversion from 'Aln' to
+      'const std::__1::basic_string<char> &' for 1st argument
+    basic_string(const basic_string& __str);
+    ^
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:1194:31: note: candidate constructor not viable: no known conversion from 'Aln' to
+      'const_pointer' (aka 'const char *') for 1st argument
+    _LIBCPP_INLINE_VISIBILITY basic_string(const_pointer __s);
+                              ^
+ractip.cpp:433:30: note: passing argument to parameter 's1' here
+rnaduplex(const std::string& s1, const std::string& s2, VVF& hp) const
+                             ^
+rnaduplexの型の問題
+普通にseqで渡すように変更した。(名前をへんこうして、引数をa1とa2とした)
+-------
+C++は型による条件分岐がしにくいな
+Haskellだったら非常にやりやすいのに
+templateにしても、やることを変えることはできない
+新しい関数を定義していたので、それを利用する形に変更した
+-------
+上と同様の問題
+専門化していないために怒られている
+一時的にコメントアウトするか、新しい関数に分離するか
+新しい関数に分離するためには、呼び出し側で分岐が必要。
+(c++ならautoで書けるんだっけ、それでもいい気がしてきた。)
+呼び出し側で分岐する形に変更する。
+solveとsolve_alnに分ける。それによって、solveまでの混流問題は解決する。バグカウント10程度。
+
+難しい(長いだけ)
+まずはコメントアウトで要らない機能を潰す。
+分岐方法は実装後に考えればよい。
+前処理を別の関数に分離して作る方法を思いついた
+---
+

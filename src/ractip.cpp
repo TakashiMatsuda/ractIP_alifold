@@ -523,8 +523,10 @@ load_from_rip(const char* filename,
 
 float
 RactIP::
-solve(Aln& s1, Aln& s2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
+solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
 {
+  std::list<std::string> s1=a1.seq();
+  std::list<std::string> s2=a2.seq();
   IP ip(IP::MAX, n_th_);// watching
   VF bp1, bp2;
   VI offset1, offset2;
@@ -538,10 +540,10 @@ solve(Aln& s1, Aln& s2, std::string& r1, std::string& r2, MixtureModel<Aln> cf)
    **/
   bool use_alifold=true;// temporary code
   if(use_alifold){
-    alifold(s1, bp1, offset1, up1, cf);
-    alifold(s2, bp2, offset2, up2, cf);
+    alifold(a1, bp1, offset1, up1, cf);
+    alifold(a2, bp2, offset2, up2, cf);
   
-    rnaduplex(s1,s2,hp);// 1st structure base pairing probability
+    rnaduplex_aln(a1,a2,hp);// 1st structure base pairing probability
   }
   else if (!rip_file_.empty())
   {
@@ -1122,7 +1124,7 @@ run()
   if (vm.count("aux")) { engine.resize(1); engine[0]="AUX"; }
   **/
   
-  FoldingEngine<Aln>* cf=NULL;
+  MixtureModel<Aln>* cf=NULL;
   std::vector<FoldingEngine<Aln>*> cf_list(engine.size(), NULL);
   std::vector<FoldingEngine<std::string>*> src_list(engine.size(), NULL);
   /**
@@ -1177,15 +1179,16 @@ run()
   }
   **/
   std::vector<std::pair<FoldingEngine<Aln>*,float> > models;
-  if (engine.size()==1)
-    cf=cf_list[0];
-  else
+  //if (engine.size()==1)
+    //cf=cf_list[0];
+  //else
+  // 上は型の都合で潰しました　キャストがうまくできるなら復活させる（今はその方法を知らない）
   {
     // if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
     for (uint i=0; i!=engine.size(); ++i)
     {
       if (engine.size()!=mix_w.size())
-        models.push_back(std::make_pair(cf_list[i], 1.0)e);
+        models.push_back(std::make_pair(cf_list[i], 1.0));
       else
         models.push_back(std::make_pair(cf_list[i], mix_w[i]));
     }
@@ -1195,7 +1198,8 @@ run()
   
   // predict the interation
   std::string r1, r2;
-  float ea = solve(fa1.seq(), fa2.seq(), r1, r2, cf);
+  float ea = solve(fa1, fa2, r1, r2, &cf);
+
   //////////////////////// by Takashi Matsuda ///////////////////////////////
   
 
