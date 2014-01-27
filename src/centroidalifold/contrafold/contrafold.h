@@ -19,7 +19,7 @@
  */
 
 #ifndef __INC_CONTRAFOLD_H__
-#define __INC_CONTRAFOLD_H__
+#define __INC_CONTRAFOLD_H__ 
 
 #include <string>
 
@@ -34,7 +34,7 @@ public:
   ~CONTRAfold();
 
   void SetParameters(const std::string& params);
-  void SetConstraint(const std::string& paren);
+  void SetConstraint(const std::string& paren);// 実装はwrapper
   
   const T* ComputePosterior(const std::string& seq);
   const T* ComputePosterior(const std::string& seq, std::vector<T>& p);

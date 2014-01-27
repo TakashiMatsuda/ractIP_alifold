@@ -24,7 +24,7 @@
 #include "../config.h"
 #endif
 
-#include "engine/aux.h"
+#include "aux.h"
 
 AuxModel::
 AuxModel(const std::vector<std::string>& bpfiles, bool run_as_mea /*=false*/)

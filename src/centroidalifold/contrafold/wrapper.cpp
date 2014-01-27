@@ -1,9 +1,13 @@
 // $Id$
+
+#ifndef __WRAPPER_DEFINED_
+#define __WRAPPER_DEFINED_
+
 #include <vector>
 #include <string>
-#include "InferenceEngine.hpp"
-#include "ParameterManager.hpp"
-#include "SStruct.hpp"
+#include "../../contrafold/InferenceEngine.hpp"
+#include "../../contrafold/ParameterManager.hpp"
+#include "../../contrafold/SStruct.hpp"
 #include "Defaults.ipp"
 #include "contrafold.h"
 
@@ -134,9 +138,9 @@ Impl(bool canonical_only, int max_bp_dist)
 {
   engine_.RegisterParameters(pm_);
   if (canonical_only)
-    w_ = GetDefaultComplementaryValues<float>();
+    w_ = GetDefaultComplementaryValues2<float>();
   else
-    w_ = GetDefaultNoncomplementaryValues<float>();
+    w_ = GetDefaultNoncomplementaryValues2<float>();
 }
 
 template < class T >
@@ -358,9 +362,9 @@ Impl(bool canonical_only, int max_bp_dist)
 {
   engine_.RegisterParameters(pm_);
   if (canonical_only)
-    w_ = GetDefaultComplementaryValues<float>();
+    w_ = GetDefaultComplementaryValues2<float>();
   else
-    w_ = GetDefaultNoncomplementaryValues<float>();
+    w_ = GetDefaultNoncomplementaryValues2<float>();
 }
 
 template < class T >
@@ -425,3 +429,5 @@ class CONTRAfold<float>;
 
 template
 class CONTRAfoldM<float>;
+
+#endif

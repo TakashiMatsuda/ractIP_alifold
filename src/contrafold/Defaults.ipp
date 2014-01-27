@@ -4,6 +4,9 @@
 // Retrieve default parameter values.
 /////////////////////////////////////////////////////////////////
 
+#ifndef __DEFAULT_H
+#define __DEFAULT_H
+
 template<class RealT>
 std::vector<RealT> GetDefaultComplementaryValues()
 {
@@ -2172,3 +2175,4 @@ std::vector<RealT> GetDefaultProfileValues()
     return std::vector<RealT>(values, values + 708);
 }
 
+#endif

@@ -35,13 +35,13 @@
 #include "fa.h"
 #include "ip.h"
 
+// このへんでエラー(duplicate)
 #include "contrafold/SStruct.hpp"
 #include "contrafold/InferenceEngine.hpp"
 #include "contrafold/DuplexEngine.hpp"
 
 #include "contrafold/Defaults.ipp"
 
-// 依存関係が面倒くさくなるようだったら、関数そのものを移動しよう
 #include "centroidalifold/aln.h"
 #include "centroidalifold/mea.h"
 #include "centroidalifold/folding_engine.h"

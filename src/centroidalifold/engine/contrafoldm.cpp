@@ -27,7 +27,7 @@
 #include <vector>
 #include <sys/time.h>
 #include "../contrafold/contrafold.h"
-#include "engine/contrafoldm.h"
+#include "contrafoldm.h"
 
 CONTRAfoldMultiModel::
 CONTRAfoldMultiModel(const std::string& model, bool canonical_only, uint max_bp_dist,

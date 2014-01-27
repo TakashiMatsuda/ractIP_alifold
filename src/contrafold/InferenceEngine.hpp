@@ -12,7 +12,10 @@
 #include "SStruct.hpp"
 #include "ParameterManager.hpp"
 #include "Utilities.hpp"
+
 #include "LogSpace.hpp"
+
+
 #include "rand.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -271,4 +274,4 @@ public:
 
 #include "InferenceEngine.ipp"
 
-#endif
+#endif 

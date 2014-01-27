@@ -29,7 +29,7 @@
 #include <cstdio>
 #include <cstring>
 #include <sys/time.h>
-#include "engine/mccaskill.h"
+#include "mccaskill.h"
 
 #ifdef HAVE_LIBRNA
 #ifndef __INC_LIBRNA_H
@@ -52,7 +52,7 @@ extern "C" {
 #endif
 
 extern "C" {
-#include "engine/boltzmann_param.h"
+#include "../../boltzmann_param.h"
 };
 
 McCaskillModel::

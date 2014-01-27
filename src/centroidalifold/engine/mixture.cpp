@@ -24,7 +24,7 @@
 #include "../config.h"
 #endif
 
-#include "engine/mixture.h"
+#include "mixture.h"
 
 // Reading
 template <class SEQ>

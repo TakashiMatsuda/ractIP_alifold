@@ -1,6 +1,8 @@
 //////////////////////////////////////////////////////////////////////
 // ParameterManager.ipp
 //////////////////////////////////////////////////////////////////////
+#ifndef __PARAMETER_DEFINED
+#define __PARAMETER_DEFINED
 
 #include "ParameterManager.hpp"
 
@@ -266,3 +268,5 @@ int ParameterManager<RealT>::GetLogicalIndex(const std::pair<RealT, RealT> *phys
     if (iter == physical_to_logical.end()) Error("Request for unknown physical parameter.");
     return iter->second;
 }
+
+#endif

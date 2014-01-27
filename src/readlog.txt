@@ -745,3 +745,125 @@ Aln::
 参照返しでは、ちゃんと型として参照で宣言しなければいけないのだろうか、
 自動的に参照の中身をいれてくれるということはないだろうか
 上の処理を解決するものとして、const_iteratorがあったのでそれを使用して、修正した。
+---
+---
+makeをします
+既知の問題点は、configureで解消されると思われるが、実際のところはわからないので、気に留めておきます。
+complile
+分割コンパイルしたあと、どのようにオブジェクトファイルをリンクするのかを理解する
+おそらくractip.oのコンパイルコマンドを変更しなければいけないだろう
+automakeが勝手にやってくれるのかもしれない。automakeのMakeFile.amの書き方を知っておく。
+---
+autotoolsの使い方
+Makefile.am
+configure.ac
+------
+これからやること：
+---
+Makefile.amを理解して、書き直す
+configure.acを理解して、書き直す
+centroidalifoldのふくめかたを考える
+---
+順番にコンパイルエラーの原因を理解する
+---
+Undefined symbols for architecture x86_64:
+  "MixtureModel<Aln>::calculate_posterior(Aln const&)", referenced from:
+      RactIP::alifold(Aln const&, std::__1::vector<float, std::__1::allocator<float> >&, std::__1::vector<int, std::__1::allocator<int> >&, std::__1::vector<std::__1::vector<float, std::__1::allocator<float> >, std::__1::allocator<std::__1::vector<float, std::__1::allocator<float> > > >&, MixtureModel<Aln>) const in ractip.o
+      vtable for MixtureModel<Aln> in ractip.o
+---
+現在のconfigure.acを読んで理解する
+centroidalifoldのmainとかと干渉しそうである。表に書いて整理して、いらないものを消す。
+-----
+コンパイルは、順番にリンクしていけばよい。cppファイルは個別にコンパイルしておいて、最後にリンクする。
+結局一つのプログラムを作るということ
+重複定義とか、相互定義とかがあってはいけない
+centroidalifold内の依存関係をチェックしなければいけない。
+---
+./configureでできたconfigファイルで、もうエラーは起きないはず
+---
+makeのエラー表示読みにくいけど、ｋれはどういう仕様で決まっているのだろう
+リンクの失敗を解消する
+---
+clang++  -g -O2  -L/usr/local/Cellar/viennarna/2.1.5//lib  -o ractip ractip.o ip.o fa.o boltzmann_param.o cmdline.o pf_duplex.o ushuffle.o SStruct.o Utilities.o  -lRNA -lglpk -lltdl -ldl -lz -lpthread 
+
+  "MixtureModel<Aln>::calculate_posterior(Aln const&)", referenced from:
+      RactIP::alifold(Aln const&, std::__1::vector<float, std::__1::allocator<float> >&, std::__1::vector<int, std::__1::allocator<int> >&, std::__1::vector<std::__1::vector<float, std::__1::allocator<float> >, std::__1::allocator<std::__1::vector<float, std::__1::allocator<float> > > >&, MixtureModel<Aln>) const in ractip.o
+---
+コンパイル命令に、一緒にリンクする関数が足りなくなってる。
+修正しよう。
+MakeFileの構文を理解したら、automakeでどのように書けばいいか調べて、書く。
+それで動くはず。
+---
+configureに渡すviennaRNAのパスを変更する
+---
+書くのはconfigure.acとMakefile.am
+---
+リンクを変えればいいだけ、
+あんまり難しく考えることはありません
+---
+centroidalifold内のMakefile.amのなかの実行プログラム作成命令文を削除して、コンパイルだけするようにする
+リンクは最後にまとめて行う為
+---
+	util.h\
+	fa.cpp fa.h 
+	contrafold/contrafold.h \
+        probconsRNA/probcons.h \
+	contralign/contralign.h \
+        naview.c \
+	engine/boltzmann_param.h engine/boltzmann_param.c
+(nokori)
+---
+linkまできた
+viennaRNAのパス
+contrafold.oのなかでリンクに失敗した
+
+<contrafold>
+となっているところかな?centroidalifoldでのソースを確認してみよう。
+---
+contrafoldのクラス定義のパスが通らない
+ifndefで落ちているのかもしれない
+ifndefは違った
+contrafold/contrafold.hで宣言されている関数の実装を探している
+---
+contrafold/contrafold.hをincludeしているファイルを全探索する
+見つからない。centroidalifoldでどのようになっているか見てみよう。
+contrafold.rbが何をしているか調べる
+contrafold.rbはただのコマンドライン
+linuxでやってみよう。原因不明
+centroidalifoldではwrapper.cppでくるまれている
+---
+grepで探しても見つからない、どこにあるんだ
+継承しているものを確認
+CONTRAfoldModel:FoldingEngine<std::string>を継承している
+FoldingEngineにそんなのない
+wrapper.cppだった。できたー
+---
+duplicatesymbol
+7回
+どういうことか
+ParameterManagerが怪しいうん。違うね。ParameterGroupでした。
+InferenceEngine.ippか、Default.ippか
+どちらも修正した(ifndef慣用句を挿入した)
+治らない
+wrapperを使う前、まだ何も起こらなかった
+wrapperが原因なのはあきらか
+エラー表示の読み方を理解する
+サンプルを作って実験してみよう
+---
+いきなりリンクが効かなくなった
+g++を一回走らせただけなのに
+InferenceEngine.ippのリンクガードを解除したらこのエラーは起きなくなった
+^
+そうじゃない。clangではエラーが出ないけど、g++-4.8だと出ている
+でもこれはリンクエラーなので本質的でない
+---
+ヘッダファイルの中身はすべてリンクガードを貼った
+wrapper.oをincludeするときにractipと干渉したということ
+ractip.cppのmain関数を探索しよう
+mainはコードの量が少なかった
+wrapperを呼び出すときに、二重定義がおこっている可能性を考えよう
+wrapperのスコープで、一番外側にあるものは
+最後のインスタンス化を除きすべてスコープが制限されている。
+最後のインスタンス化について考える
+---
+wrapperしかincludeしていないファイルと、ractipしかincludeしていないファイルの名前衝突の可能性

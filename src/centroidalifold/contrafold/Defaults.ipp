@@ -1,11 +1,13 @@
+#ifndef __DEFAULT2_H
+#define __DEFAULT2_H
+
 /////////////////////////////////////////////////////////////////
 // GetDefaultComplementaryValues()
 //
 // Retrieve default parameter values.
 /////////////////////////////////////////////////////////////////
-
 template<class RealT>
-std::vector<RealT> GetDefaultComplementaryValues()
+std::vector<RealT> GetDefaultComplementaryValues2()
 {
     RealT values[] =
     {
@@ -730,7 +732,7 @@ std::vector<RealT> GetDefaultComplementaryValues()
 /////////////////////////////////////////////////////////////////
 
 template<class RealT>
-std::vector<RealT> GetDefaultNoncomplementaryValues()
+std::vector<RealT> GetDefaultNoncomplementaryValues2()
 {
     RealT values[] =
     {
@@ -1455,7 +1457,7 @@ std::vector<RealT> GetDefaultNoncomplementaryValues()
 /////////////////////////////////////////////////////////////////
 
 template<class RealT>
-std::vector<RealT> GetDefaultProfileValues()
+std::vector<RealT> GetDefaultProfileValues2()
 {
     RealT values[] =
     {
@@ -2172,3 +2174,4 @@ std::vector<RealT> GetDefaultProfileValues()
     return std::vector<RealT>(values, values + 708);
 }
 
+#endif

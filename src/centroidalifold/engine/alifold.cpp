@@ -29,7 +29,7 @@
 #include <cmath>
 #include <stack>
 #include <sys/time.h>
-#include "engine/alifold.h"
+#include "alifold.h"
 
 #ifdef HAVE_LIBRNA
 namespace Vienna {
@@ -49,7 +49,7 @@ extern "C" {
 };
 
 extern "C" {
-#include "engine/boltzmann_param.h"
+#include "../../boltzmann_param.h"
 };
 
 AliFoldModel::

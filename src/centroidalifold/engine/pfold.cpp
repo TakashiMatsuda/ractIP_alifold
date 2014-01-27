@@ -30,7 +30,7 @@
 #include <iostream>
 #include <fstream>
 #include <unistd.h>
-#include "engine/pfold.h"
+#include "pfold.h"
 
 /* Add mkstemp function for MinGW */
 #ifdef __MINGW32__

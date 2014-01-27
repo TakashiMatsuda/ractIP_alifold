@@ -26,12 +26,12 @@
 
 #include "../folding_engine.h"
 
-#if 0
-#include <contrafold/contrafold.h>
-#else
+//#if 0
+//#include <contrafold/contrafold.h>
+//#else
 template < class RealT > class CONTRAfold;
 template < class RealT > class CONTRAfoldM;
-#endif
+//#endif
 
 class CONTRAfoldModel : public FoldingEngine<std::string>
 {

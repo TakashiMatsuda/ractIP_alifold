@@ -26,7 +26,7 @@
 #endif
 
 #include <sys/time.h>
-#include "engine/contrafold.h"
+#include "contrafold.h"
 #include "../contrafold/contrafold.h"
 
 CONTRAfoldModel::
@@ -56,7 +56,7 @@ void
 CONTRAfoldModel::
 set_constraint(const std::string& str)
 {
-  contrafold_->SetConstraint(str);
+  contrafold_->SetConstraint(str);// 実装が見当たらない
 }
 
 inline

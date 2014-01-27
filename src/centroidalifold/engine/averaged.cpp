@@ -25,7 +25,7 @@
 #include "../config.h"
 #endif
 
-#include "engine/averaged.h"
+#include "averaged.h"
 #include <stack>
 #include <cmath>
 
