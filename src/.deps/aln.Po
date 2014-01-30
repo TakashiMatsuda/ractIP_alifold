@@ -1,143 +1,5 @@
-ractip.o: ractip.cpp ../config.h cmdline1.h /usr/include/stdio.h \
-  /usr/include/sys/cdefs.h /usr/include/sys/_symbol_aliasing.h \
-  /usr/include/sys/_posix_availability.h /usr/include/Availability.h \
-  /usr/include/AvailabilityInternal.h /usr/include/_types.h \
-  /usr/include/sys/_types.h /usr/include/machine/_types.h \
-  /usr/include/i386/_types.h /usr/include/sys/_types/_va_list.h \
-  /usr/include/sys/_types/_size_t.h /usr/include/sys/_types/_null.h \
-  /usr/include/sys/_types/_off_t.h /usr/include/sys/_types/_ssize_t.h \
-  /usr/include/unistd.h /usr/include/sys/unistd.h \
-  /usr/include/sys/_types/_posix_vdisable.h \
-  /usr/include/sys/_types/_seek_set.h /usr/include/sys/_types/_gid_t.h \
-  /usr/include/sys/_types/_intptr_t.h /usr/include/sys/_types/_pid_t.h \
-  /usr/include/sys/_types/_uid_t.h /usr/include/sys/_types/_useconds_t.h \
-  /usr/include/sys/select.h /usr/include/sys/appleapiopts.h \
-  /usr/include/sys/_types/_fd_def.h /usr/include/sys/_types/_timespec.h \
-  /usr/include/sys/_types/_timeval.h /usr/include/sys/_types/_time_t.h \
-  /usr/include/sys/_types/_suseconds_t.h \
-  /usr/include/sys/_types/_sigset_t.h \
-  /usr/include/sys/_types/_fd_setsize.h \
-  /usr/include/sys/_types/_fd_set.h /usr/include/sys/_types/_fd_clr.h \
-  /usr/include/sys/_types/_fd_isset.h /usr/include/sys/_types/_fd_zero.h \
-  /usr/include/sys/_types/_fd_copy.h /usr/include/sys/_select.h \
-  /usr/include/sys/_types/_dev_t.h /usr/include/sys/_types/_mode_t.h \
-  /usr/include/sys/_types/_uuid_t.h /usr/include/gethostuuid.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdlib \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__config \
-  /usr/include/stdlib.h /usr/include/sys/wait.h \
-  /usr/include/sys/_types/_id_t.h /usr/include/sys/signal.h \
-  /usr/include/machine/signal.h /usr/include/i386/signal.h \
-  /usr/include/machine/_mcontext.h /usr/include/i386/_mcontext.h \
-  /usr/include/mach/i386/_structs.h \
-  /usr/include/sys/_types/_sigaltstack.h \
-  /usr/include/sys/_types/_ucontext.h \
-  /usr/include/sys/_types/_pthread_attr_t.h /usr/include/sys/resource.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stdint.h \
-  /usr/include/stdint.h /usr/include/sys/_types/_int8_t.h \
-  /usr/include/sys/_types/_int16_t.h /usr/include/sys/_types/_int32_t.h \
-  /usr/include/sys/_types/_int64_t.h /usr/include/_types/_uint8_t.h \
-  /usr/include/_types/_uint16_t.h /usr/include/_types/_uint32_t.h \
-  /usr/include/_types/_uint64_t.h /usr/include/sys/_types/_uintptr_t.h \
-  /usr/include/_types/_intmax_t.h /usr/include/_types/_uintmax_t.h \
-  /usr/include/machine/endian.h /usr/include/i386/endian.h \
-  /usr/include/sys/_endian.h /usr/include/libkern/_OSByteOrder.h \
-  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
-  /usr/include/sys/_types/_ct_rune_t.h /usr/include/sys/_types/_rune_t.h \
-  /usr/include/sys/_types/_wchar_t.h /usr/include/machine/types.h \
-  /usr/include/i386/types.h /usr/include/sys/_types/___offsetof.h \
-  /usr/include/sys/time.h /usr/include/time.h /usr/include/_structs.h \
-  /usr/include/sys/_structs.h /usr/include/sys/_types/_clock_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iostream \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ios \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iosfwd \
-  /usr/include/wchar.h /usr/include/sys/_types/_mbstate_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stdarg.h \
-  /usr/include/_wctype.h /usr/include/sys/_types/_wint_t.h \
-  /usr/include/_types/_wctype_t.h /usr/include/ctype.h \
-  /usr/include/runetype.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__locale \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstring \
-  /usr/include/string.h /usr/include/sys/_types/_rsize_t.h \
-  /usr/include/sys/_types/_errno_t.h /usr/include/strings.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdio \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwchar \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwctype \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cctype \
-  /usr/include/wctype.h /usr/include/_types/_wctrans_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/initializer_list \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstddef \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stddef.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/type_traits \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/utility \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tuple \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tuple_03 \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/typeinfo \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/exception \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdint \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/new \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/limits \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__undef_min_max \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iterator \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_base \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_base_03 \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/tuple \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/stdexcept \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/mutex \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__mutex_base \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/chrono \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ctime \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ratio \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/climits \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/limits.h \
-  /usr/include/limits.h /usr/include/machine/limits.h \
-  /usr/include/i386/limits.h /usr/include/i386/_limits.h \
-  /usr/include/sys/syslimits.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/system_error \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cerrno \
-  /usr/include/errno.h /usr/include/sys/errno.h /usr/include/pthread.h \
-  /usr/include/pthread_impl.h /usr/include/sched.h \
-  /usr/include/sys/_types/_pthread_cond_t.h \
-  /usr/include/sys/_types/_pthread_condattr_t.h \
-  /usr/include/sys/_types/_pthread_key_t.h \
-  /usr/include/sys/_types/_pthread_mutex_t.h \
-  /usr/include/sys/_types/_pthread_mutexattr_t.h \
-  /usr/include/sys/_types/_pthread_once_t.h \
-  /usr/include/sys/_types/_pthread_rwlock_t.h \
-  /usr/include/sys/_types/_pthread_rwlockattr_t.h \
-  /usr/include/sys/_types/_pthread_t.h \
-  /usr/include/sys/_types/_mach_port_t.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/functional \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_03 \
-  /usr/include/locale.h /usr/include/_locale.h /usr/include/xlocale.h \
-  /usr/include/_xlocale.h /usr/include/xlocale/_ctype.h \
-  /usr/include/xlocale/__wctype.h /usr/include/xlocale/_stdio.h \
-  /usr/include/xlocale/_stdlib.h /usr/include/xlocale/_string.h \
-  /usr/include/xlocale/_time.h /usr/include/xlocale/_wchar.h \
-  /usr/include/xlocale/_wctype.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/streambuf \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/istream \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ostream \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/locale \
-  /usr/include/nl_types.h /usr/include/sys/types.h \
-  /usr/include/sys/_types/_blkcnt_t.h \
-  /usr/include/sys/_types/_blksize_t.h \
-  /usr/include/sys/_types/_in_addr_t.h \
-  /usr/include/sys/_types/_in_port_t.h /usr/include/sys/_types/_ino_t.h \
-  /usr/include/sys/_types/_ino64_t.h /usr/include/sys/_types/_key_t.h \
-  /usr/include/sys/_types/_nlink_t.h \
-  /usr/include/sys/_types/_fsblkcnt_t.h \
-  /usr/include/sys/_types/_fsfilcnt_t.h /usr/include/_types/_nl_item.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/bitset \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__bit_reference \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/fstream \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/sstream \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/vector \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__split_buffer \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/list \
-  fa.h /usr/local/include/boost/version.hpp \
+aln.o: centroidalifold/aln.cpp ../config.h centroidalifold/aln.h \
+  /usr/local/include/boost/version.hpp \
   /usr/local/include/boost/spirit/include/classic.hpp \
   /usr/local/include/boost/spirit/home/classic.hpp \
   /usr/local/include/boost/spirit/home/classic/core.hpp \
@@ -150,11 +12,40 @@ ractip.o: ractip.cpp ../config.h cmdline1.h /usr/include/stdio.h \
   /usr/local/include/boost/config/select_compiler_config.hpp \
   /usr/local/include/boost/config/compiler/clang.hpp \
   /usr/local/include/boost/config/select_stdlib_config.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstddef \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__config \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stddef.h \
   /usr/local/include/boost/config/no_tr1/utility.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/utility \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tuple \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/type_traits \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tuple_03 \
   /usr/local/include/boost/config/stdlib/libcpp.hpp \
   /usr/local/include/boost/config/select_platform_config.hpp \
   /usr/local/include/boost/config/platform/macos.hpp \
   /usr/local/include/boost/config/posix_features.hpp \
+  /usr/include/unistd.h /usr/include/_types.h /usr/include/sys/_types.h \
+  /usr/include/sys/cdefs.h /usr/include/sys/_symbol_aliasing.h \
+  /usr/include/sys/_posix_availability.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h /usr/include/sys/unistd.h \
+  /usr/include/sys/_types/_posix_vdisable.h \
+  /usr/include/sys/_types/_seek_set.h /usr/include/Availability.h \
+  /usr/include/AvailabilityInternal.h /usr/include/sys/_types/_gid_t.h \
+  /usr/include/sys/_types/_intptr_t.h /usr/include/sys/_types/_off_t.h \
+  /usr/include/sys/_types/_pid_t.h /usr/include/sys/_types/_size_t.h \
+  /usr/include/sys/_types/_ssize_t.h /usr/include/sys/_types/_uid_t.h \
+  /usr/include/sys/_types/_useconds_t.h /usr/include/sys/_types/_null.h \
+  /usr/include/sys/select.h /usr/include/sys/appleapiopts.h \
+  /usr/include/sys/_types/_fd_def.h /usr/include/sys/_types/_timespec.h \
+  /usr/include/sys/_types/_timeval.h /usr/include/sys/_types/_time_t.h \
+  /usr/include/sys/_types/_suseconds_t.h \
+  /usr/include/sys/_types/_sigset_t.h \
+  /usr/include/sys/_types/_fd_setsize.h \
+  /usr/include/sys/_types/_fd_set.h /usr/include/sys/_types/_fd_clr.h \
+  /usr/include/sys/_types/_fd_isset.h /usr/include/sys/_types/_fd_zero.h \
+  /usr/include/sys/_types/_fd_copy.h /usr/include/sys/_select.h \
+  /usr/include/sys/_types/_dev_t.h /usr/include/sys/_types/_mode_t.h \
+  /usr/include/sys/_types/_uuid_t.h /usr/include/gethostuuid.h \
   /usr/local/include/boost/config/suffix.hpp \
   /usr/local/include/boost/spirit/home/classic/core/nil.hpp \
   /usr/local/include/boost/spirit/home/classic/namespace.hpp \
@@ -237,7 +128,112 @@ ractip.o: ractip.cpp ../config.h cmdline1.h /usr/include/stdio.h \
   /usr/local/include/boost/type_traits/detail/type_trait_undef.hpp \
   /usr/local/include/boost/optional.hpp \
   /usr/local/include/boost/optional/optional.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/new \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/exception \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/initializer_list \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstring \
+  /usr/include/string.h /usr/include/sys/_types/_rsize_t.h \
+  /usr/include/sys/_types/_errno_t.h /usr/include/strings.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/typeinfo \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdint \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stdint.h \
+  /usr/include/stdint.h /usr/include/sys/_types/_int8_t.h \
+  /usr/include/sys/_types/_int16_t.h /usr/include/sys/_types/_int32_t.h \
+  /usr/include/sys/_types/_int64_t.h /usr/include/_types/_uint8_t.h \
+  /usr/include/_types/_uint16_t.h /usr/include/_types/_uint32_t.h \
+  /usr/include/_types/_uint64_t.h /usr/include/sys/_types/_uintptr_t.h \
+  /usr/include/_types/_intmax_t.h /usr/include/_types/_uintmax_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/limits \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__undef_min_max \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iterator \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iosfwd \
+  /usr/include/wchar.h /usr/include/sys/_types/_mbstate_t.h \
+  /usr/include/sys/_types/_ct_rune_t.h /usr/include/sys/_types/_rune_t.h \
+  /usr/include/sys/_types/_wchar_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stdarg.h \
+  /usr/include/stdio.h /usr/include/sys/_types/_va_list.h \
+  /usr/include/time.h /usr/include/_structs.h \
+  /usr/include/sys/_structs.h /usr/include/sys/_types/_clock_t.h \
+  /usr/include/_wctype.h /usr/include/sys/_types/_wint_t.h \
+  /usr/include/_types/_wctype_t.h /usr/include/ctype.h \
+  /usr/include/runetype.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_base \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_base_03 \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/tuple \
   /usr/local/include/boost/assert.hpp /usr/include/assert.h \
+  /usr/include/stdlib.h /usr/include/sys/wait.h \
+  /usr/include/sys/_types/_id_t.h /usr/include/sys/signal.h \
+  /usr/include/machine/signal.h /usr/include/i386/signal.h \
+  /usr/include/machine/_mcontext.h /usr/include/i386/_mcontext.h \
+  /usr/include/mach/i386/_structs.h \
+  /usr/include/sys/_types/_sigaltstack.h \
+  /usr/include/sys/_types/_ucontext.h \
+  /usr/include/sys/_types/_pthread_attr_t.h /usr/include/sys/resource.h \
+  /usr/include/machine/endian.h /usr/include/i386/endian.h \
+  /usr/include/sys/_endian.h /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
+  /usr/include/machine/types.h /usr/include/i386/types.h \
+  /usr/include/sys/_types/___offsetof.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdlib \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iostream \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ios \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__locale \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdio \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwchar \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwctype \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cctype \
+  /usr/include/wctype.h /usr/include/_types/_wctrans_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/stdexcept \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/mutex \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__mutex_base \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/chrono \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ctime \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ratio \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/climits \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/limits.h \
+  /usr/include/limits.h /usr/include/machine/limits.h \
+  /usr/include/i386/limits.h /usr/include/i386/_limits.h \
+  /usr/include/sys/syslimits.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/system_error \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cerrno \
+  /usr/include/errno.h /usr/include/sys/errno.h /usr/include/pthread.h \
+  /usr/include/pthread_impl.h /usr/include/sched.h \
+  /usr/include/sys/_types/_pthread_cond_t.h \
+  /usr/include/sys/_types/_pthread_condattr_t.h \
+  /usr/include/sys/_types/_pthread_key_t.h \
+  /usr/include/sys/_types/_pthread_mutex_t.h \
+  /usr/include/sys/_types/_pthread_mutexattr_t.h \
+  /usr/include/sys/_types/_pthread_once_t.h \
+  /usr/include/sys/_types/_pthread_rwlock_t.h \
+  /usr/include/sys/_types/_pthread_rwlockattr_t.h \
+  /usr/include/sys/_types/_pthread_t.h \
+  /usr/include/sys/_types/_mach_port_t.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/functional \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_03 \
+  /usr/include/locale.h /usr/include/_locale.h /usr/include/xlocale.h \
+  /usr/include/_xlocale.h /usr/include/xlocale/_ctype.h \
+  /usr/include/xlocale/__wctype.h /usr/include/xlocale/_stdio.h \
+  /usr/include/xlocale/_stdlib.h /usr/include/xlocale/_string.h \
+  /usr/include/xlocale/_time.h /usr/include/xlocale/_wchar.h \
+  /usr/include/xlocale/_wctype.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/streambuf \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/istream \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ostream \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/locale \
+  /usr/include/nl_types.h /usr/include/sys/types.h \
+  /usr/include/sys/_types/_blkcnt_t.h \
+  /usr/include/sys/_types/_blksize_t.h \
+  /usr/include/sys/_types/_in_addr_t.h \
+  /usr/include/sys/_types/_in_port_t.h /usr/include/sys/_types/_ino_t.h \
+  /usr/include/sys/_types/_ino64_t.h /usr/include/sys/_types/_key_t.h \
+  /usr/include/sys/_types/_nlink_t.h \
+  /usr/include/sys/_types/_fsblkcnt_t.h \
+  /usr/include/sys/_types/_fsfilcnt_t.h /usr/include/_types/_nl_item.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/bitset \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__bit_reference \
   /usr/local/include/boost/current_function.hpp \
   /usr/local/include/boost/type.hpp \
   /usr/local/include/boost/type_traits/alignment_of.hpp \
@@ -384,6 +380,8 @@ ractip.o: ractip.cpp ../config.h cmdline1.h /usr/include/stdio.h \
   /usr/local/include/boost/spirit/home/classic/core/non_terminal/grammar.hpp \
   /usr/local/include/boost/spirit/home/classic/core/non_terminal/impl/grammar.ipp \
   /usr/local/include/boost/spirit/home/classic/core/non_terminal/impl/object_with_id.ipp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/vector \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__split_buffer \
   /usr/local/include/boost/shared_ptr.hpp \
   /usr/local/include/boost/smart_ptr/shared_ptr.hpp \
   /usr/local/include/boost/config/no_tr1/memory.hpp \
@@ -586,33 +584,188 @@ ractip.o: ractip.cpp ../config.h cmdline1.h /usr/include/stdio.h \
   /usr/local/include/boost/spirit/home/classic/phoenix/operators.hpp \
   /usr/local/include/boost/spirit/home/classic/phoenix/tuple_helpers.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cassert \
-  ip.h centroidalifold/aln.h centroidalifold/mea.h centroidalifold/bp.h \
-  centroidalifold/cyktable.h centroidalifold/engine/pfold.h \
-  centroidalifold/engine/../folding_engine.h \
-  /usr/local/include/boost/dynamic_bitset.hpp \
-  /usr/local/include/boost/dynamic_bitset/dynamic_bitset.hpp \
-  /usr/local/include/boost/dynamic_bitset/config.hpp \
-  /usr/local/include/boost/dynamic_bitset_fwd.hpp \
-  /usr/local/include/boost/detail/dynamic_bitset.hpp \
-  /usr/local/include/boost/pending/lowest_bit.hpp \
-  /usr/local/include/boost/pending/integer_log2.hpp \
-  centroidalifold/engine/averaged.h centroidalifold/engine/mixture.h \
-  centroidalifold/engine/aux.h \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/list \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/sstream \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/map \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tree \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/stack \
+  /usr/local/include/boost/algorithm/string.hpp \
+  /usr/local/include/boost/algorithm/string/std_containers_traits.hpp \
+  /usr/local/include/boost/algorithm/string/std/string_traits.hpp \
+  /usr/local/include/boost/algorithm/string/yes_no_type.hpp \
+  /usr/local/include/boost/algorithm/string/sequence_traits.hpp \
+  /usr/local/include/boost/algorithm/string/std/list_traits.hpp \
+  /usr/local/include/boost/algorithm/string/trim.hpp \
+  /usr/local/include/boost/algorithm/string/config.hpp \
+  /usr/local/include/boost/range/begin.hpp \
+  /usr/local/include/boost/range/config.hpp \
+  /usr/local/include/boost/range/iterator.hpp \
+  /usr/local/include/boost/range/mutable_iterator.hpp \
+  /usr/local/include/boost/range/detail/extract_optional_type.hpp \
+  /usr/local/include/boost/range/const_iterator.hpp \
+  /usr/local/include/boost/range/end.hpp \
+  /usr/local/include/boost/range/detail/implementation_help.hpp \
+  /usr/local/include/boost/range/detail/common.hpp \
+  /usr/local/include/boost/range/detail/sfinae.hpp \
+  /usr/local/include/boost/type_traits/is_array.hpp \
+  /usr/local/include/boost/range/as_literal.hpp \
+  /usr/local/include/boost/range/iterator_range.hpp \
+  /usr/local/include/boost/range/iterator_range_core.hpp \
+  /usr/local/include/boost/range/functions.hpp \
+  /usr/local/include/boost/range/size.hpp \
+  /usr/local/include/boost/range/size_type.hpp \
+  /usr/local/include/boost/range/difference_type.hpp \
+  /usr/local/include/boost/utility/enable_if.hpp \
+  /usr/local/include/boost/type_traits/make_unsigned.hpp \
+  /usr/local/include/boost/type_traits/is_signed.hpp \
+  /usr/local/include/boost/type_traits/is_unsigned.hpp \
+  /usr/local/include/boost/type_traits/add_volatile.hpp \
+  /usr/local/include/boost/range/distance.hpp \
+  /usr/local/include/boost/range/empty.hpp \
+  /usr/local/include/boost/range/rbegin.hpp \
+  /usr/local/include/boost/range/reverse_iterator.hpp \
+  /usr/local/include/boost/iterator/reverse_iterator.hpp \
+  /usr/local/include/boost/next_prior.hpp \
+  /usr/local/include/boost/range/rend.hpp \
+  /usr/local/include/boost/range/algorithm/equal.hpp \
+  /usr/local/include/boost/range/concepts.hpp \
+  /usr/local/include/boost/iterator/iterator_concepts.hpp \
+  /usr/local/include/boost/range/value_type.hpp \
+  /usr/local/include/boost/range/detail/misc_concept.hpp \
+  /usr/local/include/boost/range/detail/safe_bool.hpp \
+  /usr/local/include/boost/range/iterator_range_io.hpp \
+  /usr/local/include/boost/range/detail/str_types.hpp \
+  /usr/local/include/boost/algorithm/string/detail/trim.hpp \
+  /usr/local/include/boost/algorithm/string/classification.hpp \
+  /usr/local/include/boost/algorithm/string/detail/classification.hpp \
+  /usr/local/include/boost/algorithm/string/predicate_facade.hpp \
+  /usr/local/include/boost/algorithm/string/case_conv.hpp \
+  /usr/local/include/boost/iterator/transform_iterator.hpp \
+  /usr/local/include/boost/type_traits/function_traits.hpp \
+  /usr/local/include/boost/utility/result_of.hpp \
+  /usr/local/include/boost/preprocessor/repetition/enum_shifted_params.hpp \
+  /usr/local/include/boost/preprocessor/facilities/intercept.hpp \
+  /usr/local/include/boost/utility/declval.hpp \
+  /usr/local/include/boost/type_traits/add_rvalue_reference.hpp \
+  /usr/local/include/boost/utility/detail/result_of_iterate.hpp \
+  /usr/local/include/boost/algorithm/string/detail/case_conv.hpp \
+  /usr/local/include/boost/algorithm/string/predicate.hpp \
+  /usr/local/include/boost/algorithm/string/compare.hpp \
+  /usr/local/include/boost/algorithm/string/find.hpp \
+  /usr/local/include/boost/algorithm/string/finder.hpp \
+  /usr/local/include/boost/algorithm/string/constants.hpp \
+  /usr/local/include/boost/algorithm/string/detail/finder.hpp \
+  /usr/local/include/boost/algorithm/string/detail/predicate.hpp \
+  /usr/local/include/boost/algorithm/string/split.hpp \
+  /usr/local/include/boost/algorithm/string/iter_find.hpp \
+  /usr/local/include/boost/algorithm/string/concept.hpp \
+  /usr/local/include/boost/algorithm/string/find_iterator.hpp \
+  /usr/local/include/boost/algorithm/string/detail/find_iterator.hpp \
+  /usr/local/include/boost/function.hpp \
+  /usr/local/include/boost/preprocessor/iterate.hpp \
+  /usr/local/include/boost/function/detail/prologue.hpp \
+  /usr/local/include/boost/config/no_tr1/functional.hpp \
+  /usr/local/include/boost/function/function_base.hpp \
+  /usr/local/include/boost/integer.hpp \
+  /usr/local/include/boost/integer_fwd.hpp \
+  /usr/local/include/boost/cstdint.hpp \
+  /usr/local/include/boost/integer_traits.hpp \
+  /usr/local/include/boost/type_traits/has_trivial_destructor.hpp \
+  /usr/local/include/boost/type_traits/composite_traits.hpp \
+  /usr/local/include/boost/type_traits/is_union.hpp \
+  /usr/local/include/boost/function_equal.hpp \
+  /usr/local/include/boost/function/function_fwd.hpp \
+  /usr/local/include/boost/mem_fn.hpp \
+  /usr/local/include/boost/bind/mem_fn.hpp \
+  /usr/local/include/boost/get_pointer.hpp \
+  /usr/local/include/boost/bind/mem_fn_template.hpp \
+  /usr/local/include/boost/bind/mem_fn_cc.hpp \
+  /usr/local/include/boost/preprocessor/enum.hpp \
+  /usr/local/include/boost/preprocessor/enum_params.hpp \
+  /usr/local/include/boost/function/detail/function_iterate.hpp \
+  /usr/local/include/boost/function/detail/maybe_include.hpp \
+  /usr/local/include/boost/function/function_template.hpp \
+  /usr/local/include/boost/detail/no_exceptions_support.hpp \
+  /usr/local/include/boost/algorithm/string/detail/util.hpp \
+  /usr/local/include/boost/algorithm/string/join.hpp \
+  /usr/local/include/boost/algorithm/string/detail/sequence.hpp \
+  /usr/local/include/boost/mpl/logical.hpp \
+  /usr/local/include/boost/algorithm/string/replace.hpp \
+  /usr/local/include/boost/algorithm/string/find_format.hpp \
+  /usr/local/include/boost/algorithm/string/detail/find_format.hpp \
+  /usr/local/include/boost/algorithm/string/detail/find_format_store.hpp \
+  /usr/local/include/boost/algorithm/string/detail/replace_storage.hpp \
+  /usr/local/include/boost/algorithm/string/detail/find_format_all.hpp \
+  /usr/local/include/boost/algorithm/string/formatter.hpp \
+  /usr/local/include/boost/algorithm/string/detail/formatter.hpp \
+  /usr/local/include/boost/algorithm/string/erase.hpp \
   /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/fold.h \
   /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/data_structures.h \
   /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/energy_const.h \
-  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/fold_vars.h \
-  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/part_func.h \
-  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/part_func_up.h \
-  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/part_func_co.h \
-  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/utils.h \
-  pf_duplex.h ushuffle.h boltzmann_param.h
+  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/PS_dot.h \
+  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/plot_layouts.h \
+  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/naview.h \
+  /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/aln_util.h
 
 ../config.h:
 
-cmdline1.h:
+centroidalifold/aln.h:
 
-/usr/include/stdio.h:
+/usr/local/include/boost/version.hpp:
+
+/usr/local/include/boost/spirit/include/classic.hpp:
+
+/usr/local/include/boost/spirit/home/classic.hpp:
+
+/usr/local/include/boost/spirit/home/classic/core.hpp:
+
+/usr/local/include/boost/spirit/home/classic/version.hpp:
+
+/usr/local/include/boost/spirit/home/classic/debug.hpp:
+
+/usr/local/include/boost/spirit/home/classic/debug/minimal.hpp:
+
+/usr/local/include/boost/spirit/home/classic/core/config.hpp:
+
+/usr/local/include/boost/config.hpp:
+
+/usr/local/include/boost/config/user.hpp:
+
+/usr/local/include/boost/config/select_compiler_config.hpp:
+
+/usr/local/include/boost/config/compiler/clang.hpp:
+
+/usr/local/include/boost/config/select_stdlib_config.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstddef:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__config:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stddef.h:
+
+/usr/local/include/boost/config/no_tr1/utility.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/utility:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tuple:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/type_traits:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tuple_03:
+
+/usr/local/include/boost/config/stdlib/libcpp.hpp:
+
+/usr/local/include/boost/config/select_platform_config.hpp:
+
+/usr/local/include/boost/config/platform/macos.hpp:
+
+/usr/local/include/boost/config/posix_features.hpp:
+
+/usr/include/unistd.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
 
 /usr/include/sys/cdefs.h:
 
@@ -620,29 +773,9 @@ cmdline1.h:
 
 /usr/include/sys/_posix_availability.h:
 
-/usr/include/Availability.h:
-
-/usr/include/AvailabilityInternal.h:
-
-/usr/include/_types.h:
-
-/usr/include/sys/_types.h:
-
 /usr/include/machine/_types.h:
 
 /usr/include/i386/_types.h:
-
-/usr/include/sys/_types/_va_list.h:
-
-/usr/include/sys/_types/_size_t.h:
-
-/usr/include/sys/_types/_null.h:
-
-/usr/include/sys/_types/_off_t.h:
-
-/usr/include/sys/_types/_ssize_t.h:
-
-/usr/include/unistd.h:
 
 /usr/include/sys/unistd.h:
 
@@ -650,15 +783,27 @@ cmdline1.h:
 
 /usr/include/sys/_types/_seek_set.h:
 
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
 /usr/include/sys/_types/_gid_t.h:
 
 /usr/include/sys/_types/_intptr_t.h:
 
+/usr/include/sys/_types/_off_t.h:
+
 /usr/include/sys/_types/_pid_t.h:
+
+/usr/include/sys/_types/_size_t.h:
+
+/usr/include/sys/_types/_ssize_t.h:
 
 /usr/include/sys/_types/_uid_t.h:
 
 /usr/include/sys/_types/_useconds_t.h:
+
+/usr/include/sys/_types/_null.h:
 
 /usr/include/sys/select.h:
 
@@ -697,356 +842,6 @@ cmdline1.h:
 /usr/include/sys/_types/_uuid_t.h:
 
 /usr/include/gethostuuid.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdlib:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__config:
-
-/usr/include/stdlib.h:
-
-/usr/include/sys/wait.h:
-
-/usr/include/sys/_types/_id_t.h:
-
-/usr/include/sys/signal.h:
-
-/usr/include/machine/signal.h:
-
-/usr/include/i386/signal.h:
-
-/usr/include/machine/_mcontext.h:
-
-/usr/include/i386/_mcontext.h:
-
-/usr/include/mach/i386/_structs.h:
-
-/usr/include/sys/_types/_sigaltstack.h:
-
-/usr/include/sys/_types/_ucontext.h:
-
-/usr/include/sys/_types/_pthread_attr_t.h:
-
-/usr/include/sys/resource.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stdint.h:
-
-/usr/include/stdint.h:
-
-/usr/include/sys/_types/_int8_t.h:
-
-/usr/include/sys/_types/_int16_t.h:
-
-/usr/include/sys/_types/_int32_t.h:
-
-/usr/include/sys/_types/_int64_t.h:
-
-/usr/include/_types/_uint8_t.h:
-
-/usr/include/_types/_uint16_t.h:
-
-/usr/include/_types/_uint32_t.h:
-
-/usr/include/_types/_uint64_t.h:
-
-/usr/include/sys/_types/_uintptr_t.h:
-
-/usr/include/_types/_intmax_t.h:
-
-/usr/include/_types/_uintmax_t.h:
-
-/usr/include/machine/endian.h:
-
-/usr/include/i386/endian.h:
-
-/usr/include/sys/_endian.h:
-
-/usr/include/libkern/_OSByteOrder.h:
-
-/usr/include/libkern/i386/_OSByteOrder.h:
-
-/usr/include/alloca.h:
-
-/usr/include/sys/_types/_ct_rune_t.h:
-
-/usr/include/sys/_types/_rune_t.h:
-
-/usr/include/sys/_types/_wchar_t.h:
-
-/usr/include/machine/types.h:
-
-/usr/include/i386/types.h:
-
-/usr/include/sys/_types/___offsetof.h:
-
-/usr/include/sys/time.h:
-
-/usr/include/time.h:
-
-/usr/include/_structs.h:
-
-/usr/include/sys/_structs.h:
-
-/usr/include/sys/_types/_clock_t.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iostream:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ios:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iosfwd:
-
-/usr/include/wchar.h:
-
-/usr/include/sys/_types/_mbstate_t.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stdarg.h:
-
-/usr/include/_wctype.h:
-
-/usr/include/sys/_types/_wint_t.h:
-
-/usr/include/_types/_wctype_t.h:
-
-/usr/include/ctype.h:
-
-/usr/include/runetype.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__locale:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstring:
-
-/usr/include/string.h:
-
-/usr/include/sys/_types/_rsize_t.h:
-
-/usr/include/sys/_types/_errno_t.h:
-
-/usr/include/strings.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdio:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwchar:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwctype:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cctype:
-
-/usr/include/wctype.h:
-
-/usr/include/_types/_wctrans_t.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/initializer_list:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstddef:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stddef.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/type_traits:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/utility:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tuple:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tuple_03:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/typeinfo:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/exception:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdint:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/new:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/limits:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__undef_min_max:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iterator:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_base:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_base_03:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/tuple:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/stdexcept:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/mutex:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__mutex_base:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/chrono:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ctime:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ratio:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/climits:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/limits.h:
-
-/usr/include/limits.h:
-
-/usr/include/machine/limits.h:
-
-/usr/include/i386/limits.h:
-
-/usr/include/i386/_limits.h:
-
-/usr/include/sys/syslimits.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/system_error:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cerrno:
-
-/usr/include/errno.h:
-
-/usr/include/sys/errno.h:
-
-/usr/include/pthread.h:
-
-/usr/include/pthread_impl.h:
-
-/usr/include/sched.h:
-
-/usr/include/sys/_types/_pthread_cond_t.h:
-
-/usr/include/sys/_types/_pthread_condattr_t.h:
-
-/usr/include/sys/_types/_pthread_key_t.h:
-
-/usr/include/sys/_types/_pthread_mutex_t.h:
-
-/usr/include/sys/_types/_pthread_mutexattr_t.h:
-
-/usr/include/sys/_types/_pthread_once_t.h:
-
-/usr/include/sys/_types/_pthread_rwlock_t.h:
-
-/usr/include/sys/_types/_pthread_rwlockattr_t.h:
-
-/usr/include/sys/_types/_pthread_t.h:
-
-/usr/include/sys/_types/_mach_port_t.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/functional:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_03:
-
-/usr/include/locale.h:
-
-/usr/include/_locale.h:
-
-/usr/include/xlocale.h:
-
-/usr/include/_xlocale.h:
-
-/usr/include/xlocale/_ctype.h:
-
-/usr/include/xlocale/__wctype.h:
-
-/usr/include/xlocale/_stdio.h:
-
-/usr/include/xlocale/_stdlib.h:
-
-/usr/include/xlocale/_string.h:
-
-/usr/include/xlocale/_time.h:
-
-/usr/include/xlocale/_wchar.h:
-
-/usr/include/xlocale/_wctype.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/streambuf:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/istream:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ostream:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/locale:
-
-/usr/include/nl_types.h:
-
-/usr/include/sys/types.h:
-
-/usr/include/sys/_types/_blkcnt_t.h:
-
-/usr/include/sys/_types/_blksize_t.h:
-
-/usr/include/sys/_types/_in_addr_t.h:
-
-/usr/include/sys/_types/_in_port_t.h:
-
-/usr/include/sys/_types/_ino_t.h:
-
-/usr/include/sys/_types/_ino64_t.h:
-
-/usr/include/sys/_types/_key_t.h:
-
-/usr/include/sys/_types/_nlink_t.h:
-
-/usr/include/sys/_types/_fsblkcnt_t.h:
-
-/usr/include/sys/_types/_fsfilcnt_t.h:
-
-/usr/include/_types/_nl_item.h:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/bitset:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__bit_reference:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/fstream:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/sstream:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/vector:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__split_buffer:
-
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/list:
-
-fa.h:
-
-/usr/local/include/boost/version.hpp:
-
-/usr/local/include/boost/spirit/include/classic.hpp:
-
-/usr/local/include/boost/spirit/home/classic.hpp:
-
-/usr/local/include/boost/spirit/home/classic/core.hpp:
-
-/usr/local/include/boost/spirit/home/classic/version.hpp:
-
-/usr/local/include/boost/spirit/home/classic/debug.hpp:
-
-/usr/local/include/boost/spirit/home/classic/debug/minimal.hpp:
-
-/usr/local/include/boost/spirit/home/classic/core/config.hpp:
-
-/usr/local/include/boost/config.hpp:
-
-/usr/local/include/boost/config/user.hpp:
-
-/usr/local/include/boost/config/select_compiler_config.hpp:
-
-/usr/local/include/boost/config/compiler/clang.hpp:
-
-/usr/local/include/boost/config/select_stdlib_config.hpp:
-
-/usr/local/include/boost/config/no_tr1/utility.hpp:
-
-/usr/local/include/boost/config/stdlib/libcpp.hpp:
-
-/usr/local/include/boost/config/select_platform_config.hpp:
-
-/usr/local/include/boost/config/platform/macos.hpp:
-
-/usr/local/include/boost/config/posix_features.hpp:
 
 /usr/local/include/boost/config/suffix.hpp:
 
@@ -1212,9 +1007,299 @@ fa.h:
 
 /usr/local/include/boost/optional/optional.hpp:
 
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/new:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/exception:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/algorithm:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/initializer_list:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstring:
+
+/usr/include/string.h:
+
+/usr/include/sys/_types/_rsize_t.h:
+
+/usr/include/sys/_types/_errno_t.h:
+
+/usr/include/strings.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/memory:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/typeinfo:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdint:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/include/sys/_types/_int8_t.h:
+
+/usr/include/sys/_types/_int16_t.h:
+
+/usr/include/sys/_types/_int32_t.h:
+
+/usr/include/sys/_types/_int64_t.h:
+
+/usr/include/_types/_uint8_t.h:
+
+/usr/include/_types/_uint16_t.h:
+
+/usr/include/_types/_uint32_t.h:
+
+/usr/include/_types/_uint64_t.h:
+
+/usr/include/sys/_types/_uintptr_t.h:
+
+/usr/include/_types/_intmax_t.h:
+
+/usr/include/_types/_uintmax_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/limits:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__undef_min_max:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iterator:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iosfwd:
+
+/usr/include/wchar.h:
+
+/usr/include/sys/_types/_mbstate_t.h:
+
+/usr/include/sys/_types/_ct_rune_t.h:
+
+/usr/include/sys/_types/_rune_t.h:
+
+/usr/include/sys/_types/_wchar_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/stdarg.h:
+
+/usr/include/stdio.h:
+
+/usr/include/sys/_types/_va_list.h:
+
+/usr/include/time.h:
+
+/usr/include/_structs.h:
+
+/usr/include/sys/_structs.h:
+
+/usr/include/sys/_types/_clock_t.h:
+
+/usr/include/_wctype.h:
+
+/usr/include/sys/_types/_wint_t.h:
+
+/usr/include/_types/_wctype_t.h:
+
+/usr/include/ctype.h:
+
+/usr/include/runetype.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_base:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_base_03:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/tuple:
+
 /usr/local/include/boost/assert.hpp:
 
 /usr/include/assert.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/_types/_id_t.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/machine/_mcontext.h:
+
+/usr/include/i386/_mcontext.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/_types/_sigaltstack.h:
+
+/usr/include/sys/_types/_ucontext.h:
+
+/usr/include/sys/_types/_pthread_attr_t.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+/usr/include/alloca.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/include/sys/_types/___offsetof.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdlib:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/iostream:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ios:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__locale:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/string:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdio:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwchar:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwctype:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cctype:
+
+/usr/include/wctype.h:
+
+/usr/include/_types/_wctrans_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/stdexcept:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/mutex:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__mutex_base:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/chrono:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ctime:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ratio:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/climits:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/5.0/include/limits.h:
+
+/usr/include/limits.h:
+
+/usr/include/machine/limits.h:
+
+/usr/include/i386/limits.h:
+
+/usr/include/i386/_limits.h:
+
+/usr/include/sys/syslimits.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/system_error:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cerrno:
+
+/usr/include/errno.h:
+
+/usr/include/sys/errno.h:
+
+/usr/include/pthread.h:
+
+/usr/include/pthread_impl.h:
+
+/usr/include/sched.h:
+
+/usr/include/sys/_types/_pthread_cond_t.h:
+
+/usr/include/sys/_types/_pthread_condattr_t.h:
+
+/usr/include/sys/_types/_pthread_key_t.h:
+
+/usr/include/sys/_types/_pthread_mutex_t.h:
+
+/usr/include/sys/_types/_pthread_mutexattr_t.h:
+
+/usr/include/sys/_types/_pthread_once_t.h:
+
+/usr/include/sys/_types/_pthread_rwlock_t.h:
+
+/usr/include/sys/_types/_pthread_rwlockattr_t.h:
+
+/usr/include/sys/_types/_pthread_t.h:
+
+/usr/include/sys/_types/_mach_port_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/functional:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_03:
+
+/usr/include/locale.h:
+
+/usr/include/_locale.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/_xlocale.h:
+
+/usr/include/xlocale/_ctype.h:
+
+/usr/include/xlocale/__wctype.h:
+
+/usr/include/xlocale/_stdio.h:
+
+/usr/include/xlocale/_stdlib.h:
+
+/usr/include/xlocale/_string.h:
+
+/usr/include/xlocale/_time.h:
+
+/usr/include/xlocale/_wchar.h:
+
+/usr/include/xlocale/_wctype.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/streambuf:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/istream:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ostream:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/locale:
+
+/usr/include/nl_types.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/sys/_types/_blkcnt_t.h:
+
+/usr/include/sys/_types/_blksize_t.h:
+
+/usr/include/sys/_types/_in_addr_t.h:
+
+/usr/include/sys/_types/_in_port_t.h:
+
+/usr/include/sys/_types/_ino_t.h:
+
+/usr/include/sys/_types/_ino64_t.h:
+
+/usr/include/sys/_types/_key_t.h:
+
+/usr/include/sys/_types/_nlink_t.h:
+
+/usr/include/sys/_types/_fsblkcnt_t.h:
+
+/usr/include/sys/_types/_fsfilcnt_t.h:
+
+/usr/include/_types/_nl_item.h:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/bitset:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__bit_reference:
 
 /usr/local/include/boost/current_function.hpp:
 
@@ -1509,6 +1594,10 @@ fa.h:
 /usr/local/include/boost/spirit/home/classic/core/non_terminal/impl/grammar.ipp:
 
 /usr/local/include/boost/spirit/home/classic/core/non_terminal/impl/object_with_id.ipp:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/vector:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__split_buffer:
 
 /usr/local/include/boost/shared_ptr.hpp:
 
@@ -1922,39 +2011,235 @@ fa.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cassert:
 
-ip.h:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/list:
 
-centroidalifold/aln.h:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/sstream:
 
-centroidalifold/mea.h:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/map:
 
-centroidalifold/bp.h:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__tree:
 
-centroidalifold/cyktable.h:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/stack:
 
-centroidalifold/engine/pfold.h:
+/usr/local/include/boost/algorithm/string.hpp:
 
-centroidalifold/engine/../folding_engine.h:
+/usr/local/include/boost/algorithm/string/std_containers_traits.hpp:
 
-/usr/local/include/boost/dynamic_bitset.hpp:
+/usr/local/include/boost/algorithm/string/std/string_traits.hpp:
 
-/usr/local/include/boost/dynamic_bitset/dynamic_bitset.hpp:
+/usr/local/include/boost/algorithm/string/yes_no_type.hpp:
 
-/usr/local/include/boost/dynamic_bitset/config.hpp:
+/usr/local/include/boost/algorithm/string/sequence_traits.hpp:
 
-/usr/local/include/boost/dynamic_bitset_fwd.hpp:
+/usr/local/include/boost/algorithm/string/std/list_traits.hpp:
 
-/usr/local/include/boost/detail/dynamic_bitset.hpp:
+/usr/local/include/boost/algorithm/string/trim.hpp:
 
-/usr/local/include/boost/pending/lowest_bit.hpp:
+/usr/local/include/boost/algorithm/string/config.hpp:
 
-/usr/local/include/boost/pending/integer_log2.hpp:
+/usr/local/include/boost/range/begin.hpp:
 
-centroidalifold/engine/averaged.h:
+/usr/local/include/boost/range/config.hpp:
 
-centroidalifold/engine/mixture.h:
+/usr/local/include/boost/range/iterator.hpp:
 
-centroidalifold/engine/aux.h:
+/usr/local/include/boost/range/mutable_iterator.hpp:
+
+/usr/local/include/boost/range/detail/extract_optional_type.hpp:
+
+/usr/local/include/boost/range/const_iterator.hpp:
+
+/usr/local/include/boost/range/end.hpp:
+
+/usr/local/include/boost/range/detail/implementation_help.hpp:
+
+/usr/local/include/boost/range/detail/common.hpp:
+
+/usr/local/include/boost/range/detail/sfinae.hpp:
+
+/usr/local/include/boost/type_traits/is_array.hpp:
+
+/usr/local/include/boost/range/as_literal.hpp:
+
+/usr/local/include/boost/range/iterator_range.hpp:
+
+/usr/local/include/boost/range/iterator_range_core.hpp:
+
+/usr/local/include/boost/range/functions.hpp:
+
+/usr/local/include/boost/range/size.hpp:
+
+/usr/local/include/boost/range/size_type.hpp:
+
+/usr/local/include/boost/range/difference_type.hpp:
+
+/usr/local/include/boost/utility/enable_if.hpp:
+
+/usr/local/include/boost/type_traits/make_unsigned.hpp:
+
+/usr/local/include/boost/type_traits/is_signed.hpp:
+
+/usr/local/include/boost/type_traits/is_unsigned.hpp:
+
+/usr/local/include/boost/type_traits/add_volatile.hpp:
+
+/usr/local/include/boost/range/distance.hpp:
+
+/usr/local/include/boost/range/empty.hpp:
+
+/usr/local/include/boost/range/rbegin.hpp:
+
+/usr/local/include/boost/range/reverse_iterator.hpp:
+
+/usr/local/include/boost/iterator/reverse_iterator.hpp:
+
+/usr/local/include/boost/next_prior.hpp:
+
+/usr/local/include/boost/range/rend.hpp:
+
+/usr/local/include/boost/range/algorithm/equal.hpp:
+
+/usr/local/include/boost/range/concepts.hpp:
+
+/usr/local/include/boost/iterator/iterator_concepts.hpp:
+
+/usr/local/include/boost/range/value_type.hpp:
+
+/usr/local/include/boost/range/detail/misc_concept.hpp:
+
+/usr/local/include/boost/range/detail/safe_bool.hpp:
+
+/usr/local/include/boost/range/iterator_range_io.hpp:
+
+/usr/local/include/boost/range/detail/str_types.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/trim.hpp:
+
+/usr/local/include/boost/algorithm/string/classification.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/classification.hpp:
+
+/usr/local/include/boost/algorithm/string/predicate_facade.hpp:
+
+/usr/local/include/boost/algorithm/string/case_conv.hpp:
+
+/usr/local/include/boost/iterator/transform_iterator.hpp:
+
+/usr/local/include/boost/type_traits/function_traits.hpp:
+
+/usr/local/include/boost/utility/result_of.hpp:
+
+/usr/local/include/boost/preprocessor/repetition/enum_shifted_params.hpp:
+
+/usr/local/include/boost/preprocessor/facilities/intercept.hpp:
+
+/usr/local/include/boost/utility/declval.hpp:
+
+/usr/local/include/boost/type_traits/add_rvalue_reference.hpp:
+
+/usr/local/include/boost/utility/detail/result_of_iterate.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/case_conv.hpp:
+
+/usr/local/include/boost/algorithm/string/predicate.hpp:
+
+/usr/local/include/boost/algorithm/string/compare.hpp:
+
+/usr/local/include/boost/algorithm/string/find.hpp:
+
+/usr/local/include/boost/algorithm/string/finder.hpp:
+
+/usr/local/include/boost/algorithm/string/constants.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/finder.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/predicate.hpp:
+
+/usr/local/include/boost/algorithm/string/split.hpp:
+
+/usr/local/include/boost/algorithm/string/iter_find.hpp:
+
+/usr/local/include/boost/algorithm/string/concept.hpp:
+
+/usr/local/include/boost/algorithm/string/find_iterator.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/find_iterator.hpp:
+
+/usr/local/include/boost/function.hpp:
+
+/usr/local/include/boost/preprocessor/iterate.hpp:
+
+/usr/local/include/boost/function/detail/prologue.hpp:
+
+/usr/local/include/boost/config/no_tr1/functional.hpp:
+
+/usr/local/include/boost/function/function_base.hpp:
+
+/usr/local/include/boost/integer.hpp:
+
+/usr/local/include/boost/integer_fwd.hpp:
+
+/usr/local/include/boost/cstdint.hpp:
+
+/usr/local/include/boost/integer_traits.hpp:
+
+/usr/local/include/boost/type_traits/has_trivial_destructor.hpp:
+
+/usr/local/include/boost/type_traits/composite_traits.hpp:
+
+/usr/local/include/boost/type_traits/is_union.hpp:
+
+/usr/local/include/boost/function_equal.hpp:
+
+/usr/local/include/boost/function/function_fwd.hpp:
+
+/usr/local/include/boost/mem_fn.hpp:
+
+/usr/local/include/boost/bind/mem_fn.hpp:
+
+/usr/local/include/boost/get_pointer.hpp:
+
+/usr/local/include/boost/bind/mem_fn_template.hpp:
+
+/usr/local/include/boost/bind/mem_fn_cc.hpp:
+
+/usr/local/include/boost/preprocessor/enum.hpp:
+
+/usr/local/include/boost/preprocessor/enum_params.hpp:
+
+/usr/local/include/boost/function/detail/function_iterate.hpp:
+
+/usr/local/include/boost/function/detail/maybe_include.hpp:
+
+/usr/local/include/boost/function/function_template.hpp:
+
+/usr/local/include/boost/detail/no_exceptions_support.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/util.hpp:
+
+/usr/local/include/boost/algorithm/string/join.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/sequence.hpp:
+
+/usr/local/include/boost/mpl/logical.hpp:
+
+/usr/local/include/boost/algorithm/string/replace.hpp:
+
+/usr/local/include/boost/algorithm/string/find_format.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/find_format.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/find_format_store.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/replace_storage.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/find_format_all.hpp:
+
+/usr/local/include/boost/algorithm/string/formatter.hpp:
+
+/usr/local/include/boost/algorithm/string/detail/formatter.hpp:
+
+/usr/local/include/boost/algorithm/string/erase.hpp:
 
 /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/fold.h:
 
@@ -1962,18 +2247,10 @@ centroidalifold/engine/aux.h:
 
 /usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/energy_const.h:
 
-/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/fold_vars.h:
+/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/PS_dot.h:
 
-/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/part_func.h:
+/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/plot_layouts.h:
 
-/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/part_func_up.h:
+/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/naview.h:
 
-/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/part_func_co.h:
-
-/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/utils.h:
-
-pf_duplex.h:
-
-ushuffle.h:
-
-boltzmann_param.h:
+/usr/local/Cellar/viennarna/2.1.5/include/ViennaRNA/aln_util.h:

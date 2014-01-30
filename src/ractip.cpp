@@ -36,19 +36,18 @@
 #include "ip.h"
 
 // このへんでエラー(duplicate)
-#include "contrafold/SStruct.hpp"
-#include "contrafold/InferenceEngine.hpp"
-#include "contrafold/DuplexEngine.hpp"
-
-#include "contrafold/Defaults.ipp"
+//#include "contrafold/SStruct.hpp"
+//#include "contrafold/InferenceEngine.hpp"
+//#include "contrafold/DuplexEngine.hpp"
+//#include "contrafold/Defaults.ipp"
 
 #include "centroidalifold/aln.h"
 #include "centroidalifold/mea.h"
-#include "centroidalifold/folding_engine.h"
-#include "centroidalifold/engine/contrafold.h"
-#include "centroidalifold/engine/contrafoldm.h"
-#include "centroidalifold/engine/mccaskill.h"
-#include "centroidalifold/engine/alifold.h"
+//#include "centroidalifold/folding_engine.h"
+//#include "centroidalifold/engine/contrafold.h"
+//#include "centroidalifold/engine/contrafoldm.h"
+//#include "centroidalifold/engine/mccaskill.h"
+//#include "centroidalifold/engine/alifold.h"
 #include "centroidalifold/engine/pfold.h"
 #include "centroidalifold/engine/averaged.h"
 #include "centroidalifold/engine/mixture.h"
@@ -143,10 +142,11 @@ public:
 
 private:
   void transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const;
+  int ComputeRowOffset(int i, int N, int w /*=0*/) const;
   void alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln> cf) const;
-  void contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const;
+  //void contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const;
   void rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const;
-  void contraduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const;
+  //void contraduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const;
   void rnafold(const std::string& seq, VF& bp, VI& offset) const;
   void rnafold(const std::string& seq, VF& bp, VI& offset, VVF& up, uint max_w) const;
   void rnaduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const;
@@ -204,17 +204,44 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const
   
   //L = sstruct.G;
   int max_bp_dist=0;
-  InferenceEngine<float> en(false);
+  //InferenceEngine<float> en(false);
   
   for (int i = 0; i <= bpsize; i++)
     {
-      offset[i] = en.ComputeRowOffset(i,bpsize+1,max_bp_dist);
+      offset[i] = ComputeRowOffset(i,bpsize+1,max_bp_dist);
       //allow_unpaired_position[i] = 1;
       //loss_unpaired_position[i] = RealT(0);
     }
 }
 
 
+int 
+RactIP::ComputeRowOffset(int i, int N, int w /*=0*/) const
+{
+  //Assert(i >= 0 && i <= N, "Index out-of-bounds.");大文字Assertは見当たらない
+  if (i>=0 && i<=N)
+    {
+      std::cout << "Index out-of-bounds." << std::endl;
+    }
+
+#define USE_EFFICIENT_WINDOW
+#ifdef USE_EFFICIENT_WINDOW
+    if (w==0)
+    {
+	// equivalent to:
+	//   return N*(N+1)/2 - (N-i)*(N-i+1)/2 - i;
+	return i*(N+N-i-1)/2;
+    }
+    else
+    {
+	return i*w - i;
+    }
+#else
+    // equivalent to:
+    //   return N*(N+1)/2 - (N-i)*(N-i+1)/2 - i;
+    return i*(N+N-i-1)/2;
+#endif
+}
 
 void
 RactIP::
@@ -227,8 +254,7 @@ alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln> cf) const
   bp_centroidfold=cf.get_bp();
   // bpの変換
   transBP_centroidfold_ractip(bp_centroidfold, bp, offset);
-  
-  
+    
   const uint L=seq.size();
   up.resize(L, VF(1, 1.0));
   for (uint i=0; i!=L; ++i)
@@ -241,14 +267,14 @@ alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln> cf) const
   }
 }
 
-
+/**
 void
 RactIP::
 contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
 {
   SStruct ss("unknown", seq);
   ParameterManager<float> pm;
-  InferenceEngine<float> en(false);
+  InferenceEngine<float> en(false);// ここを消したい
   VF w = GetDefaultComplementaryValues<float>();
   bp.resize((seq.size()+1)*(seq.size()+2)/2);
   std::fill(bp.begin(), bp.end(), 0.0);
@@ -271,7 +297,8 @@ contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
     up[i][0] = std::max(0.0f, up[i][0]);
   }
 }
-
+**/
+/**
 void
 RactIP::
 contraduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const
@@ -293,7 +320,7 @@ contraduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const
     for (uint j=0; j!=seq2.size(); ++j)
       hp[i+1][j+1] = ip[en.GetOffset(i+1)+(j+1)];
 }
-
+**/
 
 void
 RactIP::
@@ -1106,7 +1133,7 @@ run()
   else { throw "unreachable"; }
   
   /**
-   * centroid_align section
+   * centroid_alifold section
    * Takashi Matsuda 2013-2014 automn-winter
    **/
   
@@ -1160,7 +1187,7 @@ run()
                                     seed, vm.count("mea"));
     }
 #endif
-    else if (engine[i]=="pfold")
+    else if (engine[i]=="pfold")// 参考にする
     {
       if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
       std::string pfold_bin_dir(getenv("PFOLD_BIN_DIR") ? getenv("PFOLD_BIN_DIR") : ".");
@@ -1185,6 +1212,9 @@ run()
     //cf=cf_list[0];
   //else
   // 上は型の都合で潰しました　キャストがうまくできるなら復活させる（今はその方法を知らない）
+
+  
+  // ここでモデルの設定を行う。
   {
     // if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
     for (uint i=0; i!=engine.size(); ++i)

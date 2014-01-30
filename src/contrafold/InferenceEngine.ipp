@@ -5608,6 +5608,13 @@ void InferenceEngine<RealT>::InitRand(unsigned int seed)
 //
 // Return posterior probability matrix, thresholded.
 //////////////////////////////////////////////////////////////////////
+template<class RealT>
+RealT *InferenceEngine<RealT>::GetPosterior(const RealT posterior_cutoff, std::vector<RealT>& p, std::vector<int>& o) const
+{
+  RealT* ret = GetPosterior(posterior_cutoff, p);
+  o = offset;
+  return ret;
+}
 
 template<class RealT>
 RealT *InferenceEngine<RealT>::GetPosterior(const RealT posterior_cutoff) const
@@ -5646,3 +5653,6 @@ RealT *InferenceEngine<RealT>::GetPosterior2(const RealT posterior_cutoff,
         p[i] = (posterior2[i] >= posterior_cutoff ? posterior2[i] : RealT(0));
     return &p[0];
 }
+template<class RealT>
+int
+InferenceEngine<RealT>::GetOffset(int i) const { return offset[i]; }

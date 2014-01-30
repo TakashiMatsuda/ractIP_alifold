@@ -48,6 +48,7 @@ public:
   virtual void clean_stochastic_traceback(const std::string& seq) { }
 
 private:
+
   CONTRAfold<float>* contrafold_;
 };
 
