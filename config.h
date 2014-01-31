@@ -29,7 +29,7 @@
 #define HAVE_LIBGLPK 1
 
 /* Define to 1 if you have the `gmp' library (-lgmp). */
-/* #undef HAVE_LIBGMP */
+#define HAVE_LIBGMP 1
 
 /* Define to 1 if you have the `ilocplex' library (-lilocplex). */
 /* #undef HAVE_LIBILOCPLEX */

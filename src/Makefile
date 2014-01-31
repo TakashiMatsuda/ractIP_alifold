@@ -182,12 +182,12 @@ AUTOMAKE = automake-1.14
 AWK = awk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g -O2
-CPPFLAGS = -I/usr/local/Cellar/viennarna/2.1.5/include 
+CFLAGS = -g -O0
+CPPFLAGS = -I/usr/local/Cellar/viennarna/2.1.5/include -DWITH_GLPK 
 CXX = g++
 CXXCPP = g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -g -O2
+CXXFLAGS = -g -O0
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -204,7 +204,7 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = -L/usr/local/Cellar/viennarna/2.1.5/lib 
 LIBOBJS = 
-LIBS = -lRNA -lglpk -lltdl -ldl -lz -lpthread 
+LIBS = -lRNA -lglpk -lltdl -ldl -lgmp -lz -lpthread 
 LTLIBOBJS = 
 MAKEINFO = makeinfo
 MKDIR_P = .././install-sh -c -d

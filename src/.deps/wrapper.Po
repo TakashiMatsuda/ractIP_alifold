@@ -63,13 +63,13 @@ wrapper.o: centroidalifold/contrafold/wrapper.cpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cwctype \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cctype \
   /usr/include/wctype.h /usr/include/_types/_wctrans_t.h \
-  centroidalifold/contrafold/../../contrafold/InferenceEngine.hpp \
+  centroidalifold/contrafold/InferenceEngine.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/queue \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/deque \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/functional \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_03 \
-  centroidalifold/contrafold/../../contrafold/Config.hpp \
-  centroidalifold/contrafold/../../contrafold/SStruct.hpp \
+  centroidalifold/contrafold/Config.hpp \
+  centroidalifold/contrafold/SStruct.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/fstream \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ostream \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/ios \
@@ -137,7 +137,7 @@ wrapper.o: centroidalifold/contrafold/wrapper.cpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/bitset \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/istream \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/sstream \
-  centroidalifold/contrafold/../../contrafold/Utilities.hpp \
+  centroidalifold/contrafold/Utilities.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cmath \
   /usr/include/math.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cstdarg \
@@ -149,12 +149,12 @@ wrapper.o: centroidalifold/contrafold/wrapper.cpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/set \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/stack \
   /usr/include/sys/time.h /usr/include/sys/_select.h \
-  centroidalifold/contrafold/../../contrafold/Utilities.ipp \
-  centroidalifold/contrafold/../../contrafold/ParameterManager.hpp \
-  centroidalifold/contrafold/../../contrafold/ParameterManager.ipp \
-  centroidalifold/contrafold/../../contrafold/LogSpace.hpp \
-  centroidalifold/contrafold/../../contrafold/rand.h \
-  centroidalifold/contrafold/../../contrafold/../../config.h \
+  centroidalifold/contrafold/Utilities.ipp \
+  centroidalifold/contrafold/ParameterManager.hpp \
+  centroidalifold/contrafold/ParameterManager.ipp \
+  centroidalifold/contrafold/LogSpace.hpp \
+  centroidalifold/contrafold/rand.h \
+  centroidalifold/contrafold/../../../config.h \
   /usr/local/include/boost/random.hpp \
   /usr/local/include/boost/random/additive_combine.hpp \
   /usr/local/include/boost/config.hpp \
@@ -1101,9 +1101,9 @@ wrapper.o: centroidalifold/contrafold/wrapper.cpp \
   /usr/local/include/boost/random/uniform_on_sphere.hpp \
   /usr/local/include/boost/random/uniform_smallint.hpp \
   /usr/local/include/boost/random/weibull_distribution.hpp \
-  centroidalifold/contrafold/../../contrafold/InferenceEngine.ipp \
+  centroidalifold/contrafold/InferenceEngine.ipp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/list \
-  centroidalifold/contrafold/Defaults.ipp \
+  contrafold/SStruct.hpp centroidalifold/contrafold/Defaults.ipp \
   centroidalifold/contrafold/contrafold.h
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/vector:
@@ -1286,7 +1286,7 @@ wrapper.o: centroidalifold/contrafold/wrapper.cpp \
 
 /usr/include/_types/_wctrans_t.h:
 
-centroidalifold/contrafold/../../contrafold/InferenceEngine.hpp:
+centroidalifold/contrafold/InferenceEngine.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/queue:
 
@@ -1296,9 +1296,9 @@ centroidalifold/contrafold/../../contrafold/InferenceEngine.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/__functional_03:
 
-centroidalifold/contrafold/../../contrafold/Config.hpp:
+centroidalifold/contrafold/Config.hpp:
 
-centroidalifold/contrafold/../../contrafold/SStruct.hpp:
+centroidalifold/contrafold/SStruct.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/fstream:
 
@@ -1492,7 +1492,7 @@ centroidalifold/contrafold/../../contrafold/SStruct.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/sstream:
 
-centroidalifold/contrafold/../../contrafold/Utilities.hpp:
+centroidalifold/contrafold/Utilities.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/cmath:
 
@@ -1518,17 +1518,17 @@ centroidalifold/contrafold/../../contrafold/Utilities.hpp:
 
 /usr/include/sys/_select.h:
 
-centroidalifold/contrafold/../../contrafold/Utilities.ipp:
+centroidalifold/contrafold/Utilities.ipp:
 
-centroidalifold/contrafold/../../contrafold/ParameterManager.hpp:
+centroidalifold/contrafold/ParameterManager.hpp:
 
-centroidalifold/contrafold/../../contrafold/ParameterManager.ipp:
+centroidalifold/contrafold/ParameterManager.ipp:
 
-centroidalifold/contrafold/../../contrafold/LogSpace.hpp:
+centroidalifold/contrafold/LogSpace.hpp:
 
-centroidalifold/contrafold/../../contrafold/rand.h:
+centroidalifold/contrafold/rand.h:
 
-centroidalifold/contrafold/../../contrafold/../../config.h:
+centroidalifold/contrafold/../../../config.h:
 
 /usr/local/include/boost/random.hpp:
 
@@ -3434,9 +3434,11 @@ centroidalifold/contrafold/../../contrafold/../../config.h:
 
 /usr/local/include/boost/random/weibull_distribution.hpp:
 
-centroidalifold/contrafold/../../contrafold/InferenceEngine.ipp:
+centroidalifold/contrafold/InferenceEngine.ipp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/c++/v1/list:
+
+contrafold/SStruct.hpp:
 
 centroidalifold/contrafold/Defaults.ipp:
 

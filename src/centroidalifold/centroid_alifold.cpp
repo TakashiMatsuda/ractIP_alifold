@@ -351,7 +351,7 @@ centroid_alifold(int argc, char* argv[])
     else
       cf->centroid_fold(aln.name().front(), aln, gamma, *out);
 
-    if (vm.count("posteriors")) cf->get_bp().save(*p_out, aln.consensus(), p_th);//
+    if (vm.count("posteriors")) cf->get_bp().save(*p_out, aln.consensus(), p_th);//here
 
     if (!ps_outname.empty())
     {

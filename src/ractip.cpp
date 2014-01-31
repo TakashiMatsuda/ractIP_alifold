@@ -35,7 +35,7 @@
 #include "fa.h"
 #include "ip.h"
 
-// このへんでエラー(duplicate)
+// (duplicate)
 //#include "contrafold/SStruct.hpp"
 //#include "contrafold/InferenceEngine.hpp"
 //#include "contrafold/DuplexEngine.hpp"
@@ -143,7 +143,7 @@ public:
 private:
   void transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const;
   int ComputeRowOffset(int i, int N, int w /*=0*/) const;
-  void alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln> cf) const;
+  void alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln>& cf) const;
   //void contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const;
   void rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const;
   //void contraduplex(const std::string& seq1, const std::string& seq2, VVF& hp) const;
@@ -184,7 +184,6 @@ private:
    **/
   std::vector<float> mix_w;   // mixture weights of inference engines
   std::vector<std::string> engine;
-
 };
 
 
@@ -245,16 +244,19 @@ RactIP::ComputeRowOffset(int i, int N, int w /*=0*/) const
 
 void
 RactIP::
-alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln> cf) const
+alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln>& cf) const
 {
   // centroid_alifoldのコードを流用して、塩基対確率を計算して取り出す関数を作っておいて、呼び出す。
   // basepair probabilityの計算
-  cf.calculate_posterior(seq);//MixtureModelはアラインメントを要求する
+  std::cout<<"pre error"<<std::endl;
+  cf.calculate_posterior(seq);
+  // ERROR
+  
   BPTable bp_centroidfold;
   bp_centroidfold=cf.get_bp();
   // bpの変換
   transBP_centroidfold_ractip(bp_centroidfold, bp, offset);
-    
+
   const uint L=seq.size();
   up.resize(L, VF(1, 1.0));
   for (uint i=0; i!=L; ++i)
@@ -520,7 +522,7 @@ load_from_rip(const char* filename,
   std::string l;
   while (std::getline(is, l))
   {
-    if (strncmp(l.c_str(), "Table R:", 8)==0) st=TABLE_R;
+    if (strncmp(l.c_str(), "Table R:", 8)==0) st=TABLE_R;//
     else if (strncmp(l.c_str(), "Table S:", 8)==0) st=TABLE_S;
     else if (strncmp(l.c_str(), "Table I:", 8)==0) st=TABLE_I;
     else if (st!=NONE && l[0]>='0' && l[0]<='9')
@@ -1015,7 +1017,7 @@ parse_options(int& argc, char**& argv)
   th_ss_ = args_info.fold_th_arg;
   th_hy_ = args_info.hybridize_th_arg;
   th_ac_ = args_info.acc_th_arg;
-  mix_w[0] = args_info.mix_weight_arg;
+  mix_w.push_back(args_info.mix_weight_arg);//float mix_weight_arg
   max_w_ = args_info.max_w_arg;
   min_w_ = args_info.min_w_arg;
   enable_zscore_ = args_info.zscore_arg;
@@ -1113,9 +1115,10 @@ run()
   Aln fa1, fa2;
   if (!fa1_.empty() && !fa2_.empty())
   {
+    std::cout<<"both fa1 and fa2 are not empty"<<std::endl;
     std::list<Aln> l1, l2;// change here <input> (Fasta -> Aln)
     if (Aln::load(l1, fa1_.c_str())==0)
-      throw (fa1_+": Format error").c_str();
+      throw (fa1_+": Format error").c_str();//これでいいのか
     if (Aln::load(l2, fa2_.c_str())==0)
       throw (fa2_+": Format error").c_str();
     fa1=l1.front();
@@ -1215,6 +1218,9 @@ run()
 
   
   // ここでモデルの設定を行う。
+  // ゆくゆくは上で条件分岐できるように、コマンドラインを設計する。FUTURE work
+  
+  
   {
     // if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
     for (uint i=0; i!=engine.size(); ++i)
@@ -1258,7 +1264,6 @@ run()
       itr2_seq++;
     }
   std::cout<< r1 << std::endl;
-
   
   //////////////////////// by Takashi Matsuda ///////////////////////////////
   //// future work: separate above code ///////
@@ -1329,6 +1334,7 @@ main(int argc, char* argv[])
   try
   {
     RactIP ractip;
+    std::cout<< "start" << std::endl;
     return ractip.parse_options(argc, argv).run();
   }
   catch (const char* msg)

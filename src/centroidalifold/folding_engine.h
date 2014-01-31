@@ -93,7 +93,7 @@ public:
 
 protected:
   bool mea_;
-  BPTable bp_;
+  BPTable bp_;//
   uint max_bp_dist_;
 
 protected:

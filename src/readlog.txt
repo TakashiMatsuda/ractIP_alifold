@@ -1012,3 +1012,185 @@ Compu~~~に含まれるAssert: undeclaredの問題
 ---
 コンパイル成功。
 ----
+segmentation faultが出る問題
+まずはinputファイルを用意して実験してみる。
+cmdline1に到達していなかったら悲しい。
+--
+mix_wを初期化していない。
+インスタンスの初期化と同時にメンバオブジェクトを初期化する方法
+""C++では、クラスのデータメンバはコンストラクタ初期化子でしか初期化することができません。
+他の場所では、更新することはできても初期化することはできません。""
+mix_weight_argはfloat
+push_backで対応して、成功
+--
+何も出力されず、一瞬で終わってしまった
+どこまで走っているか確認する。
+未対応のファイルかもしれない。
+フォーマットエラーであることを確認した。
+-
+どのように対処するか。
+clustalW形式を受け取るようにはなっているはず。(それはcentroidalifoldの仕様書で確認したはず)
+clustalW形式の確認
+converterでconvertした。
+--
+noIPlinkedって怒られた。
+configureしなおしてみる。
+glpkがないのかな。glpkはHomeBrewで入れたから、OSのデフォルトパス集合に入っていないかもしれない。
+gurobiを落としてやってみるか。->有料だった。
+glpkがなぜ通らないのか調べる。
+config.logにレポートされているかもしれないから参照する。
+gmpをインストールしたら動くようになった。
+---
+segmentation faultが出てそのままの状態。
+何もヒントが出力されない。
+コンパイラを変更して、-gがでるようにしよう。
+-
+MakeFileを変更したのに
+srcの中は変更されていなかった。あたりまえ。
+変更して走らせたところ、いろいろと問題が出た。今は無視したいので、これらのことは考えないようにするために、
+やはりclangでデバッグする。
+問題箇所はstep-nextでなんとかする。
+-
+solveの中
+solveにbreakpointを仕掛ける
+alifoldの中
+calculate_posteriorに入れるところでエラー
+Internal error: pc 0x0 in read in psymtab, but not in symtab
+cfからの呼び出しがまずいのか、引数の入れ方がまずいのか
+コンパイルエラーは出なかった
+関数呼び出しでエラー、そのあとのコードではない
+-
+headerの宣言ではvirtual宣言なのだ
+virtualをやめておいた
+-
+cfの中身がおかしいのではないか
+-> cfの傀儡関数を作ってみたら、うまく動いた。
+cfのメンバにさわろうとしているのがまずいんじゃないか
+触っていない、というか関数の呼び出しのところでエラーが出ている
+
+centroid_alifoldではどういうふうに触られていたか確認しよう。
+コンストラクタの中で事後確率も計算されている?
+
+--
+変数の中身がおかしいという仮説
+SEQにAlnを代入するだけでエラーになる。
+おそらく重大な文法ミスを犯している。
+クラスの中の変数なら許されるだろうか
+-
+alifoldのcfを参照渡しにした。
+バグはとれなかったが、エラーメッセージがわかりやすくなった。
+
+gdb) backtrace
+#0  0x0000000100049d56 in ?? ()
+#1  0x00007fff5fc35720 in ?? ()
+#2  0x00007fff5fc3c280 in ?? ()
+#3  0xd400fcf619451834 in ?? ()
+#4  0x0000000000000090 in BPTableTmpl<float>::BPTableTmpl (this=<optimized out>, this=<optimized out>)
+Cannot access memory at address 0x50
+
+using命令に問題があるかもしれない
+  using FoldingEngine<SEQ>::bp_;
+これはbp_に対してのみ、接頭語を省略できるという意味。
+Segmentation faultなのだから、いけないメモリをアクセスしている。
+いけないメモリをアクセスするには、ポインタをいじらないと行えない。
+もしくは確保されていない変数へのアクセスとかか？
+-
+参照渡しにしちゃったけど、実際は参照渡しじゃ無い方がいいだろう。
+-
+centroidalifoldのコードをよく読む。(readlogにいろいろ書いてあると思う)
+foldingengineの中にcalculate_posteriorがvirtualとして定義されている。
+これを持ってくるのもvirtualとして
+実際には定義しているけど。
+Foldingengineの中:
+  virtual void calculate_posterior(const SEQ& seq) = 0;
+この意味はわからない。
+外側から触るとき、型の同一性が保証できないのではないか。
+そんなことはない。だってstochastic_foldを触っているんだから。
+SEQに何か制約がかかっているのか。
+-
+template関数のインスタンス化
+クラスをインスタンス化したときに、メンバもインスタンス化される。へー
+-
+どうすれば解決するのかな
+明日浜田先生に聞いてみるか
+-
+seqの中身をデバッガを使って覗いてみよう。
+-
+Alnのinclude元が違う可能性
+この際統一させておく。
+
+bp_centroidfold = {bp_ = {table_ = {<std::__1::__vector_base<float, std::__1::allocator<float> >> = {<std::__1::__vector_base_common<true>> = {<No data fields>}, __begin_ = 0x100000004, 
+        __end_ = 0x0, __end_cap_ = {<std::__1::__libcpp_compressed_pair_imp<float*, std::__1::allocator<float>, 2>> = {<std::__1::allocator<float>> = {<No data fields>}, __first_ = 0x0warning: (Internal error: pc 0x0 in read in psymtab, but not in symtab.)
+
+出た。これがバグ。順番に見ていこう。
+seqの中身がおかしいんじゃないか
+a1
+input, filepointerからの部分を、centroidalifold流に変えるほうがいいかもしれない。
+
+  Aln fa1, fa2;
+  if (!fa1_.empty() && !fa2_.empty())
+  {
+    std::cout<<"both fa1 and fa2 are not empty"<<std::endl;
+    std::list<Aln> l1, l2;// change here <input> (Fasta -> Aln)
+    if (Aln::load(l1, fa1_.c_str())==0)
+      throw (fa1_+": Format error").c_str();//これでいいのか
+    if (Aln::load(l2, fa2_.c_str())==0)
+      throw (fa2_+": Format error").c_str();
+    fa1=l1.front();
+    fa2=l2.front();
+  }
+ちゃんと確保されていないseqを代入していないだろうか
+----
+p cf
+$2 = (MixtureModel<Aln> &) @0x1006000b0: 
+{<FoldingEngine<Aln>> = {_vptr$FoldingEngine = 0x100166650 <vtable for MixtureModel<Aln>+16>, 
+mea_ = false, 
+bp_ = {bp_ = {table_ = {<std::__1::__vector_base<float, std::__1::allocator<float> >> = {<std::__1::__vector_base_common<true>> = {<No data fields>}, __begin_ = 0x0, __end_ = 0x0warning: (Internal error: pc 0x0 in read in psymtab, but not in symtab.),  __end_cap_ = {<std::__1::__libcpp_compressed_pair_imp<float*, std::__1::allocator<float>, 2>> = {<std::__1::allocator<float>> = {<No data fields>}, __first_ = 0x0warning: (Internal error: pc 0x0 in read in psymtab, but not in symtab.)}, <No data fields>}}, <No data fields>}, ptr_ = {<std::__1::__vector_base<float*, std::__1::allocator<float*> >> = {<std::__1::__vector_base_common<true>> = {<No data fields>}, 
+            __begin_ = 0x0warning: (Internal error: pc 0x0 in read in psymtab, but not in symtab.)
+
+, __end_ = 0x0warning: (Internal error: pc 0x0 in read in psymtab, but not in symtab.)
+
+, 
+            __end_cap_ = {<std::__1::__libcpp_compressed_pair_imp<float**, std::__1::allocator<float*>, 2>> = {<std::__1::allocator<float*>> = {<No data fields>}, __first_ = 0x0warning: (Internal error: pc 0x0 in read in psymtab, but not in symtab.)
+
+
+}, <No data fields>}}, <No data fields>}, size_ = 0, max_dist_ = 0}, size_ = 0, reserved_size_ = 0}, max_bp_dist_ = 0}, 
+  models_ = {<std::__1::__vector_base<std::__1::pair<FoldingEngine<Aln>*, float>, std::__1::allocator<std::__1::pair<FoldingEngine<Aln>*, float> > >> = {<std::__1::__vector_base_common<true>> = {<No data f
+
+cfが原因。cfがちゃんと確保されていない。
+cfのなかのbp_でエラー
+(FoldingEngine.h)
+protected:
+  bool mea_;
+  BPTable bp_;//
+  uint max_bp_dist_;
+(mixture.h)
+using FoldingEngine<SEQ>::bp_;
+
+bp_ = {bp_ = {table_ = 
+{<std::__1::__vector_base<float, std::__1::allocator<float> >> = {<std::__1::__vector_base_common<true>> = {<No data fields>}, 
+__begin_ = 0x0, __end_ = 0x0
+warning: (Internal error: pc 0x0 in read in psymtab, but not in symtab.), 
+
+
+
+
+ __end_cap_ = {<std::__1::__libcpp_compressed_pair_imp<float*, std::__1::allocator<float>, 2>> = {<std::__1::allocator<float>> = {<No data fields>}, __first_ = 0x0warning: (Internal error: pc 0x0 in read in psymtab, but not in symtab.)}, <No data fields>}}, <No data fields>}, ptr_ = {<std::__1::__vector_base<float*, std::__1::allocator<float*> >> = {<std::__1::__vector_base_common<true>> = {<No data fields>}, 
+
+これ、internal errorっていうのはgdbのバグなのか・・・・
+悲しくなってきたよ
+
+lldb使ってみるか
+lldbすごい!!!!!
+-
+x->first->calculate_posterior
+x->firstはテンプレート変数が一致していること
+cfのヴェクた要素のペア第一要素はcf_listを入れているわけだけど、
+cf_listが空だったらよくない
+cf_listが空でした(笑)
+ここに、pffoldとcontrafoldを入れよう。
+
+cf_list=[CONTRAfoldModel c, PfoldModel
+としたい。さぁ考えるぞ。
+(future workモデルを変えられるようにする。)
+

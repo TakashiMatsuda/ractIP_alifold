@@ -64,7 +64,7 @@ calculate_posterior(const SEQ& seq)
   typename std::vector<std::pair<FoldingEngine<SEQ>*,float> >::iterator x;
   for (x=models_.begin(); x!=models_.end(); ++x)
   {
-    x->first->calculate_posterior(seq);
+    x->first->calculate_posterior(seq);//
     MulAdd ma(bp_, x->second, x->first->get_bp());
     inside_traverse(0, bp_.size()-1, ma);
     sum_w+=x->second;
