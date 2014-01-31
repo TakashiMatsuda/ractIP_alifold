@@ -1193,4 +1193,39 @@ cf_listが空でした(笑)
 cf_list=[CONTRAfoldModel c, PfoldModel
 としたい。さぁ考えるぞ。
 (future workモデルを変えられるようにする。)
+-
+CONTRAfold:
+一行づつ書き換えていこう。
+問題は、contrafoldをincludeしたら問題になるというところ。
+大丈夫っぽい。centroidalifoldでそういう設計になっていると思う。
+  //if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 4.0);
+gammaとはなにか
+  src_list[i] = new CONTRAfoldModel(param, !vm.count("noncanonical"), max_bp_dist, seed, vm.count("mea"));
+vm系をすべて置換する
+gammaはいらない
+
+variables_map: オプション引数を格納したmap
+vm.countで、辞書的に指定したオプション引数を取り出すことができる。
+型を調べて、何をいれればいいか調べよう。
+  CONTRAfoldModel(const std::string& model, bool canonical_only, uint max_bp_dist,
+                  uint seed=0, bool run_as_mea=false);
+
+param
+    ("params", po::value<std::string>(&param), "use the parameter file");
+
+max_bp_dist
+    ("max-dist,d", po::value<uint>(&max_bp_dist)->default_value(0),
+     "the maximum distance of base-pairs");
+うーんどっちもなんで必要なのかわからないなー
+とりあえず適当に与えとくかなー
+cf_list
+src_list
+-
+Pfold:
+使えるか調べよう。
+getenv:cstdlib内、環境変数を取得する関数
+Pfold、何を落としてくればいいのかわからず。
+McCaskill & Alifoldでやってみよう。
+---
+McCaskillModelのインプリ
 

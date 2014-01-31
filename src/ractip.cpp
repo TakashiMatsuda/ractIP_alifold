@@ -43,11 +43,11 @@
 
 #include "centroidalifold/aln.h"
 #include "centroidalifold/mea.h"
-//#include "centroidalifold/folding_engine.h"
-//#include "centroidalifold/engine/contrafold.h"
-//#include "centroidalifold/engine/contrafoldm.h"
-//#include "centroidalifold/engine/mccaskill.h"
-//#include "centroidalifold/engine/alifold.h"
+#include "centroidalifold/folding_engine.h"
+#include "centroidalifold/engine/contrafold.h"
+#include "centroidalifold/engine/contrafoldm.h"
+#include "centroidalifold/engine/mccaskill.h"
+#include "centroidalifold/engine/alifold.h"
 #include "centroidalifold/engine/pfold.h"
 #include "centroidalifold/engine/averaged.h"
 #include "centroidalifold/engine/mixture.h"
@@ -202,7 +202,7 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const
     }
   
   //L = sstruct.G;
-  int max_bp_dist=0;
+  int max_bp_dist=0;// これ大丈夫かなー
   //InferenceEngine<float> en(false);
   
   for (int i = 0; i <= bpsize; i++)
@@ -1157,9 +1157,9 @@ run()
   **/
   
   MixtureModel<Aln>* cf=NULL;
-  std::vector<FoldingEngine<Aln>*> cf_list(engine.size(), NULL);
-  std::vector<FoldingEngine<std::string>*> src_list(engine.size(), NULL);
-  /**
+  //std::vector<FoldingEngine<Aln>*> cf_list(engine.size(), NULL);
+  //std::vector<FoldingEngine<std::string>*> src_list(engine.size(), NULL);
+   /**
   for (uint i=0; i!=engine.size(); ++i)
   {
     if (engine[i]=="CONTRAfold")
@@ -1219,7 +1219,16 @@ run()
   
   // ここでモデルの設定を行う。
   // ゆくゆくは上で条件分岐できるように、コマンドラインを設計する。FUTURE work
-  
+  std::vector<FoldingEngine<Aln>*> cf_list();
+  std::vector<FoldingEngine<std::string>*> src_list();
+
+  bool mea_bool=false;
+  //if (gamma.empty()) gamma.push_back(mea_bool ? 6.0 : 2.0);
+  src_list[i] = new McCaskillModel(!vm.count("noncanonical"), max_bp_dist,
+				   param.empty() ? NULL : param.c_str(),
+				   seed, vm.count("mea"));
+  cf_list[i] = new AveragedModel(src_list[i], max_bp_dist, vm.count("mea"));
+
   
   {
     // if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
