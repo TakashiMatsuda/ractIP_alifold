@@ -207,7 +207,7 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const
   
   for (int i = 0; i <= bpsize; i++)
     {
-      offset[i] = ComputeRowOffset(i,bpsize+1,max_bp_dist);
+      offset.push_back(ComputeRowOffset(i,bpsize+1,max_bp_dist));
       //allow_unpaired_position[i] = 1;
       //loss_unpaired_position[i] = RealT(0);
     }
@@ -218,9 +218,9 @@ int
 RactIP::ComputeRowOffset(int i, int N, int w /*=0*/) const
 {
   //Assert(i >= 0 && i <= N, "Index out-of-bounds.");大文字Assertは見当たらない
-  if (i>=0 && i<=N)
+  if (!(i>=0 && i<=N))
     {
-      std::cout << "Index out-of-bounds." << std::endl;
+      std::cout << "Index out-of-bounds." << std::endl;//
     }
 
 #define USE_EFFICIENT_WINDOW
@@ -248,7 +248,6 @@ alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln>& cf) cons
 {
   // centroid_alifoldのコードを流用して、塩基対確率を計算して取り出す関数を作っておいて、呼び出す。
   // basepair probabilityの計算
-  std::cout<<"pre error"<<std::endl;
   cf.calculate_posterior(seq);
   // ERROR
   
@@ -411,20 +410,19 @@ RactIP::
 rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
 {
   // hpに平均値を入れていく。
-  std::list<std::string> s1=a1.seq();//
+  // hybridization probability
+  std::list<std::string> s1=a1.seq();
   std::list<std::string> s2=a2.seq();
-  int size1=a1.size();
-  int size2=a2.size();
+  uint size1=a1.num_aln();
+  uint size2=a2.num_aln();
   std::list<std::string>::iterator it1=s1.begin();
   std::list<std::string>::iterator it2=s2.begin();
   VVVVF vhp(size1);
   int i=0;
   for (it1=s1.begin(); it1 != s1.end(); it1++)
     {
-      double sum=0;
       int j=0;
       vhp[i].resize(size2);
-      
       for (it2=s2.begin(); it2!=s2.end(); it2++)
 	{
 	  rnaduplex(*it1, *it2, vhp[i][j]);
@@ -432,7 +430,8 @@ rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
 	}
       i++;
     }
-  // 平均
+  // 各塩基配列対について平均をとる
+  // 各要素doubleにしたほうがいいかも
   VVVVF::iterator it_vvhp;
   VVVF::iterator it_vhp;
   int L=vhp[0][0].size();
@@ -554,8 +553,8 @@ float
 RactIP::
 solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
 {
-  std::list<std::string> s1=a1.seq();
-  std::list<std::string> s2=a2.seq();
+  Aln s1=a1;
+  Aln s2=a2;
   IP ip(IP::MAX, n_th_);// watching
   VF bp1, bp2;
   VI offset1, offset2;
@@ -942,7 +941,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
   float ea = ip.solve();// (inner solver)
 
   // build the resultant structure
-  r1.resize(s1.size());
+  r1.resize(s1.size());// okasiikana
   r2.resize(s2.size());
   std::fill(r1.begin(), r1.end(), '.');
   std::fill(r2.begin(), r2.end(), '.');
@@ -1190,7 +1189,7 @@ run()
                                     seed, vm.count("mea"));
     }
 #endif
-    else if (engine[i]=="pfold")// 参考にする
+    else if (engine[i]=="pfold")
     {
       if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
       std::string pfold_bin_dir(getenv("PFOLD_BIN_DIR") ? getenv("PFOLD_BIN_DIR") : ".");
@@ -1219,20 +1218,21 @@ run()
   
   // ここでモデルの設定を行う。
   // ゆくゆくは上で条件分岐できるように、コマンドラインを設計する。FUTURE work
-  std::vector<FoldingEngine<Aln>*> cf_list();
-  std::vector<FoldingEngine<std::string>*> src_list();
-
-  bool mea_bool=false;
-  //if (gamma.empty()) gamma.push_back(mea_bool ? 6.0 : 2.0);
-  src_list[i] = new McCaskillModel(!vm.count("noncanonical"), max_bp_dist,
-				   param.empty() ? NULL : param.c_str(),
-				   seed, vm.count("mea"));
-  cf_list[i] = new AveragedModel(src_list[i], max_bp_dist, vm.count("mea"));
-
+  std::vector<FoldingEngine<Aln>*> cf_list(2, NULL);
+  std::vector<FoldingEngine<std::string>*> src_list(2, NULL);
+  bool mea_bool = false;
+  uint max_bp_dist = 0;
+  uint seed_model = 0;
+  // McCaskill model for 1
+  src_list[0] = new McCaskillModel(false, max_bp_dist, NULL, seed_model, false);
+  cf_list[0] = new AveragedModel(src_list[0], max_bp_dist, false);
+  // Alifold model for 2
+  cf_list[1] = new AliFoldModel(false, max_bp_dist, NULL, seed_model, false);
   
+  uint enginenumber=2;// tmp
   {
     // if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
-    for (uint i=0; i!=engine.size(); ++i)
+    for (uint i=0; i!=enginenumber /**engine.size()**/; ++i)
     {
       if (engine.size()!=mix_w.size())
         models.push_back(std::make_pair(cf_list[i], 1.0));
@@ -1260,7 +1260,7 @@ run()
 		<< (*itr1_seq) << std::endl;
       itr1_seq++;
     }
-  std::cout<< r1 << std::endl;
+  std::cout<< r1 << std::endl;//r1=="...."
   
   const std::list<std::string> fa2_name=fa2.name();
   std::list<std::string> ::const_iterator itr2_name=fa2_name.begin();

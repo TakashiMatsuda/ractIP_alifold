@@ -1227,5 +1227,109 @@ getenv:cstdlib内、環境変数を取得する関数
 Pfold、何を落としてくればいいのかわからず。
 McCaskill & Alifoldでやってみよう。
 ---
-McCaskillModelのインプリ
+McCaskillModelの実装
+  src_list[i] = new McCaskillModel(false, max_bp_dist,
+				   param.empty() ? NULL : param.c_str(),
+				   seed, vm.count("mea"));
+seed
+("seed",
+po::value<uint>(&seed)->default_value(0),
+"specify the seed for the random number generator (set this automatically if seed=0)")
+mea
+    ("mea", "run as an MEA estimator")
+実装した
+--
+ComputeRowOffsetでエラー
+引数に与えるiとbpsize+1が間違っている
+	for文でガードしているはずなんだけどな・・・
+Assertを真偽逆にとらえていた。修正。
+--
+	    {
+-> 210 	      offset[i] = ComputeRowOffset(i,bpsize+1,max_bp_dist);
+   211 
+offsetがオーバーランしたみたい
+bpsizeがうまく設定されていないのかな
 
+  int bpsize=bp_centroidfold.size();
+これが間違っているかもしれない
+bp_centroidfoldの中身を確認
+offsetの領域確保をわすれていたみたい
+書き換え:offset.push_back(ComputeRowOffset(i,bpsize+1,max_bp_dist));
+どうでしょう
+通過
+--
+rnaduplex_alnでSegmentation fault
+
+
+   1381	typename vector<_Tp, _Allocator>::reference
+   1382	vector<_Tp, _Allocator>::operator[](size_type __n)
+   1383	{
+-> 1384	    _LIBCPP_ASSERT(__n < size(), "vector[] index out of bounds");
+   1385	    return this->__begin_[__n];
+   1386	}
+   1387	
+frame #1: 0x0000000100003ab9 ractip`RactIP::rnaduplex_aln(this=0x00007fff5fbff868, a1=0x00007fff5fbfea20, a2=0x00007fff5fbfe9f0, hp=0x00007fff5fbfbee8) const + 3369 at ractip.cpp:451
+深いところまでいきすぎて、変数を確認できない。
+*it_vhpがポインタ演算だし、指定も[i][j]となっているし、いろいろと危ないことをやっているな・・・
+
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Segmentation fault: 11
+(*it_vvhp).end()にいきつくまでに、確保されていないvectorが存在するということだろう
+-
+サイズの確保をもう一度ちゃんと確認する。
+型は大丈夫か
+入力は成功しているか
+--
+ int size1=a1.size();
+  int size2=a2.size();//
+Alnのsize関数が塩基配列の本数を表すか確認する
+  unsigned int size() const { return seq_.begin()->size(); }
+これは配列の長さですね。違います。
+  unsigned int num_aln() const { return name_.size(); }
+こっちをつかってみよう。　
+---
+結果まで到達した。
+>gca_bovine
+AGCCCUGUGGUGAAUUUACACGUUGAAUUGGGGGCUU
+>gca_chicken
+GACUCUGUAGUGAAGU-UCAUAAUGAGUUGGGGGUCU
+>gca_mouse
+GGUCUUAAGGUGAUA-UUCAUGUCGAAUUGGAGACUU
+>gca_rat
+AGCCUUAAGGUGAUU-AUCAUGUCGAAUUGAGGGCUU
+....
+>gca_bovine
+GAGGCCGGUCAAAUUCAGAUCAAU-CCGGCCA
+>gca_chicken
+GAGGCCCACCAAACUCGUUUAA-AGUGGGCCA
+>gca_mouse
+GGCGUUGGGCAAACUCGAAAAAU-CCCAACGU
+>gca_rat
+GGGGUUGGGCAAACUCGAAAAUCUACCAACUA
+....
+  std::cout<< r1 << std::endl;//r1=="...."
+結果変数r1に何も格納されていないでござる。。。
+確認する。
+  r1.resize(s1.size());// okasiikana
+  r2.resize(s2.size());
+  std::fill(r1.begin(), r1.end(), '.');
+  std::fill(r2.begin(), r2.end(), '.');
+確率計算のあとの部分を、アラインメント対応に切り替えなければいけない。
+どうしようかな
+--
+s1, s2が何に使われるか読む。
+size以外には使われていない。
+a1, a2で置換する
+長さの問題は解決した
+---
+中身の問題を解決したい
+bp, hpの中身をみてみよう
