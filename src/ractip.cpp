@@ -248,9 +248,8 @@ alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln>& cf) cons
 {
   // centroid_alifoldのコードを流用して、塩基対確率を計算して取り出す関数を作っておいて、呼び出す。
   // basepair probabilityの計算
+  //cf->stochastic_fold(seq, num_samples, *out)
   cf.calculate_posterior(seq);
-  // ERROR
-  
   BPTable bp_centroidfold;
   bp_centroidfold=cf.get_bp();
   // bpの変換
@@ -275,7 +274,7 @@ contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const
 {
   SStruct ss("unknown", seq);
   ParameterManager<float> pm;
-  InferenceEngine<float> en(false);// ここを消したい
+  InferenceEngine<float> en(false);
   VF w = GetDefaultComplementaryValues<float>();
   bp.resize((seq.size()+1)*(seq.size()+2)/2);
   std::fill(bp.begin(), bp.end(), 0.0);
@@ -435,6 +434,16 @@ rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
       for (it2=s2.begin(); it2!=s2.end(); it2++)
 	{
 	  rnaduplex(*it1, *it2, vhp[i][j]);
+	  // correct probability for gap 
+	  int k=0;
+	  int l=0;
+	  if (false)
+	    {
+	      if (false)
+		{
+		  vhp[i][j][k][l]=0;
+		}
+	    }
 	  j++;
 	}
       i++;
@@ -580,31 +589,32 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
    **/
   bool use_alifold=true;// temporary code
   if(use_alifold){
+    MixtureModel<Aln> cf2 = cf;
     alifold(a1, bp1, offset1, up1, cf);
-    alifold(a2, bp2, offset2, up2, cf);
+    alifold(a2, bp2, offset2, up2, cf2);
     rnaduplex_aln(a1,a2,hp);// 1st structure base pairing probability
   }
-#if 0
-  std::ofstream out_bp1("out_bp1_2.txt");
+#if 1
+  std::ofstream out_bp1("out_bp1_2.csv");
   VF::iterator it_bp1 = bp1.begin();
   for (it_bp1 = bp1.begin(); it_bp1 < bp1.end(); it_bp1++)
     {
-      out_bp1 << (*it_bp1);
+      out_bp1 << (*it_bp1) << ",";
     }
-  std::ofstream out_bp2("out_bp2_2.txt");
+  std::ofstream out_bp2("out_bp2_2.csv");
   VF::iterator it_bp2 = bp2.begin();
   for (it_bp2 = bp2.begin(); it_bp2 < bp2.end(); it_bp2++)
     {
-      out_bp2 << (*it_bp2);
+      out_bp2 << (*it_bp2) << ",";
     }
-  std::ofstream out_hp("out_hp_2.txt");
+  std::ofstream out_hp("out_hp_2.csv");
   VVF::iterator itit_hp = hp.begin();
   VF::iterator it_hp;
   for (itit_hp = hp.begin(); itit_hp < hp.end(); itit_hp++)
     {
       for (it_hp = (*itit_hp).begin(); it_hp < (*itit_hp).end(); it_hp++)
 	{
-	  out_hp << (*it_hp);
+	  out_hp << (*it_hp) << ",";
 	}
     }
   out_bp1.close();

@@ -1495,3 +1495,245 @@ hybridization probabilityを修正する。doubleで扱えるように。
 ---
 hp[i][j]の値を間違えて代入していた。
 修正した.
+---
+ハイブリダイゼーションのギャップ問題を解決する。
+---
+相変わらず結果が安定しない。
+確率が過小でないか確認する。
+ミスが起きるとしたら、transBPだろうか。
+transBPはpushbackしか行っていないので、変化はなさそうである。
+---
+    ("max-dist,d", po::value<uint>(&max_bp_dist)->default_value(0),
+     "the maximum distance of base-pairs");
+---
+rnaduplexの返り値
+上三角行列で十分なところ
+現行ではフルでとってるけど、返り値は違うのかもしれない
+---
+こういう結果であってるのかもしれない
+IPの安定性について議論したあと、テストデータでテストしてみよう。結果の出力にもなってちょうどよい。
+--
+seedについて調べる。
+solverはおかしいはずはないんだ。
+(一応、ractipについても実験して調べてみよう)
+安定している同じ結果が出てくる。
+---
+もしかして、毎回別のシークエンスセットに対して行っているとかはないか。
+単一のシークエンスしか含まないアラインメントに対して走らせてみよう。
+ときどきnumerical instabilityとか出てくる。
+確率行列は同じなはず。
+ということは、やはりIPの解き方がおかしい。
+  IP ip(IP::MAX, n_th_);// watching
+Warning: numerical instability (dual simplex, phase II)
+Warning: numerical instability (dual simplex, phase II)
+IPに入れる変数が毎回変わっている可能性と、
+IP自体が変な設定のせいで毎回違う値を返すようになっている可能性、
+２つに分けて調べよう。
+---
+IPに入れる変数の問題
+コメントアウトしたなかに変なものがはいっていないか
+up1, up2が何かわかっているか
+---
+up1について
+そのままコピーしただけになっている
+---
+CalculatePosteriorだけ走らせてもだめなんじゃないか
+  SStruct ss("unknown", seq);
+  ParameterManager<float> pm;
+  InferenceEngine<float> en(false);
+  VF w = GetDefaultComplementaryValues<float>();
+  bp.resize((seq.size()+1)*(seq.size()+2)/2);
+  std::fill(bp.begin(), bp.end(), 0.0);
+  en.RegisterParameters(pm);
+  en.LoadValues(w);
+  en.LoadSequence(ss);
+  en.ComputeInside();
+  en.ComputeOutside();
+  en.ComputePosterior();
+  en.GetPosterior(0, bp, offset);
+
+centroidalifoldでどう使われているか、本気で調べなければ
+set_constraint:制約条件を掛ける。任意
+
+    if (num_samples>0)
+    {
+      if (max_clusters>0)
+        cf->stochastic_fold(aln.name().front(), aln, num_samples, gamma, max_clusters, *out, p_outname, p_th);
+      else
+        cf->stochastic_fold(aln, num_samples, *out);
+      continue;
+    }
+
+("sampling,s", 
+po::value<uint>(&num_samples),
+"specify the number of samples)
+
+    ("max-clusters,c",
+     po::value<uint>(&max_clusters)->default_value(10),
+     "the maximum number of clusters for the stochastic sampling algorithm")
+
+    ("seed",
+     po::value<uint>(&seed)->default_value(0),
+     "specify the seed for the random number generator (set this automatically if seed=0)");
+    ("max-mcc", po::value<int>(&max_mcc), 
+     "predict secondary structure by maximizing pseudo-expected MCC (arg: # of sampling)")
+
+% centroid_alifold -g -1 RF00436.aln
+>AB029447-1/1210-1265
+--BCAHuUGYAVgUCGCUUUGGAYAaaAG--CGUCUGCUAAAUGM-VURwrukKAAAUDu-
+............................................................. (g=0.03125,th=0.969697)
+............................................................. (g=0.0625,th=0.941176)
+............................................................. (g=0.125,th=0.888889)
+............................................................. (g=0.25,th=0.8)
+...............(((.........))..)............................. (g=0.5,th=0.666667)
+..............(((((.......)))..))............................ (g=1,th=0.5)
+............(.((((((.....))))..)).).......................... (g=2,th=0.333333)
+........((..(.((((((.....))))..)).).))....................... (g=4,th=0.2)
+...((((.((.((.((((((.....))))..)).))))..))))................. (g=6,th=0.142857)
+...(((((((.((.((((((.....))))..)).)))).)))))................. (g=8,th=0.111111)
+..((((((((.((.((((((.....))))..)).)))).))))))................ (g=16,th=0.0588235)
+..((((((((.((.((((((.....))))..)).)))).))))))((.....))....... (g=32,th=0.030303)
+..((((((((.((.((((((.....))))..)).)))).))))))((.....))....... (g=64,th=0.0153846)
+..((((((((.((.((((((.....))))..)).)))).))))))((.....))....... (g=128,th=0.00775194)
+..((((((((.((.((((((.....))))..)).)))).))))))(((...)))....... (g=256,th=0.00389105)
+.(((((((((.((.((((((.....))))..)).)))).)))))).).((((....)))). (g=512,th=0.00194932)
+.(((((((((.((.((((((.....))))..)).)))).)))))).)(((((....))))) (g=1024,th=0.00097561)
+The first line of the result is the description of the first sequence in the given alignment. The second is the "most informative sequence" (Freyhult et al., 2005), which is similar to IUPAC ambiguity characters, produced by a library routine of the Vienna Package.
+
+      else
+        cf->stochastic_fold(aln, num_samples, *out);
+
+  virtual void stochastic_fold(const SEQ& seq, uint num_samples, std::ostream& out);
+  uint num_samples=0;
+
+  int max_mcc = -1;
+    ("max-mcc", po::value<int>(&max_mcc), 
+     "predict secondary structure by maximizing pseudo-expected MCC (arg: # of sampling)")
+
+    ("ea", po::value<int>(&num_ea_samples), 
+     "compute (pseudo-)expected accuracy (pseudo if arg==0, sampling if arg>0; arg: # of sampling)")
+
+うーん、やっぱり、違う気がする
+コンスタラクタで、すでに計算が済んでいて
+あとは、outを投げているし、これは出力上の問題ではないかな
+
+foldingengineのコンストラクタの確認
+MixtureModel(const std::vector<std::pair<FoldingEngine<SEQ>*,float> >& models,
+             bool run_as_mea /*=false*/)
+  : FoldingEngine<SEQ>(run_as_mea, 0), models_(models)
+{
+}
+
+cfを参照渡しではなく、値渡しとしてみよう。
+二回使うために、何かエラーが起きている気がする。
+値渡しにコードを変更して、うまくいかないなら、コピーしてやってみよう。
+コピーコンストラクタを使ったコードに変更した。
+---
+McCaskillModel(bool canonical_only, uint max_bp_dist,
+               const char* param /*=NULL*/, uint seed /*=0*/, bool run_as_mea /*=false*/)
+  : FoldingEngine<std::string>(run_as_mea, max_bp_dist),
+    canonical_only_(canonical_only), bk_st_back_(Vienna::st_back), str_()
+{
+  if (!canonical_only_)
+    Vienna::nonstandards = const_cast<char*>("AAACAGCACCCUGAGGUCUU");
+
+  if (seed==0)
+  {
+    timeval t;
+    gettimeofday(&t, NULL);
+    seed = t.tv_usec * t.tv_sec;
+  }
+  srand((uint)seed);
+
+  {
+    using namespace Vienna;
+    // copy from ViennaRNA-x.x.x/lib/utils.c
+    xsubi[0] = xsubi[1] = xsubi[2] = (unsigned short) seed;  /* lower 16 bit */
+    xsubi[1] += (unsigned short) ((unsigned)seed >> 6);
+    xsubi[2] += (unsigned short) ((unsigned)seed >> 12);
+  }
+
+  copy_boltzmann_parameters();
+  if (param) Vienna::read_parameter_file(param);
+}
+
+calculateposteriorがコンストラクタでは呼ばれないあたり、どうすればいいのかな、ッて思う。
+
+      cf->ps_plot(std::string(buf), aln, gamma[0], !vm.count("monochrome"));
+
+FoldingEngine<SEQ>::
+ps_plot(const std::string& name, const SEQ& seq, float g, bool color) const
+{
+  std::string paren;
+  decode_structure(g, paren);
+  if (color)
+    ::ps_color_plot(get_seq(seq).c_str(), paren.c_str(), bp_, name.c_str());
+  else
+    ::ps_plot(get_seq(seq).c_str(), paren.c_str(), name.c_str());
+計算後のプロット関数
+decode_structure(float gamma, std::string& paren) const
+{
+  float p=0.0;
+  paren.resize(bp_.size());
+  std::fill(paren.begin(), paren.end(), '.');
+  if (!mea_) {
+    if (max_bp_dist_==0)
+      p = Centroid::execute(bp_, paren, gamma);
+    else
+      p = Centroid::execute(bp_, paren, max_bp_dist_, gamma);
+  } else {
+    if (max_bp_dist_==0)
+      p = MEA::execute(bp_, paren, gamma);
+    else
+      p = MEA::execute(bp_, paren, max_bp_dist_, gamma);
+  }
+  return p;
+}
+
+mccaskillなど、個別のengineに実装されている関数が、塩基確率の計算関数であるはず
+  const BPTable& get_bp() const { return bp_; }
+
+
+template < class SEQ >
+void
+FoldingEngine<SEQ>::
+centroid_fold(const std::string& name, const SEQ& seq,
+              const std::vector<float>& gamma, std::ostream& out)
+{
+#ifdef HAVE_LIBRNA
+  Vienna::eos_debug = -1;
+#endif
+  calculate_posterior(seq);
+やっぱりcalculate_porteriorであっているっぽい
+---
+では、なぜ俺のでｈ
+mixtureの失敗か？
+全体的に確率が低くなっている気がする。
+入れているbp1, bp2, up1, up2のどれかがやっぱり違うんだろう。
+もとのractipを新しくコンパイルして、確率を出力させて、比べよう。
+-
+。
+------
+
+Numerical instability[edit]
+
+One user reports occasionally encountering the following console message when solving millions of tiny automatically generated LPs using the GLPK API:
+Warning: numerical instability (primal simplex, phase II)
+This means that the simplex solver detected that the current basic solution has became infeasible due to excessive round-off errors. In this case, the solver automatically switches to phase I to recover feasibility and then continues the search. If the solver routine returns 0, the solution can be considered accurate to within the current working precision. The GLPK routine lpx_check_kkt can subsequently be used to check whether the solution satisfies the various conditions for feasibility and optimality, as described here and here. See this thread for more information.
+Provisionally from GLPK 4.46 onward, a more robust strategy for dealing with numerical instability is planned. This new version will mean that these instability warnings will no longer occur. See this April 2011 posting for some details.
+Interior point solver[edit]
+Users should be aware that the interior point solver sometimes prematurely terminates its search for a solution due to numerical instabilities when solving a Newtonian system. In which case, the more robust simplex solver should be used. This 2011 posting contains more details.
+やはり確率が小さすぎるのだ
+hpの方をしらべてみよう。
+------
+まず、長さが違った。
+長さが違うということは、transBPで何か間違っている可能性がある。
+get_bpでちゃんと値が帰ってきているのか、
+長さはどのくらい違うのか
+調べよう
+33、違う。一行分です。
+1: 38違う。一行分です。
+もとのractipのほうが長いですね。ということは、
+一行分、どこかにおとしてきてしまっているということでしょうか。
+----
+

@@ -20,8 +20,6 @@ void
 RactIP::
 alifold(const std::string& seq, VF& bp, VI& offset, VVF& up, engine, mix_w, cf_list, vm) const
 {
-  // 必要なパスはすべて通してあると仮定してコードする。
-  
   std::vector<std::string> engine;
   if (gamma.empty()) gamma.push_back(vm.count("mea") ? 6.0 : 1.0);
   std::vector<std::pair<FoldingEngine<Aln>*,float> > models;
