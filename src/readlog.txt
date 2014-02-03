@@ -1333,3 +1333,165 @@ a1, a2で置換する
 ---
 中身の問題を解決したい
 bp, hpの中身をみてみよう
+どっちもちゃんと入っている。
+パラメータの与え方がおかしいのかもしれない。
+r1をつくるところ、つまりうしろからたどってみよう。
+-
+結果が毎回一定でない。なぜだろう。
+結果は3パターンにわかれる。
+bp,hpのどちらかが、おそらく変わっているのだろう。
+centroid_alifoldを使ってみる。
+bash-3.2$ centroid_alifold sample.clustal 
+>gca_bovine
+RRCCYURWRGUGAWWuwWCAYRWYGAAUUGRRGRCYU
+((((((.....((.........))......)))))). (g=2,th=0.333333,e=-1.89)
+bash-3.2$ centroid_alifold sample-2.clustal 
+>gca_bovine
+GRGGYYGGKCAAAYUCGDWWAWuugYSRRCBW
+..(((((((...............))))))). (g=2,th=0.333333,e=-6.2025)
+bash-3.2$ ./ractip sample.clustal sample-2.clustal 
+start
+both fa1 and fa2 are not empty
+inner for 1
+inner for 1
+>gca_bovine
+AGCCCUGUGGUGAAUUUACACGUUGAAUUGGGGGCUU
+>gca_chicken
+GACUCUGUAGUGAAGU-UCAUAAUGAGUUGGGGGUCU
+>gca_mouse
+GGUCUUAAGGUGAUA-UUCAUGUCGAAUUGGAGACUU
+>gca_rat
+AGCCUUAAGGUGAUU-AUCAUGUCGAAUUGAGGGCUU
+..............................((.))..
+>gca_bovine
+GAGGCCGGUCAAAUUCAGAUCAAU-CCGGCCA
+>gca_chicken
+GAGGCCCACCAAACUCGUUUAA-AGUGGGCCA
+>gca_mouse
+GGCGUUGGGCAAACUCGAAAAAU-CCCAACGU
+>gca_rat
+GGGGUUGGGCAAACUCGAAAAUCUACCAACUA
+................................
+もしや、フォーマットが違うかな?
+入力をテスト。
+入力テスト通過した。
+---
+毎回かわるところを見る。
+-
+max_bp_distを100に設定してみた。
+結果は変化したがよくわかっていない。
+-
+mix_w
+完全に確認していないが、とりあえず問題は考えられていない。
+-
+seed_model
+-
+use_alifold_modelなところ
+-
+
+basepair probabilityの問題か、それともその後の問題か確認しよう。
+solve関数を理解する。
+----
+結果があっているかの性能試験コードを作ったほうがいいなあ。
+---
+bp1,bp2,hpの中身を確認する。
+ちゃんと中身はあった。
+---
+	 if (x[i][j]>=0 && ip.get_value(x[i][j])>0.5)
+        {
+          assert(r1[i]=='.'); assert(r1[j]=='.');
+	  std::cout << "inner for 1" << std::endl;
+          r1[i]='('; r1[j]=')';
+        }
+この条件で中に入らないことがあったり、なかったり
+この原因を調べたいが、それにはとても時間がかかる
+ractipの実装を全部読むのは時間がかかりそうだ
+basepair probability についてよくみてみよう
+bp1, bp2, hpを出力させて、そのdiffがあるか調べる。
+-
+ベクタに対するイテレータ
+配列は全部ポインタだったが、
+vectorのポインタ型はその変数に[i]をつけてはいけない
+---
+base pair probabilityは一定である。
+solverに与えるパラメータでこの結果が出力されているとかんがえるのが妥当でしょう。
+パラメータ設定を理解する。
+---
+やること：
+パラメータ設定の理解
+先行論文のデータ・セットをダウンロード
+テスト
+---
+一本を入れてみよう
+interactionが増えたようだ
+でも、結果は安定しない
+-
+結果が安定しない問題について
+まず、もう一回アルゴリズムを理解する。
+確率を得たあとから
+自分のlatexと、ractipの論文を読む。
+-
+どの程度、ハイブリダイゼーションを重要視するか、というパラメータalpha
+-
+ip.make_variable
+  int make_variable(double coef)
+  {
+    int col = vars_.getSize();
+    vars_.add(IloBoolVar(env_));
+    obj_ += coef * vars_[col];
+    return col;
+  }
+
+----
+ハイブリダイゼーションの確率が本当にあっているか、確認する。
+(ギャップのところ)
+--
+安定について：
+最適解が複数あった場合、ランダムに選ばれるだろう
+---
+ハイブリダイゼーションの確率の修正
+現在：ViennaRNAの機能をそのままりようしている
+内部で何が起こっているかわからない。
+ViennaRNAにかける前に、その外側で例外処理を行う。
+ViennaRNAにかけるところを見る。
+    Vienna::co_pf_fold(const_cast<char*>(s.c_str()), const_cast<char*>(c.c_str()));
+
+/**
+ *  \brief Calculate partition function and base pair probabilities
+ *
+ *  This is the cofold partition function folding. The second molecule starts
+ *  at the #cut_point nucleotide.
+ *
+ *  \note OpenMP: Since this function relies on the global parameters
+ *        #do_backtrack, #dangles, #temperature and #pf_scale it is not
+ *        threadsafe according to concurrent changes in these variables!
+ *        Use co_pf_fold_par() instead to circumvent this issue.
+ *
+ *  \see co_pf_fold_par()
+ *
+ *  \param  sequence  Concatenated RNA sequences
+ *  \param  structure Will hold the structure or constraints
+ *  \return           cofoldF structure containing a set of energies needed for
+ *                    concentration computations.
+ */
+cofoldF co_pf_fold( char *sequence,
+                    char *structure)
+実装はない。コンパイルしたものしかない。
+どうしよっかなー
+帰ってきたあとのhpに対して、
+ギャップのときの確率を、
+定数probabilityforgapにする。0が妥当であろう。正確には統計のよって定めるのが次善策だ。
+そもそも0になっているか調べてみよう。
+なっていなかった。
+最後に治す形で修正する。
+---
+アラインメントの塩基確率を計算するところ
+誤差が大きくなってる可能性、（桁落ち）
+doubleで修正しよう。
+centroid_alifoldから流用してしまっているから、このことは大丈夫だろう（centroid_alifoldの精度)
+じゃあ何か
+hybridization probabilityを修正する。doubleで扱えるように。
+そうしてあった。
+---
+hp[i][j]の値を間違えて代入していた。
+修正した.

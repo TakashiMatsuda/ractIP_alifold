@@ -202,7 +202,7 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const
     }
   
   //L = sstruct.G;
-  int max_bp_dist=0;// これ大丈夫かなー
+  int max_bp_dist=100;// これ大丈夫かなー
   //InferenceEngine<float> en(false);
   
   for (int i = 0; i <= bpsize; i++)
@@ -413,12 +413,21 @@ rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
   // hybridization probability
   std::list<std::string> s1=a1.seq();
   std::list<std::string> s2=a2.seq();
+
   uint size1=a1.num_aln();
   uint size2=a2.num_aln();
   std::list<std::string>::iterator it1=s1.begin();
   std::list<std::string>::iterator it2=s2.begin();
   VVVVF vhp(size1);
   int i=0;
+  ///////////
+  // gapの時の確率を見たい
+  it1++;
+  it1++;
+  std::cout << "S1[2][15]: " << (*it1)[15] << std::cout;// 2-15の塩基を取り出すコード
+
+  //////////
+
   for (it1=s1.begin(); it1 != s1.end(); it1++)
     {
       int j=0;
@@ -443,14 +452,16 @@ rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
       for (int j=0; j<M; j++)
 	{
 	  double sum=0;
+	  uint ucount=0;
 	  for (it_vvhp=vhp.begin(); it_vvhp!=vhp.end();it_vvhp++)
 	    {
 	      for(it_vhp=(*it_vvhp).begin(); it_vhp!=(*it_vvhp).end(); it_vhp++)
 		{
 		  sum+=(*it_vhp)[i][j];
 		}
+	      //hp[i][j]=sum / (double)(size1+size2);// ここじゃなくない?
 	    }
-	  hp[i][j]=sum / (double)(size1+size2);	  
+	  hp[i][j]=sum / (double)(size1+size2);// 上から移動
 	}
     }
 }
@@ -472,13 +483,14 @@ rnaduplex(const std::string& s1, const std::string& s2, VVF& hp) const
   }
   else
   {
+    //reading
     hp.clear();
     hp.resize(s1.size()+1, VF(s2.size()+1, 0.0));
     std::string s=s1+s2;
     std::string c(s.size(), 'e');
     Vienna::pf_scale = -1;
     Vienna::cut_point = s1.size()+1;
-    Vienna::co_pf_fold(const_cast<char*>(s.c_str()), const_cast<char*>(c.c_str()));
+    Vienna::co_pf_fold(const_cast<char*>(s.c_str()), const_cast<char*>(c.c_str()));// reading, 
     pair_info* pi = NULL;
 #ifdef HAVE_VIENNA20
     Vienna::assign_plist_from_pr(&pi, Vienna::export_co_bppm(), s.size(), th_hy_);
@@ -570,9 +582,36 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
   if(use_alifold){
     alifold(a1, bp1, offset1, up1, cf);
     alifold(a2, bp2, offset2, up2, cf);
-  
     rnaduplex_aln(a1,a2,hp);// 1st structure base pairing probability
   }
+#if 0
+  std::ofstream out_bp1("out_bp1_2.txt");
+  VF::iterator it_bp1 = bp1.begin();
+  for (it_bp1 = bp1.begin(); it_bp1 < bp1.end(); it_bp1++)
+    {
+      out_bp1 << (*it_bp1);
+    }
+  std::ofstream out_bp2("out_bp2_2.txt");
+  VF::iterator it_bp2 = bp2.begin();
+  for (it_bp2 = bp2.begin(); it_bp2 < bp2.end(); it_bp2++)
+    {
+      out_bp2 << (*it_bp2);
+    }
+  std::ofstream out_hp("out_hp_2.txt");
+  VVF::iterator itit_hp = hp.begin();
+  VF::iterator it_hp;
+  for (itit_hp = hp.begin(); itit_hp < hp.end(); itit_hp++)
+    {
+      for (it_hp = (*itit_hp).begin(); it_hp < (*itit_hp).end(); it_hp++)
+	{
+	  out_hp << (*it_hp);
+	}
+    }
+  out_bp1.close();
+  out_bp2.close();
+  out_hp.close();
+#endif
+
   /**
    * Takashi Matsuda commented out below in 2014
   else if (!rip_file_.empty())
@@ -614,7 +653,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
     for (uint i=j-1; i!=-1u; --i)
     {
       const float& p=bp1[offset1[i+1]+(j+1)];
-      if (p>th_ss_)
+      if (p>th_ss_)//
       {
         x[i][j] = ip.make_variable(p);
         xx[i].push_back(j);
@@ -941,7 +980,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
   float ea = ip.solve();// (inner solver)
 
   // build the resultant structure
-  r1.resize(s1.size());// okasiikana
+  r1.resize(s1.size());
   r2.resize(s2.size());
   std::fill(r1.begin(), r1.end(), '.');
   std::fill(r2.begin(), r2.end(), '.');
@@ -951,6 +990,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
     {
       if (z[i][j]>=0 && ip.get_value(z[i][j])>0.5)
       {
+	//std::cout << "OUTER" << std::endl;
         r1[i]='['; r2[j]=']';
       }
     }
@@ -964,6 +1004,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
         if (x[i][j]>=0 && ip.get_value(x[i][j])>0.5)
         {
           assert(r1[i]=='.'); assert(r1[j]=='.');
+	  //std::cout << "inner for 1" << std::endl;
           r1[i]='('; r1[j]=')';
         }
       }
@@ -975,6 +1016,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
         if (y[i][j]>=0 && ip.get_value(y[i][j])>0.5)
         {
           assert(r2[i]=='.'); assert(r2[j]=='.');
+	  std::cout << "outer for 2" << std::endl;
           r2[i]='('; r2[j]=')';
         }
       }
@@ -1000,7 +1042,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
   }
   std::cout << std::endl;
 #endif
-
+  
   return ea;
 }
 
@@ -1117,7 +1159,7 @@ run()
     std::cout<<"both fa1 and fa2 are not empty"<<std::endl;
     std::list<Aln> l1, l2;// change here <input> (Fasta -> Aln)
     if (Aln::load(l1, fa1_.c_str())==0)
-      throw (fa1_+": Format error").c_str();//これでいいのか
+      throw (fa1_+": Format error").c_str();
     if (Aln::load(l2, fa2_.c_str())==0)
       throw (fa2_+": Format error").c_str();
     fa1=l1.front();
@@ -1135,8 +1177,8 @@ run()
   else { throw "unreachable"; }
   
   /**
-   * centroid_alifold section
-   * Takashi Matsuda 2013-2014 automn-winter
+   * ractalifold (imported from  centroid_alifold) section
+   * Takashi Matsuda 2013-2014 automn-winter-earlyspring
    **/
   
   std::vector<FoldingEngine<Aln>*> cflist(engine.size(),NULL);
@@ -1221,13 +1263,13 @@ run()
   std::vector<FoldingEngine<Aln>*> cf_list(2, NULL);
   std::vector<FoldingEngine<std::string>*> src_list(2, NULL);
   bool mea_bool = false;
-  uint max_bp_dist = 0;
+  uint max_bp_dist = 100;
   uint seed_model = 0;
   // McCaskill model for 1
-  src_list[0] = new McCaskillModel(false, max_bp_dist, NULL, seed_model, false);
+  src_list[0] = new McCaskillModel(true, max_bp_dist, NULL, seed_model, false);
   cf_list[0] = new AveragedModel(src_list[0], max_bp_dist, false);
   // Alifold model for 2
-  cf_list[1] = new AliFoldModel(false, max_bp_dist, NULL, seed_model, false);
+  cf_list[1] = new AliFoldModel(true, max_bp_dist, NULL, seed_model, false);
   
   uint enginenumber=2;// tmp
   {
@@ -1247,7 +1289,6 @@ run()
   std::string r1, r2;
   float ea = solve(fa1, fa2, r1, r2, *cf);
 
-
   // diplay the result
   const std::list<std::string> fa1_name=fa1.name();
   std::list<std::string> ::const_iterator itr1_name=fa1_name.begin();
@@ -1260,7 +1301,7 @@ run()
 		<< (*itr1_seq) << std::endl;
       itr1_seq++;
     }
-  std::cout<< r1 << std::endl;//r1=="...."
+  std::cout<< r1 << std::endl;
   
   const std::list<std::string> fa2_name=fa2.name();
   std::list<std::string> ::const_iterator itr2_name=fa2_name.begin();
@@ -1272,7 +1313,7 @@ run()
 		<< (*itr2_seq) << std::endl;
       itr2_seq++;
     }
-  std::cout<< r1 << std::endl;
+  std::cout<< r2 << std::endl;
   
   //////////////////////// by Takashi Matsuda ///////////////////////////////
   //// future work: separate above code ///////
