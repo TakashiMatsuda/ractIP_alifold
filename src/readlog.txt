@@ -1736,4 +1736,80 @@ get_bpでちゃんと値が帰ってきているのか、
 もとのractipのほうが長いですね。ということは、
 一行分、どこかにおとしてきてしまっているということでしょうか。
 ----
+transBPを調べる。対角成分を、落としてしまっていると思う。
+    std::vector<RealT> posterior, posterior2;
+//////////////////////////////////////////////////////////////////////
+// ComputeRowOffset()
+//
+// Consider an N x N upper triangular matrix whose elements are
+// stored in a one-dimensional flat array using the following
+// row-major indexing scheme:
+//
+//     0  1  2  3     <-- row 0
+//        4  5  6     <-- row 1
+//           7 [8]    <-- row 2
+//              9     <-- row 3
+//
+// Assuming 0-based indexing, this function computes offset[i]
+// for the ith row such that offset[i]+j is the index of the
+// (i,j)th element of the upper triangular matrix in the flat
+// array.
+//
+// For example, offset[2] = 5, so the (2,3)th element of the
+// upper triangular matrix (marked in the picture above) can be 
+// found at position offset[2]+3 = 5+3 = 8 in the flat array.
+//////////////////////////////////////////////////////////////////////
+これを可能にするにはどうすればよいか
+bpsizeが本当に正しいものか調べる。  uint size() const { return size_; }
+typedef BPTableTmpl<float> BPTable;// BPTable definition
+ためしに+1してみた。(一応これで数はあう。一致するかはわからない。 -> セグフォ)
+---
+アルファベット：26文字
+U:21
+O:15
+561
+38*38=1444
+----
+cutoffをちゃんとしよう。
+foldingの方ではなくて、modelの方。
+centroid_alifoldを見てみよう。
+cutoffをやります。
 
+      if (z[i][j]>=0 && ip.get_value(z[i][j])>0.5)
+     
+この条件がわからない
+なんで0.5以上なのか
+ip.get_valueとはなにか
+全然最適解になってない感じがある
+IPの試行回数を増やして、改善したい。
+---
+解決法
+頭が動いてない.....
+寝るのが怖い
+これは悪影響出ているから、最悪サボるとして、なんとかしよう。
+確率を与えるときに、ミスがでていると思われる。具体的には、
+一行分足りない。(それ以上の情報はまだ得ていない)
+hpについても調べる。
+それと、確率分布が大きく異なっているかもしれないので、それについては
+IPの試行回数を増やすことで、対応する。
+------------
+確率行列は、絶対にまちがっているのだから、まずこっちをちゃんとする。
+ギャップの扱い、Viennaがちゃんとできるのか、確認する。
+------------
+既存のbpの配合
+  en.GetPosterior(0, bp, offset);
+これは
+   p[i] = (posterior[i] >= posterior_cutoff ? posterior[i] : RealT(0));
+->  posterior.clear();
+    posterior.resize(SIZE, RealT(0));
+    
+->  L = sstruct.GetLength();
+#ifdef USE_EFFICIENT_WINDOW
+    if (max_bp_dist==0)
+        SIZE = (L+1)*(L+2) / 2;
+    else
+        SIZE = (L+1)*max_bp_dist;
+#else
+    SIZE = (L+1)*(L+2) / 2;
+#endif
+max_bp_distの意味が変わってくるので注意

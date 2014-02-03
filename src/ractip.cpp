@@ -102,7 +102,7 @@ public:
   RactIP()
     : alpha_(0.5),
       beta_(0.0),
-      th_hy_(0.2),
+      th_hy_(0.2),// ここをいじると、逆にあとのconstraintで弾かれる。
       th_ss_(0.5),
       th_ac_(0.0),
       max_w_(0),
@@ -141,7 +141,7 @@ public:
                                float& e1, float& e2, float& e3);
 
 private:
-  void transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const;
+  void transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset, const Aln& aln) const;
   int ComputeRowOffset(int i, int N, int w /*=0*/) const;
   void alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln>& cf) const;
   //void contrafold(const std::string& seq, VF& bp, VI& offset, VVF& up) const;
@@ -189,28 +189,38 @@ private:
 
 void
 RactIP::
-transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset) const
+transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset, const Aln& aln) const
 {
   int bpsize=bp_centroidfold.size();
+  uint L = aln.size();
+  std::cout << "bpsize: " << std::endl;
+  bp.clear();
+  bp.resize((L+1)*(L+2)/2);
+  offset.resize(L+1);
+  for(uint i=0; i<=L; ++i)
+    {
+      offset[i]=i*((L+1)+(L+1)-i-1)/2;
+    }
   for (int i=0; i<bpsize; i++)
     {
       int j=0;
       for (j=i; j<bpsize; j++)
 	{
-	  bp.push_back(bp_centroidfold(i,j));
+	  //bp.push_back(bp_centroidfold(i,j));
+	  bp[offset[i]+j]=bp_centroidfold(i,j);
 	}
     }
   
   //L = sstruct.G;
-  int max_bp_dist=100;// これ大丈夫かなー
+  //int max_bp_dist=0;
   //InferenceEngine<float> en(false);
   
-  for (int i = 0; i <= bpsize; i++)
-    {
-      offset.push_back(ComputeRowOffset(i,bpsize+1,max_bp_dist));
+  //  for (int i = 0; i <= bpsize; i++)
+  //    {
+  //      offset.push_back(ComputeRowOffset(i,bpsize+1,max_bp_dist));
       //allow_unpaired_position[i] = 1;
       //loss_unpaired_position[i] = RealT(0);
-    }
+  //    }
 }
 
 
@@ -220,7 +230,7 @@ RactIP::ComputeRowOffset(int i, int N, int w /*=0*/) const
   //Assert(i >= 0 && i <= N, "Index out-of-bounds.");大文字Assertは見当たらない
   if (!(i>=0 && i<=N))
     {
-      std::cout << "Index out-of-bounds." << std::endl;//
+      std::cout << "Index out-of-bounds." << std::endl;
     }
 
 #define USE_EFFICIENT_WINDOW
@@ -253,7 +263,7 @@ alifold(const Aln& seq, VF& bp, VI& offset, VVF& up, MixtureModel<Aln>& cf) cons
   BPTable bp_centroidfold;
   bp_centroidfold=cf.get_bp();
   // bpの変換
-  transBP_centroidfold_ractip(bp_centroidfold, bp, offset);
+  transBP_centroidfold_ractip(bp_centroidfold, bp, offset, seq);
 
   const uint L=seq.size();
   up.resize(L, VF(1, 1.0));
@@ -553,7 +563,7 @@ load_from_rip(const char* filename,
       s >> i >> j >> p;
       switch (st)
       {
-        case TABLE_R:
+      case TABLE_R://reading
           bp1[offset1[i]+j] = p;
           break;
         case TABLE_S:
@@ -663,7 +673,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
     for (uint i=j-1; i!=-1u; --i)
     {
       const float& p=bp1[offset1[i+1]+(j+1)];
-      if (p>th_ss_)//
+      if (p>th_ss_)
       {
         x[i][j] = ip.make_variable(p);
         xx[i].push_back(j);
@@ -987,7 +997,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
   }
 
   // execute optimization
-  float ea = ip.solve();// (inner solver)
+  float ea = ip.solve();
 
   // build the resultant structure
   r1.resize(s1.size());
@@ -998,7 +1008,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
   {
     for (uint j=0; j!=s2.size(); ++j)
     {
-      if (z[i][j]>=0 && ip.get_value(z[i][j])>0.5)
+      if (z[i][j]>=0 && ip.get_value(z[i][j])>0.2)
       {
 	//std::cout << "OUTER" << std::endl;
         r1[i]='['; r2[j]=']';
@@ -1011,7 +1021,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
     {
       for (uint j=i+1; j<s1.size(); ++j)
       {
-        if (x[i][j]>=0 && ip.get_value(x[i][j])>0.5)
+        if (x[i][j]>=0 && ip.get_value(x[i][j])>0.2)
         {
           assert(r1[i]=='.'); assert(r1[j]=='.');
 	  //std::cout << "inner for 1" << std::endl;
@@ -1023,10 +1033,10 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
     {
       for (uint j=i+1; j<s2.size(); ++j)
       {
-        if (y[i][j]>=0 && ip.get_value(y[i][j])>0.5)
+        if (y[i][j]>=0 && ip.get_value(y[i][j])>0.2)
         {
           assert(r2[i]=='.'); assert(r2[j]=='.');
-	  std::cout << "outer for 2" << std::endl;
+	  std::cout << "inner for 2" << std::endl;
           r2[i]='('; r2[j]=')';
         }
       }
@@ -1273,7 +1283,7 @@ run()
   std::vector<FoldingEngine<Aln>*> cf_list(2, NULL);
   std::vector<FoldingEngine<std::string>*> src_list(2, NULL);
   bool mea_bool = false;
-  uint max_bp_dist = 100;
+  uint max_bp_dist = 1000;
   uint seed_model = 0;
   // McCaskill model for 1
   src_list[0] = new McCaskillModel(true, max_bp_dist, NULL, seed_model, false);
