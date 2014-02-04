@@ -193,7 +193,7 @@ transBP_centroidfold_ractip(BPTable bp_centroidfold, VF& bp, VI& offset, const A
 {
   int bpsize=bp_centroidfold.size();
   uint L = aln.size();
-  std::cout << "bpsize: " << std::endl;
+  //std::cout << "bpsize: " << std::endl;
   bp.clear();
   bp.resize((L+1)*(L+2)/2);
   offset.resize(L+1);
@@ -433,7 +433,7 @@ rnaduplex_aln(const Aln& a1, const Aln& a2, VVF& hp) const
   // gapの時の確率を見たい
   it1++;
   it1++;
-  std::cout << "S1[2][15]: " << (*it1)[15] << std::cout;// 2-15の塩基を取り出すコード
+  //std::cout << "S1[2][15]: " << (*it1)[15] << std::cout;// 2-15の塩基を取り出すコード
 
   //////////
 
@@ -1036,7 +1036,7 @@ solve(Aln& a1, Aln& a2, std::string& r1, std::string& r2, MixtureModel<Aln>& cf)
         if (y[i][j]>=0 && ip.get_value(y[i][j])>0.2)
         {
           assert(r2[i]=='.'); assert(r2[j]=='.');
-	  std::cout << "inner for 2" << std::endl;
+	  //std::cout << "inner for 2" << std::endl;
           r2[i]='('; r2[j]=')';
         }
       }
@@ -1176,7 +1176,7 @@ run()
   Aln fa1, fa2;
   if (!fa1_.empty() && !fa2_.empty())
   {
-    std::cout<<"both fa1 and fa2 are not empty"<<std::endl;
+    //std::cout<<"both fa1 and fa2 are not empty"<<std::endl;
     std::list<Aln> l1, l2;// change here <input> (Fasta -> Aln)
     if (Aln::load(l1, fa1_.c_str())==0)
       throw (fa1_+": Format error").c_str();
@@ -1404,7 +1404,7 @@ main(int argc, char* argv[])
   try
   {
     RactIP ractip;
-    std::cout<< "start" << std::endl;
+    //std::cout<< "start" << std::endl;
     return ractip.parse_options(argc, argv).run();
   }
   catch (const char* msg)
@@ -1417,4 +1417,3 @@ main(int argc, char* argv[])
   }
   return 1;
 }
-
